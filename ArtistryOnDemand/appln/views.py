@@ -5,7 +5,7 @@ from django.http import HttpResponse
 def home(request):
     return render(request, 'appln/home.html')
 
-def singup(request):
+def signup(request):
     # Render the login page template
     return render(request,'appln/signup.html')
 
