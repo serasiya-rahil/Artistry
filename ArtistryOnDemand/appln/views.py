@@ -3,9 +3,6 @@ from django.http import HttpResponse
 
 #view for default home page
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'appln/home.html')
 
-#
-def login(request):
-    return render(request, 'login.html')
 
