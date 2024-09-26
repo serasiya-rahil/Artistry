@@ -1,13 +1,78 @@
+<!-- templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artistry on Demand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>My App Home</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'appln/style.css' %}">
 </head>
 <body>
-    <h1>Welcome to My App Home Page!</h1>
+
+    <header>
+        <h1>Artistry on Demand</h1>
+        <nav>
+            <!-- Add navigation links here if needed -->
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Welcome to Artistry on Demand!</h1>
+        <p>Connect with talented artists for personalized artistic creations.</p>
+    </div>
+
+    <section class="services">
+        <div class="service">
+            <h3><i class="fas fa-pencil-alt"></i> Request Artwork</h3>
+            <p>Request hand-drawn sketches, cartoon versions, and custom-made greetings.</p>
+        </div>
+        <div class="service">
+            <h3><i class="fas fa-brush"></i> Artists Listing</h3>
+            <p>Artists can add, modify, and manage their art listings seamlessly.</p>
+        </div>
+        <div class="service">
+            <h3><i class="fas fa-comments"></i> Provide Feedback</h3>
+            <p>Once your request is fulfilled, provide feedback to help artists grow!</p>
+        </div>
+        <div class="service">
+            <h3><i class="fas fa-eye"></i> View Listings</h3>
+            <p>Browse and view listings based on your artistic preferences.</p>
+        </div>
+    </section>
+
+    <section class="artworks">
+        <div class="artwork-card">
+            <div class="artwork-inner">
+                <img src="https://cdn.pixabay.com/photo/2019/09/05/05/28/eye-4453129_1280.jpg" alt="Hand-drawn Sketch" class="artwork-image">
+                <div class="artwork-description">Hand-drawn Sketch</div>
+            </div>
+        </div>
+        <div class="artwork-card">
+            <div class="artwork-inner">
+                <img src="https://cdn.pixabay.com/photo/2023/07/30/11/39/girl-8158685_1280.jpg" alt="Cartoon Version" class="artwork-image">
+                <div class="artwork-description">Cartoon Version</div>
+            </div>
+        </div>
+        <div class="artwork-card">
+            <div class="artwork-inner">
+                <img autoplay src="https://cdn.pixabay.com/photo/2017/03/07/23/33/technology-2125547_1280.jpg" alt="Animated Video" class="artwork-image">
+                <div class="artwork-description">Animated Video</div>
+            </div>
+        </div>
+        <div class="artwork-card">
+            <div class="artwork-inner">
+                <img src="{% static 'images/customGreeting.jpeg' %}" alt="Custom Greeting" class="artwork-image">
+                <div class="artwork-description">Custom Greeting</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Artistry on Demand. All Rights Reserved.</p>
+    </footer>
+
 </body>
 </html>
