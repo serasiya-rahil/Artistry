@@ -30,4 +30,5 @@ Welcome to **Artistry on Demand**, a web application that connects users with ta
 - Rahil Serasiya 
 - RajatKumar Maisuriya 
 - Dhrumil Patel
-- Ahsish Yadav 
+- Ahsish Yadav
+- Riya Kapadiya
