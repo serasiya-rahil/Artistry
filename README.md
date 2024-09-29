@@ -6,10 +6,7 @@ Welcome to **Artistry on Demand**, a web application that connects users with ta
 
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-- [Installation](#installation)
 - [Team Members](#team-members)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
