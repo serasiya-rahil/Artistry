@@ -76,10 +76,18 @@ WSGI_APPLICATION = 'ArtistryOnDemand.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'ArtistryOnDemand',  # Replace with your actual database name
+        'USER': 'rahil',       # Replace with your SQL Server username
+        'PASSWORD': 'rahil',   # Replace with your SQL Server password
+        'HOST': 'DESKTOP-99B9D8G\\SQLEXPRESS',  # SQL Server instance
+        'PORT': '',  # Keep empty for default SQL Server port
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',  # Ensure you have this installed
+        },
     }
 }
+
 
 
 # Password validation
