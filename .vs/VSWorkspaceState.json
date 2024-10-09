@@ -3,12 +3,13 @@
     "",
     "\\ArtistryOnDemand",
     "\\ArtistryOnDemand\\appln",
-    "\\ArtistryOnDemand\\appln\\migrations",
+    "\\ArtistryOnDemand\\appln\\static",
     "\\ArtistryOnDemand\\appln\\static\\appln",
     "\\ArtistryOnDemand\\appln\\static\\images",
+    "\\ArtistryOnDemand\\appln\\templates",
     "\\ArtistryOnDemand\\appln\\templates\\appln",
     "\\ArtistryOnDemand\\ArtistryOnDemand"
   ],
-  "SelectedNode": "\\ArtistryOnDemand\\appln\\migrations\\__init__.py",
+  "SelectedNode": "\\ArtistryOnDemand\\appln\\Forms.py",
   "PreviewInSolutionExplorer": false
 }

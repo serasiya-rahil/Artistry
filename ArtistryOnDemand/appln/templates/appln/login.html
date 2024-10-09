@@ -1,22 +1,63 @@
-<!-- templates/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Artistry on Demand</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	<title>My App Home</title>
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'appln/style.css' %}">
+	<link rel="stylesheet" href="{% static 'appln/signup.css' %}">
+	<title>Signup Page</title>
 </head>
 <body>
-	<header>
-		<nav>
-			<!-- Add navigation links here if needed -->
-		</nav>
-		<h1>Login Here</h1>
 
+	<header>
+		<h1>Artistry on Demand</h1>
+		<nav>
+			<a href="">Home</a>
+			<a href="">About</a>
+			<a href="">Login</a>
+			<a href="">Contact Us</a>
+		</nav>
 	</header>
+
+	<div class="container">
+		<aside class="sidebar">
+			<h2>Sidebar</h2>
+			<ul>
+				<li><a href="#">Link 1</a></li>
+				<li><a href="#">Link 2</a></li>
+				<li><a href="#">Link 3</a></li>
+			</ul>
+		</aside>
+
+		<main class="signup-container">
+			<form method="POST" action="{% url 'login_user' %}">
+				{% csrf_token %}
+				<div>
+					<label for="username">Username:</label>
+					<input type="text" id="username" name="username" required>
+				</div>
+				<div>
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+				<button type="submit">Login</button>
+			</form>
+
+			{% if messages %}
+			<ul>
+				{% for message in messages %}
+				<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</main>
+	</div>
+
+	<footer>
+		<p>&copy; 2024 Your Company. All rights reserved.</p>
+	</footer>
+
+
 </body>
 </html>
+
