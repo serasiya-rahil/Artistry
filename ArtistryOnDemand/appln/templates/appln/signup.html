@@ -1,22 +1,129 @@
-<!-- templates/signup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Artistry on Demand</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	<title>My App Home</title>
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'appln/style.css' %}">
+	<link rel="stylesheet" href="{% static 'appln/signup.css' %}">
+	<title>Signup Page</title>
 </head>
 <body>
-	<header>
-		<nav>
-			<!-- Add navigation links here if needed -->
-		</nav>
-		<h1>signup Here</h1>
 
+	<header>
+		<h1>Artistry on Demand</h1>
+		<nav>
+			<a href="">Home</a>
+			<a href="">About</a>
+			<a href="">Login</a>
+			<a href="">Contact Us</a>
+		</nav>
 	</header>
+
+	<div class="container">
+		<aside class="sidebar">
+			<h2>Sidebar</h2>
+			<ul>
+				<li><a href="#">Link 1</a></li>
+				<li><a href="#">Link 2</a></li>
+				<li><a href="#">Link 3</a></li>
+			</ul>
+		</aside>
+
+		<main class="signup-container">
+			<h2>Signup</h2>
+			<p>Please fill in the form below to create an account.</p>
+			<form method="POST" novalidate>
+				{% csrf_token %}
+
+				<div class="form-group">
+					<label for="first_name">First Name:</label>
+					{{ form.first_name }}
+					{% if form.first_name.errors %}
+					<div class="error">{{ form.first_name.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="last_name">Last Name:</label>
+					{{ form.last_name }}
+					{% if form.last_name.errors %}
+					<div class="error">{{ form.last_name.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="username">Username:</label>
+					{{ form.username }}
+					{% if form.username.errors %}
+					<div class="error">{{ form.username.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="email">Email:</label>
+					{{ form.email }}
+					{% if form.email.errors %}
+					<div class="error">{{ form.email.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="phone_number">Phone Number:</label>
+					{{ form.phone_number }}
+					{% if form.phone_number.errors %}
+					<div class="error">{{ form.phone_number.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="password1">Password:</label>
+					{{ form.password1 }}
+					{% if form.password1.errors %}
+					<div class="error">{{ form.password1.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="password2">Confirm Password:</label>
+					{{ form.password2 }}
+					{% if form.password2.errors %}
+					<div class="error">{{ form.password2.errors }}</div>
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					<label for="address_line1">Address Line 1:</label>
+					<input type="text" id="address_line1" name="address_line1" required>
+				</div>
+
+				<div class="form-group">
+					<label for="address_line2">Address Line 2:</label>
+					<input type="text" id="address_line2" name="address_line2">
+				</div>
+
+				<div class="form-group">
+					<label for="city">City:</label>
+					<input type="text" id="city" name="city" required>
+				</div>
+
+				<div class="form-group">
+					<label for="province">Province:</label>
+					<input type="text" id="province" name="province" required>
+				</div>
+
+				<div class="form-group">
+					<label for="country">Country:</label>
+					<input type="text" id="country" name="country" required>
+				</div>
+
+				<button type="submit" class="btn">Sign Up</button>
+			</form>
+		</main>
+	</div>
+
+	<footer>
+		<p>&copy; 2024 Your Company. All rights reserved.</p>
+	</footer>
+
 </body>
 </html>
