@@ -24,7 +24,7 @@ class User(models.Model):
 
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artists')
+    #user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='artists')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=True)
