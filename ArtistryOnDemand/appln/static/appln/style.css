@@ -1,228 +1,147 @@
+/* styles.css */
+
+/* Dark Theme Color Palette */
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
-    background-color: #eef2f3;
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212; /* Deep dark background */
+    color: #e0e0e0; /* Light gray text for readability */
+    scroll-behavior: smooth; /* Enable smooth scrolling */
 }
 
-header {
-    background-color: #4a90e2;
-    color: white;
-    padding: 10px; /* Reduced padding */
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+/* Two-Level Navigation Bar */
+.navbar {
+    background-color: #1f1f1f; /* Slightly lighter dark for nav */
+    border-bottom: 1px solid #333;
 }
 
-    header h1 {
-        font-size: 2.5em; /* Adjusted header size */
-        margin: 0;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+.navbar-nav .nav-link {
+    color: #e0e0e0;
+    padding: 10px 20px;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #ff9800; /* Vibrant accent color on hover */
     }
 
-nav {
-    margin: 15px 0;
+/* Dropdown Menus */
+.dropdown:hover .dropdown-menu {
+    display: block;
 }
 
-    nav a {
-        margin: 0 20px;
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        transition: color 0.3s;
-    }
-
-        nav a:hover {
-            color: #ffcc00; /* Highlight color */
-        }
-
-.hero {
-    text-align: center;
-    padding: 60px 20px; /* Adjusted padding */
-    background-color: #4a90e2;
-    color: white;
-    border-radius: 10px;
-    margin: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-    .hero h1 {
-        font-size: 3em; /* Adjusted hero title size */
-        margin: 0;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .hero p {
-        font-size: 1.5em;
-        margin-top: 10px;
-    }
-
-.services {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 40px;
-    padding: 20px;
-}
-
-.service {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin: 10px;
-    flex: 1 1 280px; /* Flexbox for responsive design */
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-    .service:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .service h3 {
-        color: #4a90e2;
-        font-size: 1.5em;
-        margin: 15px 0;
-    }
-
-    .service p {
-        font-size: 1em;
-        color: #666;
-    }
-
-.artworks {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin: 40px 0;
-    padding: 20px;
-}
-
-.artwork-card {
-    background: white;
-    border-radius: 15px;
-    /*box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);*/
-    margin: 10px;
-    padding: 20px;
-    text-align: center;
-    width: 280px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    perspective: 1000px;
-}
-
-    .artwork-card:hover {
-        transform: scale(1.05);
-        /*box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);*/
-    }
-
-.artwork-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.artwork-image {
-    width: 100%; /* Keep this to make the image responsive within the card */
-    height: 300px; /* Set a fixed height for all images */
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-    border-radius: 15px;
-    transition: transform 0.3s;
-}
-
-    .artwork-image:hover {
-        transform: scale(1.1);
-    }
-
-.artwork-description {
-    padding: 10px 0;
-    font-size: 1em;
-    color: #333;
-}
-
-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #4a90e2;
-    color: white;
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.signup-container {
-    max-width: 500px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #555;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="password"]:focus,
-    input[type="date"]:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
+.dropdown-menu {
+    background-color: #292929; /* Dark background for dropdown */
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-    button:hover {
-        background-color: #0056b3;
-    }
-
-@media screen and (max-width: 768px) {
-    .signup-container {
-        padding: 20px;
-    }
-
-    form {
-        flex-direction: column;
-    }
+.dropdown-item {
+    color: #e0e0e0;
 }
 
+    .dropdown-item:hover {
+        background-color: #ff9800; /* Highlight on hover */
+        color: #121212; /* Text contrast on hover */
+    }
+
+/* Adjusting Dropdown positioning */
+.navbar .dropdown-menu {
+    left: auto; /* Align dropdown menu correctly */
+    right: 0; /* Keep dropdown on the right edge of the screen */
+    width: 200px; /* Ensuring it fits well */
+}
+
+/* Secondary Nav Bar */
+.secondary-nav {
+    background-color: #1f1f1f;
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #333;
+}
+
+    .secondary-nav a {
+        color: #ff9800;
+        margin: 0 10px;
+    }
+
+/* Hero Section */
+.hero-section {
+    background-color: #212121;
+    padding: 100px 0;
+    text-align: center;
+}
+
+    .hero-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    .hero-section p {
+        font-size: 1.2rem;
+        color: #bdbdbd;
+        margin-bottom: 40px;
+    }
+
+.btn-cta {
+    background-color: #ff9800;
+    color: #121212;
+    padding: 10px 30px;
+    font-size: 1.1rem;
+    border: none;
+    transition: background-color 0.3s; /* Add transition */
+}
+
+    .btn-cta:hover {
+        background-color: #ffb74d;
+    }
+
+/* Services Section */
+.services-section {
+    padding: 50px 0;
+    background-color: #121212;
+}
+
+    .services-section h2 {
+        color: #ffffff;
+        margin-bottom: 30px;
+    }
+
+.service-item {
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: #1f1f1f; /* Card background */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Rounded corners */
+    transition: transform 0.3s, box-shadow 0.3s; /* Add transition */
+}
+
+    .card:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Shadow effect */
+    }
+
+.service-item h3 {
+    margin-top: 15px;
+    color: #ff9800;
+}
+
+.service-item p {
+    color: #bdbdbd;
+}
+
+/* Footer */
+.footer {
+    background-color: #1f1f1f;
+    padding: 20px;
+    text-align: center;
+    color: #e0e0e0;
+}
+
+    .footer a {
+        color: #ff9800;
+    }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }

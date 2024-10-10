@@ -1,0 +1,132 @@
+/* Dark Theme Color Palette */
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #121212; /* Deep dark background */
+	color: #e0e0e0; /* Light gray text for readability */
+	scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
+/* Two-Level Navigation Bar */
+.navbar {
+	background-color: #1f1f1f; /* Slightly lighter dark for nav */
+	border-bottom: 1px solid #333;
+}
+
+.navbar-nav .nav-link {
+	color: #e0e0e0;
+	padding: 10px 20px;
+}
+
+	.navbar-nav .nav-link:hover {
+		color: #ff9800; /* Vibrant accent color on hover */
+	}
+
+/* Dropdown Menus */
+.dropdown:hover .dropdown-menu {
+	display: block;
+}
+
+.dropdown-menu {
+	background-color: #292929; /* Dark background for dropdown */
+	border: none;
+}
+
+.dropdown-item {
+	color: #e0e0e0;
+}
+
+	.dropdown-item:hover {
+		background-color: #ff9800; /* Highlight on hover */
+		color: #121212; /* Text contrast on hover */
+	}
+
+/* Adjusting Dropdown positioning */
+.navbar .dropdown-menu {
+	left: auto; /* Align dropdown menu correctly */
+	right: 0; /* Keep dropdown on the right edge of the screen */
+	width: 200px; /* Ensuring it fits well */
+}
+
+/* Hero Section */
+.hero-section {
+	background-color: #212121;
+	padding: 100px 0;
+	text-align: center;
+}
+
+	.hero-section h1 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+		color: #ffffff;
+	}
+
+	.hero-section p {
+		font-size: 1.2rem;
+		color: #bdbdbd;
+		margin-bottom: 40px;
+	}
+
+.btn-cta {
+	background-color: #ff9800;
+	color: #121212;
+	padding: 10px 30px;
+	font-size: 1.1rem;
+	border: none;
+	transition: background-color 0.3s; /* Add transition */
+}
+
+	.btn-cta:hover {
+		background-color: #ffb74d;
+	}
+
+/* Services Section */
+.services-section {
+	padding: 50px 0;
+	background-color: #121212;
+}
+
+	.services-section h2 {
+		color: #ffffff;
+		margin-bottom: 30px;
+	}
+
+.service-item {
+	margin-bottom: 30px;
+}
+
+.card {
+	background-color: #1f1f1f; /* Card background */
+	border: none; /* Remove default border */
+	border-radius: 8px; /* Rounded corners */
+	transition: transform 0.3s, box-shadow 0.3s; /* Add transition */
+}
+
+	.card:hover {
+		transform: translateY(-5px); /* Slight lift on hover */
+		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Shadow effect */
+	}
+
+.service-item h3 {
+	margin-top: 15px;
+	color: #ff9800;
+}
+
+.service-item p {
+	color: #bdbdbd;
+}
+
+/* Footer */
+.footer {
+	background-color: #1f1f1f;
+	padding: 20px;
+	text-align: center;
+	color: #e0e0e0;
+}
+
+	.footer a {
+		color: #ff9800;
+	}
+
+		.footer a:hover {
+			text-decoration: underline;
+		}
