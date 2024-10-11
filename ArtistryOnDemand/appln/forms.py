@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Artist, User as CustomUser
+from .models import Artist, User as CustomUser, Artwork
 
 class CustomUserSignupForm(UserCreationForm):
     first_name = forms.CharField(max_length=255)
@@ -81,3 +81,14 @@ class ArtistSignupForm(forms.ModelForm):
 class ArtistLoginForm(forms.Form):
     username = forms.CharField(max_length=255)
     password = forms.CharField(widget=forms.PasswordInput)
+
+class ArtworkForm(forms.ModelForm):
+    class Meta:
+        model = Artwork
+        fields = ['title', 'description', 'artwork_type', 'price', 'image_path', 'video_path', 'requirements']
+        
+
+class EditArtworkForm(forms.ModelForm):
+    class Meta:
+        model = Artwork
+        fields = ['title', 'description', 'artwork_type', 'price', 'image_path', 'video_path', 'requirements']

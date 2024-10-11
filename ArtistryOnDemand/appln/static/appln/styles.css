@@ -1,0 +1,21 @@
+.art-image {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Dropdown Styles */
+.dropdown-content {
+    display: none; /* Hide by default */
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Ensure dropdown appears above other elements */
+}
+
+/* Show the dropdown when parent is hovered */
+.dropdown:hover .dropdown-content {
+    display: block;
+}

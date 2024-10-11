@@ -3,61 +3,144 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Artistry On Demand</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'appln/signup.css' %}">
-	<title>Signup Page</title>
+	<link rel="stylesheet" href="{% static 'appln/styles.css' %}">
+	<style>
+		.body {
+			background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
+		}
+	</style>
 </head>
-<body>
+<body class="bg-gray-100">
 
-	<header>
-		<h1>Artistry on Demand</h1>
-		<nav>
-			<a href="">Home</a>
-			<a href="">About</a>
-			<a href="">Login</a>
-			<a href="">Contact Us</a>
-		</nav>
-	</header>
+	<!-- Navbar -->
+	<nav class="bg-white shadow">
+		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
+			<a href="#" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
+			<div class="space-x-6">
+				<a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
+				<div class="relative inline-block text-left dropdown">
+					<button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-blue-300" id="userDropdown">
+						User
+						<svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+						</svg>
+					</button>
+					<div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="userDropdownContent">
+						<a href="{% url 'login_user' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
+						<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
 
-	<div class="container">
-		<aside class="sidebar">
-			<h2>Sidebar</h2>
-			<ul>
-				<li><a href="#">Link 1</a></li>
-				<li><a href="#">Link 2</a></li>
-				<li><a href="#">Link 3</a></li>
+	<div class="flex container mx-auto mt-10">
+
+		<!-- Sidebar -->
+		<aside class="w-1/4 bg-white-600 p-6">
+			<h2 class="text-xl font-semibold mb-4">Quick Links</h2>
+			<ul class="space-y-2">
+				<li><a href="#" class="text-blue-600 hover:underline">Portfolio</a></li>
+				<li><a href="#" class="text-blue-600 hover:underline">Testimonials</a></li>
+				<li><a href="#" class="text-blue-600 hover:underline">Pricing</a></li>
+				<li><a href="#" class="text-blue-600 hover:underline">FAQs</a></li>
 			</ul>
 		</aside>
 
-		<main class="signup-container">
-			<form method="POST" action="{% url 'login_user' %}">
-				{% csrf_token %}
-				<div>
-					<label for="username">Username:</label>
-					<input type="text" id="username" name="username" required>
-				</div>
-				<div>
-					<label for="password">Password:</label>
-					<input type="password" id="password" name="password" required>
-				</div>
-				<button type="submit">Login</button>
-			</form>
+		<!-- Hero Section -->
+		<section class="flex-grow bg-white-600 text-blue py-10 px-6 ">
+			<div class="text-center">
+				<h1 class="text-2xl font-bold">Welcome to Artistry On Demand</h1>
+				<p class="mt-2 text-lg">Your one-stop solution for personalized artistic creations.</p>
+				
+			</div>
 
-			{% if messages %}
-			<ul>
-				{% for message in messages %}
-				<li>{{ message }}</li>
-				{% endfor %}
-			</ul>
-			{% endif %}
-		</main>
+			<!-- Login Form -->
+			<div class="mt-5 mx-auto w-full max-w-sm">
+				<h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+				<form method="POST" action="{% url 'login_user' %}">
+					{% csrf_token %}
+					<div class="mb-4">
+						<label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
+						<input type="text" id="username" name="username" required
+							   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500" />
+					</div>
+					<div class="mb-6">
+						<label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
+						<input type="password" id="password" name="password" required
+							   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500" />
+					</div>
+					<button type="submit"
+							class="w-full bg-blue-600 text-white-900 font-semibold py-2 rounded-md hover:bg-green-900 transition duration-200">
+						Login
+					</button>
+				</form>
+
+				{% if messages %}
+				<ul class="mt-4 text-red-600">
+					{% for message in messages %}
+					<li>{{ message }}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+		</section>
 	</div>
 
-	<footer>
-		<p>&copy; 2024 Your Company. All rights reserved.</p>
+	<!-- Footer Section -->
+	<footer class="bg-gray-800 text-white py-8 mt-10">
+		<div class="container mx-auto text-center">
+			<div class="mb-4">
+				<a href="#" class="text-xl font-bold text-white">Artistry On Demand</a>
+			</div>
+			<div class="mb-4 space-x-6">
+				<a href="#" class="text-gray-400 hover:text-white">Home</a>
+				<a href="#" class="text-gray-400 hover:text-white">About</a>
+				<a href="#" class="text-gray-400 hover:text-white">Services</a>
+				<a href="#" class="text-gray-400 hover:text-white">Contact</a>
+			</div>
+			<div class="space-x-4 mb-6">
+				<a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+				<a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+			</div>
+			<p class="text-gray-400">&copy; 2024 Artistry On Demand. All rights reserved.</p>
+		</div>
 	</footer>
 
+	<script>
+		// Handle dropdown toggling
+		document.addEventListener('DOMContentLoaded', function () {
+			const dropdowns = document.querySelectorAll('.dropdown');
+
+			dropdowns.forEach(dropdown => {
+				const button = dropdown.querySelector('button');
+				const content = dropdown.querySelector('.dropdown-content');
+
+				button.addEventListener('click', function () {
+					// Toggle dropdown content display
+					const isVisible = content.style.display === 'block';
+					content.style.display = isVisible ? 'none' : 'block';
+				});
+			});
+
+			// Close dropdown if clicked outside
+			window.addEventListener('click', function (event) {
+				dropdowns.forEach(dropdown => {
+					const content = dropdown.querySelector('.dropdown-content');
+					if (!dropdown.contains(event.target) && content.style.display === 'block') {
+						content.style.display = 'none';
+					}
+				});
+			});
+		});
+	</script>
 
 </body>
 </html>
-
