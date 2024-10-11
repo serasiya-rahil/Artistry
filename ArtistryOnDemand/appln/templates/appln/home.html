@@ -1,78 +1,172 @@
-<!-- templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artistry on Demand</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>My App Home</title>
+    <title>Artistry On Demand</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'appln/style.css' %}">
+    <link rel="stylesheet" href="{% static 'appln/styles.css' %}">
+    <style>
+
+    </style>
 </head>
-<body>
+<body class="bg-gray-100">
 
-    <header>
-        <h1>Artistry on Demand</h1>
-        <nav>
-            <!-- Add navigation links here if needed -->
-        </nav>
-    </header>
+    <!-- Navbar -->
+    <nav class="bg-white  shadow fixed top-0 left-0 w-full z-10">
+        <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+            <a href="" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
+            <div class="space-x-6">
+                <a href="home" class="text-gray-600 hover:text-gray-900">Home</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
+                <!-- Dropdown: User -->
+                <div class="relative inline-block text-left dropdown">
+                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-blue-300" id="userDropdown">
+                        User
+                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="userDropdownContent">
+                        <a href="login_user" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
+                        <a href="UserSignup" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
+                    </div>
+                </div>
+                <!-- Dropdown: Artist -->
+                <div class="relative inline-block text-left dropdown">
+                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-green-300" id="artistDropdown">
+                        Artist
+                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="artistDropdownContent">
+                        <a href="loginArtist" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
+                        <a href="ArtistSignup" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <div class="hero">
-        <h1>Welcome to Artistry on Demand!</h1>
-        <p>Connect with talented artists for personalized artistic creations.</p>
-    </div>
+    <!-- Hero Section -->
+    <section class="relative bg-gray-800 text-white py-32 text-center">
+        <div class="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-60"></div>
+        <div class="container mx-auto relative z-10">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Artistry On Demand</h1>
+            <p class="text-2xl mb-8">Bringing your imagination to life through art</p>
+            <a href="#" class="bg-blue-500 text-white px-8 py-4 rounded-lg hover:bg-blue-600 text-lg">Explore Our Services</a>
+        </div>
+        <div class="absolute inset-0 bg-fit bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2022/06/24/12/00/hd-wallpaper-7281586_1280.jpg');opacity:20%"></div>
+    </section>
 
-    <section class="services">
-        <div class="service">
-            <h3><i class="fas fa-pencil-alt"></i> Request Artwork</h3>
-            <p>Request hand-drawn sketches, cartoon versions, and custom-made greetings.</p>
-        </div>
-        <div class="service">
-            <h3><i class="fas fa-brush"></i> Artists Listing</h3>
-            <p>Artists can add, modify, and manage their art listings seamlessly.</p>
-        </div>
-        <div class="service">
-            <h3><i class="fas fa-comments"></i> Provide Feedback</h3>
-            <p>Once your request is fulfilled, provide feedback to help artists grow!</p>
-        </div>
-        <div class="service">
-            <h3><i class="fas fa-eye"></i> View Listings</h3>
-            <p>Browse and view listings based on your artistic preferences.</p>
+    <!-- Art Illustration Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Our Custom Art Services</h2>
+            <p class="text-gray-600 mb-8">We create personalized artwork based on your requests, from hand-drawn sketches to animated videos. Take a look at some of our featured services below:</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Illustration 1 -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://cdn.pixabay.com/photo/2019/09/05/05/28/eye-4453129_1280.jpg" alt="Custom Sketch" class="art-image mb-4 mx-auto">
+                    <h3 class="text-2xl font-bold mb-2">Custom Hand-Drawn Sketch</h3>
+                    <p class="text-gray-600">Turn your photos into hand-drawn sketches by our talented artists.</p>
+                </div>
+
+                <!-- Illustration 2 -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://cdn.pixabay.com/photo/2023/07/30/11/39/girl-8158685_1280.jpg" alt="Cartoon Sketch" class="art-image mb-4 mx-auto">
+                    <h3 class="text-2xl font-bold mb-2">Cartoon Sketch</h3>
+                    <p class="text-gray-600">Get a fun and creative cartoon version of yourself or a loved one.</p>
+                </div>
+
+                <!-- Illustration 3 -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://cdn.pixabay.com/photo/2017/03/07/23/33/technology-2125547_1280.jpg" alt="Animated Video" class="art-image mb-4 mx-auto">
+                    <h3 class="text-2xl font-bold mb-2">Custom Animated Videos</h3>
+                    <p class="text-gray-600">Bring your stories to life with personalized animated videos.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="artworks">
-        <div class="artwork-card">
-            <div class="artwork-inner">
-                <img src="https://cdn.pixabay.com/photo/2019/09/05/05/28/eye-4453129_1280.jpg" alt="Hand-drawn Sketch" class="artwork-image">
-                <div class="artwork-description">Hand-drawn Sketch</div>
-            </div>
-        </div>
-        <div class="artwork-card">
-            <div class="artwork-inner">
-                <img src="https://cdn.pixabay.com/photo/2023/07/30/11/39/girl-8158685_1280.jpg" alt="Cartoon Version" class="artwork-image">
-                <div class="artwork-description">Cartoon Version</div>
-            </div>
-        </div>
-        <div class="artwork-card">
-            <div class="artwork-inner">
-                <img autoplay src="https://cdn.pixabay.com/photo/2017/03/07/23/33/technology-2125547_1280.jpg" alt="Animated Video" class="artwork-image">
-                <div class="artwork-description">Animated Video</div>
-            </div>
-        </div>
-        <div class="artwork-card">
-            <div class="artwork-inner">
-                <img src="{% static 'images/customGreeting.jpeg' %}" alt="Custom Greeting" class="artwork-image">
-                <div class="artwork-description">Custom Greeting</div>
+    <section class="py-16 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Our Artworks</h2>
+            <p class="text-gray-600 mb-8">Explore our collection of personalized artwork, from hand-drawn sketches to animated creations. Check out our featured artworks below:</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for artwork in artworks %}
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    {% if artwork.artwork_type == 'image' and artwork.image_path %}
+                    <img src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}" class="art-image mb-4 mx-auto h-48 w-full object-cover">
+                    {% elif artwork.artwork_type == 'video' and artwork.video_path %}
+                    <video controls class="art-image mb-4 mx-auto h-48 w-full object-cover">
+                        <source src="{{ artwork.video_path.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% else %}
+                    <div class="flex items-center justify-center h-48 bg-gray-200 mb-4">
+                        <p class="text-gray-600">No preview available</p>
+                    </div>
+                    {% endif %}
+                    <h3 class="text-2xl font-bold mb-2">{{ artwork.title }}</h3>
+                    <p class="text-gray-600">{{ artwork.description }}</p>
+                </div>
+                {% empty %}
+                <p class="col-span-3 text-center text-gray-500">No artworks available.</p>
+                {% endfor %}
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2024 Artistry on Demand. All Rights Reserved.</p>
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <div class="mb-4">
+                <a href="#" class="text-xl font-bold text-white">Artistry On Demand</a>
+            </div>
+            <div class="mb-4 space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white">Home</a>
+                <a href="#" class="text-gray-400 hover:text-white">About</a>
+                <a href="#" class="text-gray-400 hover:text-white">Services</a>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+            </div>
+            <p class="text-gray-400">&copy; 2024 Artistry On Demand. All rights reserved.</p>
+        </div>
     </footer>
+
+    <script>
+        // Handle dropdown toggling
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdowns = document.querySelectorAll('.dropdown');
+
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.dropdown-content');
+
+                button.addEventListener('click', function () {
+                    // Toggle dropdown content display
+                    const isVisible = content.style.display === 'block';
+                    content.style.display = isVisible ? 'none' : 'block';
+                });
+            });
+
+            // Close dropdown if clicked outside
+            window.addEventListener('click', function (event) {
+                dropdowns.forEach(dropdown => {
+                    const content = dropdown.querySelector('.dropdown-content');
+                    if (!dropdown.contains(event.target) && content.style.display === 'block') {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

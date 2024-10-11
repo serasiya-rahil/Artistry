@@ -24,7 +24,7 @@ class User(models.Model):
 
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='artists')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='artists', null=True, blank=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=True)
@@ -45,8 +45,8 @@ class Artwork(models.Model):
     description = models.TextField()
     artwork_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image_path = models.CharField(max_length=255, blank=True, null=True)
-    video_path = models.CharField(max_length=255, blank=True, null=True)
+    image_path = models.ImageField(max_length=255, blank=True, null=True)
+    video_path = models.FileField(max_length=255, blank=True, null=True)
     requirements = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
