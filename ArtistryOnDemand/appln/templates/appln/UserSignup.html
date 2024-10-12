@@ -64,24 +64,24 @@
 						<input type="text" id="first_name" name="first_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 
 						{% if form.first_name.errors %}
-						<div class="text-red-500 text-xs">{{ form.first_name.errors }}</div>
+						<div class="text-red-500 text-xs">{{ form.first_name.value }} {{ form.first_name.errors }}</div>
 						{% endif %}
 					</div>
 
 					<div class="mb-4">
 						<label for="last_name" class="block text-sm font-medium text-gray-700">Last Name:</label>
-						<input type="text" id="last_name"  name="last_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="last_name" name="last_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 
 						{% if form.last_name.errors %}
-						<div class="text-red-500 text-xs">{{ form.last_name.errors }}</div>
+						<div class="text-red-500 text-xs"> {{ form.last_name.value }} {{ form.last_name.errors }}</div>
 						{% endif %}
 					</div>
 
 					<div class="mb-4">
 						<label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
-						<input type="text" id="username"  name="username" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="username" name="username" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.username.errors %}
-						<div class="text-red-500 text-xs">{{ form.username.errors }}</div>
+						<div class="text-red-500 text-xs"> {{ form.username.errors }}</div>
 						{% endif %}
 					</div>
 
@@ -90,7 +90,7 @@
 						<input type="email" id="email" name="email" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 
 						{% if form.email.errors %}
-						<div class="text-red-500 text-xs">{{ form.email.errors }}</div>
+						<div class="text-red-500 text-xs"> {{ form.email.errors }}</div>
 						{% endif %}
 					</div>
 
@@ -98,7 +98,7 @@
 						<label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number:</label>
 						<input type="number" id="phone_number" maxlength="10" name="phone_number" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.phone_number.errors %}
-						<div class="text-red-500 text-xs">{{ form.phone_number.errors }}</div>
+						<div class="text-red-500 text-xs"> {{ form.phone_number.errors }}</div>
 						{% endif %}
 					</div>
 
@@ -122,6 +122,9 @@
 					<div class="mb-4">
 						<label for="address_line1" class="block text-sm font-medium text-gray-700">Address Line 1:</label>
 						<input type="text" id="address_line1" name="address_line1" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						{% if form.address_line1.errors %}
+						<div class="text-red-500 text-xs">{{ form.address_line1.value }} {{ form.address_line1.errors }}</div>
+						{% endif %}
 					</div>
 
 					<div class="mb-4">
@@ -132,16 +135,25 @@
 					<div class="mb-4">
 						<label for="city" class="block text-sm font-medium text-gray-700">City:</label>
 						<input type="text" id="city" name="city" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						{% if form.city.errors %}
+						<div class="text-red-500 text-xs">{{ form.city.errors }}</div>
+						{% endif %}
 					</div>
 
 					<div class="mb-4">
 						<label for="province" class="block text-sm font-medium text-gray-700">Province:</label>
 						<input type="text" id="province" name="province" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						{% if form.province.errors %}
+						<div class="text-red-500 text-xs"> {{ form.province.errors }}</div>
+						{% endif %}
 					</div>
 
 					<div class="mb-4">
 						<label for="country" class="block text-sm font-medium text-gray-700">Country:</label>
 						<input type="text" id="country" name="country" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						{% if form.country.errors %}
+						<div class="text-red-500 text-xs"> {{ form.country.errors }}</div>
+						{% endif %}
 					</div>
 
 					<button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500">Sign Up</button>

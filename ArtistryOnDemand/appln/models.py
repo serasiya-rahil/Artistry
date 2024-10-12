@@ -1,4 +1,6 @@
+from wsgiref.validate import validator
 from django.db import models
+from .validators import *
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
@@ -20,18 +22,18 @@ class User(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.username})"
-
+    
 
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='artists', null=True, blank=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=255, validators=[ValidateNameImpl])
+    last_name = models.CharField(max_length=255, validators=[ValidateNameImpl])
+    username = models.CharField(max_length=255, unique=True, validators=[ValidateUserNameImpl])
     password = models.CharField(max_length=255)  # Should be hashed in practice
-    email = models.EmailField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True, validators=[ValidateEmailImpl])
     created_at = models.DateTimeField(auto_now_add=True)
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20, validators=[ValidatePhoneNumberImpl])
     is_account_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -41,10 +43,10 @@ class Artist(models.Model):
 class Artwork(models.Model):
     artwork_id = models.AutoField(primary_key=True)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artworks')
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    title = models.CharField(max_length=255, validators=[ValidateTitleImpl])
+    description = models.TextField(validators=[ValidateTitleImpl])
     artwork_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[ValidatePriceImpl])
     image_path = models.ImageField(max_length=255, blank=True, null=True)
     video_path = models.FileField(max_length=255, blank=True, null=True)
     requirements = models.TextField(blank=True, null=True)
