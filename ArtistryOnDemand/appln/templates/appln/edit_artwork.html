@@ -52,10 +52,16 @@
 					<div>
 						<label for="title" class="block text-sm font-medium text-gray-700">Title</label>
 						{{ form.title|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg" }}
+						{% if form.title.errors %}
+							<div class="text-red-500 text-xs">{{ form.title.errors }}</div>
+						{% endif %}
 					</div>
 					<div>
 						<label for="description" class="block text-sm font-medium text-gray-700">Description</label>
 						{{ form.description|add_class:"w-full px-4 py-2 border border-gray-300 rounded-lg" }}
+						{% if form.description.errors %}
+							<div class="text-red-500 text-xs">{{ form.description.errors }}</div>
+						{% endif %}
 					</div>
 					<div>
 						<label for="artwork_type" class="block text-sm font-medium text-gray-700">Artwork Type</label>
