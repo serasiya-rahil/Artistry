@@ -106,3 +106,39 @@ class EditArtworkForm(forms.ModelForm):
     class Meta:
         model = Artwork
         fields = ['title', 'description', 'artwork_type', 'price', 'image_path', 'video_path', 'requirements']
+        
+
+from .models import ArtistProfile
+
+class ArtistProfileForm(forms.ModelForm):
+    class Meta:
+        model = ArtistProfile
+        fields = ['artist', 'bio', 'website', 'social_links', 'profile_photo']
+        
+
+from django import forms
+from .models import ArtistProfile
+
+class ArtistProfileForm(forms.ModelForm):
+    class Meta:
+        model = ArtistProfile
+        fields = ['bio', 'website', 'social_links', 'profile_photo']
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'class': 'form-textarea mt-1 block w-full',
+                'rows': 4,
+                'placeholder': 'Tell us more about yourself...'
+            }),
+            'website': forms.URLInput(attrs={
+                'class': 'form-input mt-1 block w-full',
+                'placeholder': 'https://yourwebsite.com'
+            }),
+            'social_links': forms.Textarea(attrs={
+                'class': 'form-textarea mt-1 block w-full',
+                'rows': 3,
+                'placeholder': 'Enter social media links in JSON format'
+            }),
+            'profile_photo': forms.ClearableFileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100',
+            }),
+        }

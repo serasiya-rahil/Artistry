@@ -3,11 +3,8 @@
     "",
     "\\ArtistryOnDemand",
     "\\ArtistryOnDemand\\appln",
-    "\\ArtistryOnDemand\\appln\\migrations",
-    "\\ArtistryOnDemand\\appln\\templates",
-    "\\ArtistryOnDemand\\appln\\templates\\appln",
-    "\\ArtistryOnDemand\\ArtistryOnDemand"
+    "\\ArtistryOnDemand\\appln\\templates"
   ],
-  "SelectedNode": "\\ArtistryOnDemand\\appln\\migrations\\0006_alter_artist_email_alter_artist_first_name_and_more.py",
+  "SelectedNode": "\\ArtistryOnDemand\\appln\\forms.py",
   "PreviewInSolutionExplorer": false
 }

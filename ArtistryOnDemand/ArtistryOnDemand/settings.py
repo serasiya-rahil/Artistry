@@ -140,3 +140,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGOUT_REDIRECT_URL = '/loginArtist/'
 
 LOGIN_URL = 'login_user' 
+

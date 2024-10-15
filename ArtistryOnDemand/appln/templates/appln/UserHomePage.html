@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>User Dashboard | Artistry On Demand</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'appln/styles.css' %}">
+	<style>
+		.hidden {
+			opacity: 0;
+			max-height: 0;
+			overflow: hidden;
+			transition: opacity 1s ease, max-height 0.5s ease;
+		}
+
+		.visible {
+			opacity: 1;
+			max-height: 500px; /* Set this to a value slightly larger than the content's height */
+			transition: opacity 1s ease, max-height 0.5s ease;
+		}
+	</style>
+
+	<script>
+		function showArtListings() {
+			const artListings = document.getElementById('art-listings');
+			artListings.classList.toggle('hidden');
+			artListings.classList.toggle('visible');
+		}
+	</script>
+</head>
+<body class="bg-gray-100">
+	<!-- Navbar -->
+	<nav class="bg-white shadow fixed top-0 left-0 w-full z-10">
+		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
+			<a href="" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
+			<div class="space-x-6">
+				<a href="home" class="text-gray-600 hover:text-gray-900">Home</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
+				<form method="post" action="{% url 'logout' %}" style="display: inline;">
+					{% csrf_token %}
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
+						Logout
+					</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Main Dashboard Section -->
+	<section class="container mx-auto pt-32 pb-12">
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+			<!-- Sidebar Menu -->
+			<aside class="bg-white shadow-md rounded-lg p-6">
+				<h2 class="text-xl font-semibold mb-4">Dashboard Menu</h2>
+				<ul class="space-y-4">
+					<li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-500">View Art Listings</a></li>
+					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Make a Request</a></li>
+					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Modify Requests</a></li>
+					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Cancel Requests</a></li>
+					<li><a href="#" class="block text-gray-600 hover:text-blue-500">View Past Orders</a></li>
+					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Give Feedback</a></li>
+				</ul>
+			</aside>
+
+			<!-- Main Content -->
+			<div class="col-span-3">
+				<!-- Overview Section -->
+				<div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+					<h3 class="text-2xl font-bold mb-4">Welcome Back! {{user.first_name}}</h3>
+					<p class="text-gray-600 mb-6">Here's what's Trending around your likes</p>
+
+					<!-- User Overview >
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+							<div class="bg-blue-100 p-6 rounded-lg text-center">
+								<h4 class="text-xl font-bold mb-2">Active Requests</h4>
+								<p class="text-3xl font-semibold">{{ active_requests_count }}</p>
+							</div>
+							<div class="bg-green-100 p-6 rounded-lg text-center">
+								<h4 class="text-xl font-bold mb-2">Completed Orders</h4>
+								<p class="text-3xl font-semibold">{{ completed_orders_count }}</p>
+							</div>
+							<div class="bg-red-100 p-6 rounded-lg text-center">
+								<h4 class="text-xl font-bold mb-2">Cancellation Deadlines</h4>
+								<p class="text-3xl font-semibold">{{ cancellation_deadlines_count }}</p>
+							</div>
+						</div>
+					</div-->
+					<!-- Active Requests >
+					<div class="bg-white p-6 rounded-lg shadow-lg">
+						<h3 class="text-2xl font-bold mb-4">Your Active Requests</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+							{% for request in active_requests %}
+							<div class="bg-gray-100 p-4 rounded-lg shadow-md">
+								<h4 class="font-semibold text-xl mb-2">{{ request.art_title }}</h4>
+								<p class="text-gray-600 mb-2">Status: <span class="text-blue-500">{{ request.status }}</span></p>
+								<p class="text-gray-600 mb-2">Deadline: {{ request.deadline }}</p>
+								<a href="{% url 'modify_request' request.id %}" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">Modify</a>
+								<a href="{% url 'cancel_request' request.id %}" class="block bg-red-500 text-white text-center py-2 rounded mt-2">Cancel</a>
+							</div>
+							{% empty %}
+							<p class="text-center col-span-3">No active requests at the moment.</p>
+							{% endfor %}
+						</div>
+					</div-->
+					<div class="container mx-auto mb-6">
+						<form method="GET" action="" class="flex">
+							<input type="text" name="search" value="{{ search_query }}"
+								   placeholder="Search artworks..."
+								   class="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300" />
+							<button type="submit"
+									class="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none">
+								Search
+							</button>
+						</form>
+					</div>
+					<!-- Art Listings Section -->
+					<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8">
+						<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+							{% for artwork in artworks %}
+							<div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
+								<!-- Artwork Image or Video -->
+								<div class="w-full mb-4">
+									{% if artwork.image_path %}
+									<img class="rounded-lg w-full h-64 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
+									{% elif artwork.video_path %}
+									<video class="rounded-lg w-full h-64 object-cover" controls>
+										<source src="{{ artwork.video_path.url }}" type="video/mp4">
+										Your browser does not support the video tag.
+									</video>
+									{% endif %}
+								</div>
+
+								<!-- Artwork Details -->
+								<div class="flex-1">
+									<h3 class="text-xl font-semibold text-gray-800 truncate">{{ artwork.title }}</h3>
+									<p class="text-gray-600 truncate" style="max-height: 3.6em; overflow: hidden; text-overflow: ellipsis;">{{ artwork.description }}</p>
+								</div>
+
+								<!-- Price at the bottom -->
+								<p class="text-gray-800 font-bold mt-2">Price: ${{ artwork.price }}</p>
+								<a href="" class="mt-2 text-blue-500 hover:underline">View Details</a>
+							</div>
+							{% empty %}
+							<p class="text-center col-span-3">No artworks available at the moment.</p>
+							{% endfor %}
+						</div>
+					</div>
+
+					<!-- Art Listings Section >
+					<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8 hidden">
+						<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+							<!-- Example Art Listings>
+							<div class="bg-gray-100 p-4 rounded-lg shadow-md">
+								<h4 class="font-semibold text-xl mb-2">Artwork Title 1</h4>
+								<p class="text-gray-600 mb-2">Artist: Artist Name</p>
+								<p class="text-gray-600 mb-2">Description of artwork.</p>
+								<a href="#" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">View Details</a>
+							</div>
+
+							< Add more artwork listings as needed>
+						</div>
+					</div-->
+					<!-- Past Orders -->
+					<div class="bg-white p-6 rounded-lg shadow-lg mt-8">
+						<h3 class="text-2xl font-bold mb-4">Your Past Orders</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+							{% for order in past_orders %}
+							<div class="bg-gray-100 p-4 rounded-lg shadow-md">
+								<h4 class="font-semibold text-xl mb-2">{{ order.art_title }}</h4>
+								<p class="text-gray-600 mb-2">Completed on: {{ order.completed_date }}</p>
+								<a href="{% url 'order_details' order.id %}" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">View Details</a>
+							</div>
+							{% empty %}
+							<p class="text-center col-span-3">No past orders found.</p>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+	</section>
+</body>
+</html>

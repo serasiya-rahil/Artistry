@@ -15,6 +15,10 @@ urlpatterns = [
     path('artistDashboard/add-artwork/', views.add_artwork, name='add_artwork'),
     path('artistDashboard/delete-artwork/<int:artwork_id>/', views.delete_artwork, name='delete_artwork'),
     path('edit_artwork/<int:artwork_id>/', views.edit_artwork, name='edit_artwork'),
+    path('UserView/', views.UserView, name='UserView'),
+    path('search-suggestions/', views.search_suggestions, name='search_suggestions'),
+    path('view_profile/', views.view_profile, name='view_profile'),
+
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
