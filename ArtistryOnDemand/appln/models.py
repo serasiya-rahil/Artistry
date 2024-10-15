@@ -92,6 +92,7 @@ class ArtistProfile(models.Model):
     bio = models.TextField()
     website = models.URLField(blank=True, null=True)
     social_links = models.JSONField(blank=True, null=True)
+    profile_photo = models.ImageField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"Profile for {self.artist}"

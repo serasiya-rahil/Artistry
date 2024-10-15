@@ -3,12 +3,8 @@
     "",
     "\\ArtistryOnDemand",
     "\\ArtistryOnDemand\\appln",
-    "\\ArtistryOnDemand\\appln\\static",
-    "\\ArtistryOnDemand\\appln\\static\\appln",
-    "\\ArtistryOnDemand\\appln\\templates",
-    "\\ArtistryOnDemand\\appln\\templates\\appln",
-    "\\ArtistryOnDemand\\ArtistryOnDemand"
+    "\\ArtistryOnDemand\\appln\\templates"
   ],
-  "SelectedNode": "\\ArtistryOnDemand\\appln\\models.py",
+  "SelectedNode": "\\ArtistryOnDemand\\appln\\forms.py",
   "PreviewInSolutionExplorer": false
 }

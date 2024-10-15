@@ -3,56 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\edit_artwork.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\edit_artwork.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\forms.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\forms.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\forms.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\forms.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\UserSignup.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\UserSignup.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_profile_form.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\artist_profile_form.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\add_artwork.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\add_artwork.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\artist_login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\create_artist_profile.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\create_artist_profile.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\ArtistryOnDemand\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\home.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArtistryOnDemand\\appln\\templates\\appln\\home.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 317,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,29 +62,124 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "edit_artwork.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\edit_artwork.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\edit_artwork.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\edit_artwork.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\edit_artwork.html",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAAACgAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-11T01:49:03.127Z",
+              "DocumentIndex": 0,
+              "Title": "forms.py",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\forms.py",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\forms.py",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\forms.py",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\forms.py",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-10-15T00:16:59.96Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "add_artwork.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\add_artwork.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\add_artwork.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\add_artwork.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\add_artwork.html",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAXAAAA",
+              "DocumentIndex": 3,
+              "Title": "UserSignup.html",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\UserSignup.html",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\UserSignup.html",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\UserSignup.html",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\UserSignup.html",
+              "ViewState": "AQIAAD8AAAAAAAAAAAAAAEMAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T22:55:48.605Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-15T00:05:26.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "artist_signup.html",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-10-15T00:05:13.928Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "login.html",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\login.html",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\login.html",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\login.html",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\login.html",
+              "ViewState": "AQIAADsAAAAAAAAAAAAQwIEAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-10-14T23:42:55.117Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "views.py",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\views.py",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\views.py",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\views.py",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\views.py",
+              "ViewState": "AQIAAD8AAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-10-13T23:51:19.94Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "artist_profile_form.html",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_profile_form.html",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\artist_profile_form.html",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_profile_form.html",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\artist_profile_form.html",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAAEoAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-10-13T22:57:40.604Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "create_artist_profile.html",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\create_artist_profile.html",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\create_artist_profile.html",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\create_artist_profile.html",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\create_artist_profile.html",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-10-13T00:12:30.866Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "models.py",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\models.py",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\models.py",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\models.py",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\models.py",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAAFgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-10-12T05:33:53.773Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "settings.py",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
+              "RelativeToolTip": "ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
+              "ViewState": "AQIAAIIAAAAAAAAAAAAAAI4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-10-13T23:46:28.453Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "artistDashboard.html",
+              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
+              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
+              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
+              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
+              "ViewState": "AQIAAIQAAAAAAAAAAAAAABAAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-10-12T04:46:40.198Z"
             },
             {
               "$type": "Document",
@@ -102,140 +189,9 @@
               "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\urls.py",
               "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\urls.py",
               "RelativeToolTip": "ArtistryOnDemand\\appln\\urls.py",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAnAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-10-10T11:02:07.278Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "views.py",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\views.py",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\views.py",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\views.py",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\views.py",
-              "ViewState": "AQIAAGAAAAAAAAAAAAAAAHYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-10-10T02:56:33.608Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "login.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\login.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\login.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\login.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\login.html",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABUAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T11:02:32.582Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "artistDashboard.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\artistDashboard.html",
-              "ViewState": "AQIAADMAAAAAAAAAAAAAAD0AAABDAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T09:22:32.652Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "forms.py",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\forms.py",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\forms.py",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\forms.py",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\forms.py",
-              "ViewState": "AQIAADsAAAAAAAAAAAAiwE4AAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-10-11T01:53:38.526Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "models.py",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\models.py",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\models.py",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\models.py",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\models.py",
-              "ViewState": "AQIAABgAAAAAAAAAAAAAABgAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-10-10T10:39:38.715Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "artist_signup.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\artist_signup.html",
-              "ViewState": "AQIAACoAAAAAAAAAAAAAAEMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T11:59:44.169Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "index.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\index.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\index.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\index.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\index.html",
-              "ViewState": "AQIAAHEAAAAAAAAAAAAAAHwAAABAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T01:48:45.326Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "artist_login.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_login.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\artist_login.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\artist_login.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\artist_login.html",
-              "ViewState": "AQIAABUAAAAAAAAAAAAAAEIAAABAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T12:16:34.865Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "settings.py",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
-              "RelativeToolTip": "ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAI4AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-10-11T02:14:14.186Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "home.html",
-              "DocumentMoniker": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\home.html",
-              "RelativeDocumentMoniker": "ArtistryOnDemand\\appln\\templates\\appln\\home.html",
-              "ToolTip": "C:\\Users\\Rahil\\OneDrive - Conestoga College\\Desktop\\Django\\TechTitans\\ArtistryOnDemand\\appln\\templates\\appln\\home.html",
-              "RelativeToolTip": "ArtistryOnDemand\\appln\\templates\\appln\\home.html",
-              "ViewState": "AQIAAIEAAAAAAAAAAAAAAIkAAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-10-10T09:23:40.034Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-10T11:02:07.278Z"
             }
           ]
         }

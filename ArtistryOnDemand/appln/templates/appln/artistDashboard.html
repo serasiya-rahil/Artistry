@@ -14,7 +14,7 @@
             <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
             <div class="space-x-6">
                 <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Profile</a>
+                <a href="{% url 'view_profile' %}"  class="text-gray-600 hover:text-gray-900">Profile</a>
                 <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
                 <!-- Logout Form -->
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
@@ -35,7 +35,7 @@
         <aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4 mb-6 md:mb-0">
             <h2 class="text-xl font-semibold">Dashboard Menu</h2>
             <ul class="mt-4 space-y-4">
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Dashboard Overview</a></li>
+                
                 <li><a href="#" class="block text-gray-600 hover:text-blue-500">Track Requests</a></li>
                 <li><a href="#" class="block text-gray-600 hover:text-blue-500">My Listings: {{ total_artworks }}</a></li>
                 <li><a href="#" class="block text-gray-600 hover:text-blue-500">Manage Feedback</a></li>
@@ -91,7 +91,7 @@
                             </video>
                             {% endif %}
                         </div>
-
+                        
                         <!-- Artwork Details -->
                         <div class="flex-1 md:ml-6">
                             <h3 class="text-xl font-semibold text-gray-800">{{ artwork.title }}</h3>
