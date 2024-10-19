@@ -6,6 +6,7 @@
 	<title>User Dashboard | Artistry On Demand</title>
 	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 	{% load static %}
+	<link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 	<link rel="stylesheet" href="{% static 'appln/styles.css' %}">
 	<style>
 		.hidden {
@@ -74,38 +75,38 @@
 					<p class="text-gray-600 mb-6">Here's what's Trending around your likes</p>
 
 					<!-- User Overview >
-						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-							<div class="bg-blue-100 p-6 rounded-lg text-center">
-								<h4 class="text-xl font-bold mb-2">Active Requests</h4>
-								<p class="text-3xl font-semibold">{{ active_requests_count }}</p>
-							</div>
-							<div class="bg-green-100 p-6 rounded-lg text-center">
-								<h4 class="text-xl font-bold mb-2">Completed Orders</h4>
-								<p class="text-3xl font-semibold">{{ completed_orders_count }}</p>
-							</div>
-							<div class="bg-red-100 p-6 rounded-lg text-center">
-								<h4 class="text-xl font-bold mb-2">Cancellation Deadlines</h4>
-								<p class="text-3xl font-semibold">{{ cancellation_deadlines_count }}</p>
-							</div>
-						</div>
-					</div-->
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+			<div class="bg-blue-100 p-6 rounded-lg text-center">
+				<h4 class="text-xl font-bold mb-2">Active Requests</h4>
+				<p class="text-3xl font-semibold">{{ active_requests_count }}</p>
+			</div>
+			<div class="bg-green-100 p-6 rounded-lg text-center">
+				<h4 class="text-xl font-bold mb-2">Completed Orders</h4>
+				<p class="text-3xl font-semibold">{{ completed_orders_count }}</p>
+			</div>
+			<div class="bg-red-100 p-6 rounded-lg text-center">
+				<h4 class="text-xl font-bold mb-2">Cancellation Deadlines</h4>
+				<p class="text-3xl font-semibold">{{ cancellation_deadlines_count }}</p>
+			</div>
+		</div>
+	</div-->
 					<!-- Active Requests >
-					<div class="bg-white p-6 rounded-lg shadow-lg">
-						<h3 class="text-2xl font-bold mb-4">Your Active Requests</h3>
-						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-							{% for request in active_requests %}
-							<div class="bg-gray-100 p-4 rounded-lg shadow-md">
-								<h4 class="font-semibold text-xl mb-2">{{ request.art_title }}</h4>
-								<p class="text-gray-600 mb-2">Status: <span class="text-blue-500">{{ request.status }}</span></p>
-								<p class="text-gray-600 mb-2">Deadline: {{ request.deadline }}</p>
-								<a href="{% url 'modify_request' request.id %}" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">Modify</a>
-								<a href="{% url 'cancel_request' request.id %}" class="block bg-red-500 text-white text-center py-2 rounded mt-2">Cancel</a>
-							</div>
-							{% empty %}
-							<p class="text-center col-span-3">No active requests at the moment.</p>
-							{% endfor %}
-						</div>
-					</div-->
+	<div class="bg-white p-6 rounded-lg shadow-lg">
+		<h3 class="text-2xl font-bold mb-4">Your Active Requests</h3>
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+			{% for request in active_requests %}
+			<div class="bg-gray-100 p-4 rounded-lg shadow-md">
+				<h4 class="font-semibold text-xl mb-2">{{ request.art_title }}</h4>
+				<p class="text-gray-600 mb-2">Status: <span class="text-blue-500">{{ request.status }}</span></p>
+				<p class="text-gray-600 mb-2">Deadline: {{ request.deadline }}</p>
+				<a href="{% url 'modify_request' request.id %}" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">Modify</a>
+				<a href="{% url 'cancel_request' request.id %}" class="block bg-red-500 text-white text-center py-2 rounded mt-2">Cancel</a>
+			</div>
+			{% empty %}
+			<p class="text-center col-span-3">No active requests at the moment.</p>
+			{% endfor %}
+		</div>
+	</div-->
 					<div class="container mx-auto mb-6">
 						<form method="GET" action="" class="flex">
 							<input type="text" name="search" value="{{ search_query }}"
@@ -117,12 +118,24 @@
 							</button>
 						</form>
 					</div>
+
+					<!-- Art Listings Section -->
 					<!-- Art Listings Section -->
 					<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8">
 						<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
 						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 							{% for artwork in artworks %}
 							<div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
+								<div class="flex items-center">
+									{% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
+									<img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
+									<span class="text-gray-800 font-semibold">by {{ artwork.artist.first_name }}</span>
+									{% else %}
+									<img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
+									<span class="text-gray-800 font-semibold">Unknown Artist</span>
+									{% endif %}
+								</div>
+								<br />
 								<!-- Artwork Image or Video -->
 								<div class="w-full mb-4">
 									{% if artwork.image_path %}
@@ -151,21 +164,22 @@
 						</div>
 					</div>
 
-					<!-- Art Listings Section >
-					<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8 hidden">
-						<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
-						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-							<!-- Example Art Listings>
-							<div class="bg-gray-100 p-4 rounded-lg shadow-md">
-								<h4 class="font-semibold text-xl mb-2">Artwork Title 1</h4>
-								<p class="text-gray-600 mb-2">Artist: Artist Name</p>
-								<p class="text-gray-600 mb-2">Description of artwork.</p>
-								<a href="#" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">View Details</a>
-							</div>
 
-							< Add more artwork listings as needed>
-						</div>
-					</div-->
+					<!-- Art Listings Section >
+	<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8 hidden">
+		<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+			<!-- Example Art Listings>
+			<div class="bg-gray-100 p-4 rounded-lg shadow-md">
+				<h4 class="font-semibold text-xl mb-2">Artwork Title 1</h4>
+				<p class="text-gray-600 mb-2">Artist: Artist Name</p>
+				<p class="text-gray-600 mb-2">Description of artwork.</p>
+				<a href="#" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">View Details</a>
+			</div>
+
+			< Add more artwork listings as needed>
+		</div>
+	</div-->
 					<!-- Past Orders -->
 					<div class="bg-white p-6 rounded-lg shadow-lg mt-8">
 						<h3 class="text-2xl font-bold mb-4">Your Past Orders</h3>

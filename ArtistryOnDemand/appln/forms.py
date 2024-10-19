@@ -108,14 +108,14 @@ class EditArtworkForm(forms.ModelForm):
         fields = ['title', 'description', 'artwork_type', 'price', 'image_path', 'video_path', 'requirements']
         
 
-from .models import ArtistProfile
+# from .models import ArtistProfile
 
-class ArtistProfileForm(forms.ModelForm):
-    class Meta:
-        model = ArtistProfile
-        fields = ['artist', 'bio', 'website', 'social_links', 'profile_photo']
+# class ArtistProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = ArtistProfile
+#         fields = ['artist', 'bio', 'website', 'social_links', 'profile_photo']
         
-
+# appln/forms.py
 from django import forms
 from .models import ArtistProfile
 
@@ -124,21 +124,21 @@ class ArtistProfileForm(forms.ModelForm):
         model = ArtistProfile
         fields = ['bio', 'website', 'social_links', 'profile_photo']
         widgets = {
-            'bio': forms.Textarea(attrs={
-                'class': 'form-textarea mt-1 block w-full',
-                'rows': 4,
-                'placeholder': 'Tell us more about yourself...'
-            }),
-            'website': forms.URLInput(attrs={
-                'class': 'form-input mt-1 block w-full',
-                'placeholder': 'https://yourwebsite.com'
-            }),
-            'social_links': forms.Textarea(attrs={
-                'class': 'form-textarea mt-1 block w-full',
-                'rows': 3,
-                'placeholder': 'Enter social media links in JSON format'
-            }),
-            'profile_photo': forms.ClearableFileInput(attrs={
-                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100',
-            }),
-        }
+        'bio': forms.Textarea(attrs={
+        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+        'placeholder': 'Write your bio here...'
+        }),
+        'website': forms.URLInput(attrs={
+        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+        'placeholder': 'https://example.com'
+        }),
+        'social_links': forms.Textarea(attrs={
+        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+        'placeholder': 'Enter social links separated by commas'
+        }),
+        'profile_photo': forms.ClearableFileInput(attrs={
+        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+        }),
+}
+
+

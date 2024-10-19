@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artistry On Demand</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'appln/styles.css' %}">
     <style>
-
     </style>
 </head>
 <body class="bg-gray-100">
@@ -65,7 +66,7 @@
 
     <!-- Art Illustration Section -->
     <section class="py-16 bg-white">
-        <div class="container mx-auto text-center">
+        <div class="container mx-auto text-center px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold mb-6">Our Custom Art Services</h2>
             <p class="text-gray-600 mb-8">We create personalized artwork based on your requests, from hand-drawn sketches to animated videos. Take a look at some of our featured services below:</p>
 
@@ -94,35 +95,51 @@
         </div>
     </section>
 
-    <section class="py-16 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-6">Our Artworks</h2>
-            <p class="text-gray-600 mb-8">Explore our collection of personalized artwork, from hand-drawn sketches to animated creations. Check out our featured artworks below:</p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section class="py-16 bg-white">
+        <div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Art Listings</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {% for artwork in artworks %}
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    {% if artwork.artwork_type == 'image' and artwork.image_path %}
-                    <img src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}" class="art-image mb-4 mx-auto h-48 w-full object-cover">
-                    {% elif artwork.artwork_type == 'video' and artwork.video_path %}
-                    <video controls autoplay class="art-image mb-4 mx-auto h-48 w-full object-cover">
-                        <source src="{{ artwork.video_path.url }}" autoplay type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    {% else %}
-                    <div class="flex items-center justify-center h-48 bg-gray-200 mb-4">
-                        <p class="text-gray-600">No preview available</p>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
+                    <div class="flex items-center">
+                        <div class="transition-transform transform hover:scale-90 hover:shadow-lg">
+                            {% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
+                            <img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
+                            {% else %}
+                            <img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
+                            {% endif %}
+                        </div>
+                        <span class="text-gray-500 font-semibold">{{ artwork.artist.first_name }}</span>
                     </div>
-                    {% endif %}
-                    <h3 class="text-2xl font-bold mb-2">{{ artwork.title }}</h3>
-                    <p class="text-gray-600">{{ artwork.description }}</p>
+                    <br />
+                    <!-- Artwork Image or Video -->
+                    <div class="w-full mb-4 transition-transform transform hover:scale-105">
+                        {% if artwork.image_path %}
+                        <img class="rounded-lg w-full h-64 object-cover transition-transform duration-300 transform hover:scale-105" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
+                        {% elif artwork.video_path %}
+                        <video class="rounded-lg w-full h-64 object-cover transition-transform duration-300 transform hover:scale-105" controls>
+                            <source src="{{ artwork.video_path.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        {% endif %}
+                    </div>
+
+                    <!-- Artwork Details -->
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-gray-800 truncate">{{ artwork.title }}</h3>
+                        <p class="text-gray-600 truncate" style="max-height: 3.6em; overflow: hidden; text-overflow: ellipsis;">{{ artwork.description }}</p>
+                    </div>
+
+                    <!-- Price at the bottom -->
+                    <p class="text-gray-800 font-bold mt-2">Price: ${{ artwork.price }}</p>
                 </div>
-                {% empty %}
-                <p class="col-span-3 text-center text-gray-500">No artworks available.</p>
                 {% endfor %}
             </div>
         </div>
     </section>
+
+
 
     <!-- Footer Section -->
     <footer class="bg-gray-800 text-white py-4">

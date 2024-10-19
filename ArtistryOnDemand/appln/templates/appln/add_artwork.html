@@ -5,23 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Artwork</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 </head>
 <body class="bg-gray-100">
-
     <!-- Navbar -->
     <nav class="bg-white shadow">
         <div class="container mx-auto px-4 py-5 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
-            <div class="space-x-6">
-                <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Profile</a>
+            <div class="space-x-6 flex items-center">
+                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
+                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
                 <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+
+                <!-- Logout Form -->
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
                         Logout
                     </button>
                 </form>
+                <img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}"
+                     alt="Profile Image"
+                     class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
             </div>
         </div>
     </nav>
@@ -30,15 +37,13 @@
     <div class="container mx-auto flex flex-col md:flex-row mt-6">
 
         <!-- Sidebar -->
-        <aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4 mb-6 md:mb-0">
+        <aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4">
             <h2 class="text-xl font-semibold">Dashboard Menu</h2>
             <ul class="mt-4 space-y-4">
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Dashboard Overview</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Track Requests</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">My Listings</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Manage Feedback</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Account Settings</a></li>
-                <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500">Add Listing</a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings: {{ total_artworks }}</span></a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">settings</span> <span>Account Settings</span></a></li>
             </ul>
         </aside>
 
@@ -93,7 +98,7 @@
                 </div>
 
                 <!-- Upload Image or Video -->
-                <div id="imageInput" >
+                <div id="imageInput">
                     <label for="image_path" class="block text-gray-700 font-semibold">Upload Image</label>
                     <input type="file" name="image_path" id="image_path"
                            class="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300">

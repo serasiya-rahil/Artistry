@@ -1,6 +1,8 @@
-from wsgiref.validate import validator
-from django.db import models
 from .validators import *
+from django.db import models
+from wsgiref.validate import validator
+
+
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
@@ -93,7 +95,7 @@ class ArtistProfile(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='profiles')
     bio = models.TextField()
     website = models.URLField(blank=True, null=True)
-    social_links = models.JSONField(blank=True, null=True)
+    social_links = models.TextField(blank=True, null=True)
     profile_photo = models.ImageField(max_length=255, blank=True, null=True)
 
     def __str__(self):

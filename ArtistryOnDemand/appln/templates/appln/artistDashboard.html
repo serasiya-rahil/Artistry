@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 </head>
 <body class="bg-gray-100">
 
@@ -12,10 +15,11 @@
     <nav class="bg-white shadow">
         <div class="container mx-auto px-4 py-5 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
-            <div class="space-x-6">
-                <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
-                <a href="{% url 'view_profile' %}"  class="text-gray-600 hover:text-gray-900">Profile</a>
+            <div class="space-x-6 flex items-center">
+                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
+                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
                 <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+
                 <!-- Logout Form -->
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
                     {% csrf_token %}
@@ -23,6 +27,15 @@
                         Logout
                     </button>
                 </form>
+                <div class="flex items-center">
+                    <!-- Artist Name -->
+                    <span class="mr-3 text-blue-500">{{ artist.first_name }}</span>
+
+                    <!-- Profile Image -->
+                    <img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}"
+                         alt="Profile Image"
+                         class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
+                </div>
             </div>
         </div>
     </nav>
@@ -32,21 +45,66 @@
     <div class="container mx-auto flex flex-col md:flex-row mt-6">
 
         <!-- Sidebar -->
-        <aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4 mb-6 md:mb-0">
+        <aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4">
             <h2 class="text-xl font-semibold">Dashboard Menu</h2>
             <ul class="mt-4 space-y-4">
-                
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Track Requests</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">My Listings: {{ total_artworks }}</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Manage Feedback</a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500">Account Settings</a></li>
-                <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500">Add Listing</a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings: {{ total_artworks }}</span></a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">settings</span> <span>Account Settings</span></a></li>
+                <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
             </ul>
         </aside>
 
         <!-- Dashboard Main Content -->
         <main class="flex-1 bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-2xl font-semibold mb-6">Artist Dashboard Overview </h2>
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div id="alert-{{ forloop.counter }}" class="p-4 rounded-lg shadow-md mb-3 transition duration-300 relative
+                    {% if message.tags == 'success' %} bg-green-500 text-white
+                    {% elif message.tags == 'error' %} bg-red-500 text-white
+                    {% elif message.tags == 'warning' %} bg-yellow-500 text-black
+                    {% elif message.tags == 'info' %} bg-blue-500 text-white
+                    {% else %} bg-gray-300 text-black {% endif %}">
+
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            {% if message.tags == 'success' %}
+                            <svg class="w-6 h-6 text-green-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {% elif message.tags == 'error' %}
+                            <svg class="w-6 h-6 text-red-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            {% elif message.tags == 'warning' %}
+                            <svg class="w-6 h-6 text-yellow-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01" />
+                                <path d="M12 4a9 9 0 100 18 9 9 0 000-18z" />
+                            </svg>
+                            {% elif message.tags == 'info' %}
+                            <svg class="w-6 h-6 text-blue-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01" />
+                                <path d="M12 4a9 9 0 100 18 9 9 0 000-18z" />
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow">
+                            {{ message }}
+                        </div>
+                        <!-- Close Button -->
+                        <button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-4 text-white hover:text-gray-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <h2 class="text-2xl font-semibold mb-6"><span class="material-icons align-middle">person</span> Artist Dashboard Overview </h2>
 
             <!-- Stats Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
@@ -91,7 +149,7 @@
                             </video>
                             {% endif %}
                         </div>
-                        
+
                         <!-- Artwork Details -->
                         <div class="flex-1 md:ml-6">
                             <h3 class="text-xl font-semibold text-gray-800">{{ artwork.title }}</h3>
@@ -105,6 +163,7 @@
                             <button type="button"
                                     class="bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transition-all duration-300 ease-in-out"
                                     onclick="openModal('{{ artwork.artwork_id }}', '{{ artwork.title }}')">
+                                <span class="material-icons align-middle">delete</span>
                                 Delete
                             </button>
                         </div>
@@ -113,6 +172,7 @@
                             <button type="button"
                                     class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md transition-all duration-300 ease-in-out"
                                     onclick="window.location.href='{% url 'edit_artwork' artwork.artwork_id %}'">
+                                <span class="material-icons align-middle">edit</span>
                                 Edit
                             </button>
                         </div>
