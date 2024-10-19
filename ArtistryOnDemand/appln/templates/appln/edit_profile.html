@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Artist Dashboard</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	{% load static %}
+	<link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+	<!-- Material Icons CDN for sidebar icons -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+	<!-- Navbar -->
+	<nav class="bg-white shadow-md">
+		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
+			<a href="#" class="text-2xl font-bold text-gray-800">Artistry on Demand</a>
+			<div class="space-x-6 flex items-center">
+				<a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
+				<a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+				<form method="post" action="{% url 'logout' %}" style="display: inline;">
+					{% csrf_token %}
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">Logout</button>
+				</form>
+				<div class="flex items-center">
+					<span class="mr-3 text-blue-500">{{ artist.first_name }}</span>
+					<img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}" alt="Profile Image" class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Main Content -->
+	<div class="container mx-auto flex flex-col md:flex-row mt-8 space-y-6 md:space-y-0 md:space-x-8">
+		<!-- Sidebar -->
+		<aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4">
+			<h2 class="text-xl font-semibold">Dashboard Menu</h2>
+			<ul class="mt-4 space-y-4">
+				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
+				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings: {{ total_artworks }}</span></a></li>
+				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">settings</span> <span>Account Settings</span></a></li>
+				<li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
+			</ul>
+		</aside>
+
+		<!-- Dashboard Main Content -->
+		<main class="flex-1 bg-white shadow-md rounded-lg p-6">
+			{% if messages %}
+			<div class="mb-4">
+				{% for message in messages %}
+				<div id="alert-{{ forloop.counter }}" class="p-4 rounded-lg shadow-md mb-3 transition duration-300 relative
+                    {% if message.tags == 'success' %} bg-green-500 text-white
+                    {% elif message.tags == 'error' %} bg-red-500 text-white
+                    {% elif message.tags == 'warning' %} bg-yellow-500 text-black
+                    {% elif message.tags == 'info' %} bg-blue-500 text-white
+                    {% else %} bg-gray-300 text-black {% endif %}">
+					<div class="flex items-center">
+						<div class="flex-grow">{{ message }}</div>
+						<button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-4 text-white hover:text-gray-300">
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+			<div class="max-w-4xl mx-auto bg-white shadow-md p-8 rounded-lg">
+				<h1 class="text-2xl font-bold mb-4">Edit Profile for {{ artist.name }}</h1>
+
+				<form method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="mb-4">
+						<label for="bio" class="block font-medium text-gray-700">Bio:</label>
+						{{ form.bio }}
+					</div>
+
+					<div class="mb-4">
+						<label for="website" class="block font-medium text-gray-700">Website:</label>
+						{{ form.website }}
+					</div>
+
+					<div class="mb-4">
+						<label for="social_links" class="block font-medium text-gray-700">Social Links:</label>
+						{{ form.social_links }}
+					</div>
+
+					<div class="mb-4">
+						<label for="profile_photo" class="block font-medium text-gray-700">Profile Photo:</label>
+						{{ form.profile_photo }}
+					</div>
+
+					<button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Save</button>
+				</form>
+			</div>
+		</main>
+	</div>
+
+	<!-- Footer -->
+	<footer class="bg-gray-800 text-white py-8">
+		<div class="container mx-auto text-center">
+			<a href="#" class="text-xl font-bold text-white">Artistry On Demand</a>
+			<div class="mt-4 space-x-6">
+				<a href="#" class="text-gray-400 hover:text-white">Home</a>
+				<a href="#" class="text-gray-400 hover:text-white">About</a>
+				<a href="#" class="text-gray-400 hover:text-white">Services</a>
+				<a href="#" class="text-gray-400 hover:text-white">Contact</a>
+			</div>
+			<p class="text-gray-400 mt-4">&copy; 2024 Artistry On Demand. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

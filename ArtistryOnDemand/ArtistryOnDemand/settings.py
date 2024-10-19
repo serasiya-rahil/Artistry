@@ -141,3 +141,5 @@ LOGOUT_REDIRECT_URL = '/loginArtist/'
 
 LOGIN_URL = 'login_user' 
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
