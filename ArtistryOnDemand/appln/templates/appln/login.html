@@ -68,12 +68,12 @@
 				<div class="mb-4">
 					{% for message in messages %}
 					<div id="alert-{{ forloop.counter }}" class="
-        p-4 rounded-lg shadow-md mb-3 transition duration-300 relative
-        {% if message.tags == 'success' %} bg-green-500 text-white
-        {% elif message.tags == 'error' %} bg-red-500 text-white
-        {% elif message.tags == 'warning' %} bg-yellow-500 text-black
-        {% elif message.tags == 'info' %} bg-blue-500 text-white
-        {% else %} bg-gray-300 text-black {% endif %}">
+						p-4 rounded-lg shadow-md mb-3 transition duration-300 relative
+						{% if message.tags == 'success' %} bg-green-500 text-white
+						{% elif message.tags == 'error' %} bg-red-500 text-white
+						{% elif message.tags == 'warning' %} bg-yellow-500 text-black
+						{% elif message.tags == 'info' %} bg-blue-500 text-white
+						{% else %} bg-gray-300 text-black {% endif %}">
 
 						<div class="flex items-center">
 							<div class="flex-shrink-0">

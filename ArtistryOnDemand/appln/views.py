@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import Artist, Artwork, ArtistProfile
+from .models import Artist, Artwork, ArtistProfile, User as userModel
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
@@ -59,10 +59,19 @@ def login_user(request):
         password = request.POST['password']
         
         dbg.info(f"Attempting to log in user: {username}")
+        
+        try:
+            userObj = userModel.objects.get(username=username)
+            dbg.info(f"User found: {userObj.username}")
+        except:
+            messages.error(request, "User does not exist.")
+            dbg.error(f"User does not exist: {username}")
+            
+            return render(request, 'appln/login.html')
+        
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
-            
             login(request, user)
             dbg.info(f"User logged in {request.user}")
             return redirect('UserView')  
