@@ -2,6 +2,7 @@ import os
 import json
 from .Debug import *
 from .logout_middleware import *
+from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -300,12 +301,6 @@ def view_profile(request):
 
     return render(request, 'appln/artist_profile_form.html', {'artist_profile': artist_profile,'profile':profile})
 
-import os
-from django.conf import settings
-from django.shortcuts import get_object_or_404, redirect, render
-from .forms import ArtistProfileForm
-from .models import ArtistProfile
-
 def edit_profile(request, artist_id):
     artist_profile = get_object_or_404(ArtistProfile, artist_id=artist_id)
     
@@ -313,28 +308,28 @@ def edit_profile(request, artist_id):
         form = ArtistProfileForm(request.POST, request.FILES, instance=artist_profile)
         
         if form.is_valid():
-            # Get social links from form and join them into a single string
+            
             social_links = form.cleaned_data.get('social_links', '')
             if social_links:
-                # Optionally, split by comma and strip whitespace
+               
                 links_list = [link.strip() for link in social_links.split(',')]
-                form.instance.social_links = ', '.join(links_list)  # Join back to a single string
+                form.instance.social_links = ', '.join(links_list) 
             
-            # Check if a new profile photo is uploaded
+            
             if 'profile_photo' in request.FILES:
-                # If a new photo is uploaded, delete the old one
+               
                 if artist_profile.profile_photo:
                     old_photo_path = artist_profile.profile_photo.path
-                    print(f"Attempting to delete: {old_photo_path}")  # Debug print
+                    print(f"Attempting to delete: {old_photo_path}")  
                     if os.path.isfile(old_photo_path):
                         try:
                             os.remove(old_photo_path)
-                            print(f"Deleted: {old_photo_path}")  # Confirm deletion
+                            print(f"Deleted: {old_photo_path}")  
                         except Exception as e:
-                            print(f"Error deleting file: {e}")  # Log any error
+                            print(f"Error deleting file: {e}")  
             
-            form.save()  # Save the form instance
-            return redirect('view_profile')  # Adjust redirect as needed
+            form.save()
+            return redirect('view_profile') 
     else:
         form = ArtistProfileForm(instance=artist_profile)
 
