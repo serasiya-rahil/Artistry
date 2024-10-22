@@ -36,7 +36,7 @@ class SimpleDebugger:
 
         state_width = 5  
         timestamp_width = 23  
-        func_line_width = 25  
+        func_line_width = 30
         message_width = 85
 
         # Create the header

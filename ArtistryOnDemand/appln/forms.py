@@ -124,21 +124,39 @@ class ArtistProfileForm(forms.ModelForm):
         model = ArtistProfile
         fields = ['bio', 'website', 'social_links', 'profile_photo']
         widgets = {
-        'bio': forms.Textarea(attrs={
-        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-        'placeholder': 'Write your bio here...'
-        }),
-        'website': forms.URLInput(attrs={
-        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-        'placeholder': 'https://example.com'
-        }),
-        'social_links': forms.Textarea(attrs={
-        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-        'placeholder': 'Enter social links separated by commas'
-        }),
-        'profile_photo': forms.ClearableFileInput(attrs={
-        'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-        }),
-}
+                    'bio': forms.Textarea(attrs={
+                    'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                    'placeholder': 'Write your bio here...'
+                    }),
+                    'website': forms.URLInput(attrs={
+                    'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                    'placeholder': 'https://example.com'
+                    }),
+                    'social_links': forms.Textarea(attrs={
+                    'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                    'placeholder': 'Enter social links separated by commas'
+                    }),
+                    'profile_photo': forms.ClearableFileInput(attrs={
+                    'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                    }),
+        }
+        
+# forms.py
+
+from django import forms
+from .models import Request
+
+class RequestForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields = ['description', 'image_path', 'video_path']
+        widgets = {
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'image_path': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'video_path': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+
+
 
 

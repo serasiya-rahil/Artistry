@@ -18,6 +18,10 @@ urlpatterns = [
     path('UserView/', views.UserView, name='UserView'),
     path('view_profile/', views.view_profile, name='view_profile'),
     path('edit_profile/<int:artist_id>', views.edit_profile, name='edit_profile'),
+    path('View-Artwork-By-Id/<int:artwork_id>', views.viewArtworkById, name='viewArtworkById'),
+    path('Order-Now/<int:artwork_id>', views.orderNow, name='orderNow'),
+    path('success/', views.payment_success, name='payment_success'),
+    path('cancel/', views.payment_cancel, name='payment_cancel'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

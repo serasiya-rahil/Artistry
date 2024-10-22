@@ -18,7 +18,7 @@
 
 		.visible {
 			opacity: 1;
-			max-height: 500px; /* Set this to a value slightly larger than the content's height */
+			max-height: 500px; 
 			transition: opacity 1s ease, max-height 0.5s ease;
 		}
 	</style>
@@ -62,51 +62,39 @@
 					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Make a Request</a></li>
 					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Modify Requests</a></li>
 					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Cancel Requests</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">View Past Orders</a></li>
+					<li><a href="#" class="block text-gray-600 hover:text-blue-500">View Past Orders: {{ order_count }}</a></li>
 					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Give Feedback</a></li>
 				</ul>
 			</aside>
 
 			<!-- Main Content -->
 			<div class="col-span-3">
+				{% if messages %}
+				<div class="mb-4">
+					{% for message in messages %}
+					<div id="alert-{{ forloop.counter }}" class="p-4 rounded-lg shadow-md mb-3 transition duration-300 relative
+                        {% if message.tags == 'success' %} bg-green-500 text-white
+                        {% elif message.tags == 'error' %} bg-red-500 text-white
+                        {% elif message.tags == 'warning' %} bg-yellow-500 text-black
+                        {% elif message.tags == 'info' %} bg-blue-500 text-white
+                        {% else %} bg-gray-300 text-black {% endif %}">
+						<div class="flex items-center">
+							<div class="flex-grow">{{ message }}</div>
+							<button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-4 text-white hover:text-gray-300">
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
 				<!-- Overview Section -->
 				<div class="bg-white p-6 rounded-lg shadow-lg mb-8">
 					<h3 class="text-2xl font-bold mb-4">Welcome Back! {{user.first_name}}</h3>
 					<p class="text-gray-600 mb-6">Here's what's Trending around your likes</p>
 
-					<!-- User Overview >
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-			<div class="bg-blue-100 p-6 rounded-lg text-center">
-				<h4 class="text-xl font-bold mb-2">Active Requests</h4>
-				<p class="text-3xl font-semibold">{{ active_requests_count }}</p>
-			</div>
-			<div class="bg-green-100 p-6 rounded-lg text-center">
-				<h4 class="text-xl font-bold mb-2">Completed Orders</h4>
-				<p class="text-3xl font-semibold">{{ completed_orders_count }}</p>
-			</div>
-			<div class="bg-red-100 p-6 rounded-lg text-center">
-				<h4 class="text-xl font-bold mb-2">Cancellation Deadlines</h4>
-				<p class="text-3xl font-semibold">{{ cancellation_deadlines_count }}</p>
-			</div>
-		</div>
-	</div-->
-					<!-- Active Requests >
-	<div class="bg-white p-6 rounded-lg shadow-lg">
-		<h3 class="text-2xl font-bold mb-4">Your Active Requests</h3>
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-			{% for request in active_requests %}
-			<div class="bg-gray-100 p-4 rounded-lg shadow-md">
-				<h4 class="font-semibold text-xl mb-2">{{ request.art_title }}</h4>
-				<p class="text-gray-600 mb-2">Status: <span class="text-blue-500">{{ request.status }}</span></p>
-				<p class="text-gray-600 mb-2">Deadline: {{ request.deadline }}</p>
-				<a href="{% url 'modify_request' request.id %}" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">Modify</a>
-				<a href="{% url 'cancel_request' request.id %}" class="block bg-red-500 text-white text-center py-2 rounded mt-2">Cancel</a>
-			</div>
-			{% empty %}
-			<p class="text-center col-span-3">No active requests at the moment.</p>
-			{% endfor %}
-		</div>
-	</div-->
 					<div class="container mx-auto mb-6">
 						<form method="GET" action="" class="flex">
 							<input type="text" name="search" value="{{ search_query }}"
@@ -120,66 +108,67 @@
 					</div>
 
 					<!-- Art Listings Section -->
-					<!-- Art Listings Section -->
-					<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8">
-						<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
-						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+					<div id="art-listings" class="bg-white p-8 rounded-lg shadow-lg mt-8">
+						<h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Explore Artworks</h3>
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 							{% for artwork in artworks %}
-							<div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
-								<div class="flex items-center">
+							<div class="bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:scale-105 overflow-hidden">
+								<!-- Artist Info -->
+								<div class="flex items-center p-4 bg-white border-b border-gray-200">
 									{% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
-									<img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
-									<span class="text-gray-800 font-semibold">by {{ artwork.artist.first_name }}</span>
+									<img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-12 h-12 rounded-full object-cover mr-3 shadow-sm">
 									{% else %}
-									<img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
-									<span class="text-gray-800 font-semibold">Unknown Artist</span>
+									<img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-12 h-12 rounded-full object-cover mr-3 shadow-sm">
 									{% endif %}
+									<div>
+										<span class="text-gray-800 font-medium">by {{ artwork.artist.first_name }}</span>
+									</div>
 								</div>
-								<br />
-								<!-- Artwork Image or Video -->
-								<div class="w-full mb-4">
+
+								<div class="relative mb-4">
+									<!-- Artwork Image or Video -->
 									{% if artwork.image_path %}
-									<img class="rounded-lg w-full h-64 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
+									<img class="rounded-t-xl w-full h-48 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
 									{% elif artwork.video_path %}
-									<video class="rounded-lg w-full h-64 object-cover" controls>
+									<video class="rounded-t-xl w-full h-48 object-cover" controls>
 										<source src="{{ artwork.video_path.url }}" type="video/mp4">
 										Your browser does not support the video tag.
 									</video>
 									{% endif %}
+									<!-- Rating Badge -->
+									{% if artwork.artwork_rating %}
+									<span class="absolute top-2 right-2 bg-yellow-400 text-white text-xs font-bold py-1 px-2 rounded-full shadow-md">
+										⭐ {{ artwork.artwork_rating }}
+									</span>
+									{% endif %}
 								</div>
 
 								<!-- Artwork Details -->
-								<div class="flex-1">
-									<h3 class="text-xl font-semibold text-gray-800 truncate">{{ artwork.title }}</h3>
-									<p class="text-gray-600 truncate" style="max-height: 3.6em; overflow: hidden; text-overflow: ellipsis;">{{ artwork.description }}</p>
+								<div class="p-4">
+									<h3 class="text-xl font-semibold text-gray-800 truncate mb-1">{{ artwork.title }}</h3>
+									<p class="text-gray-600 text-sm truncate mb-4">{{ artwork.description }}</p>
 								</div>
 
-								<!-- Price at the bottom -->
-								<p class="text-gray-800 font-bold mt-2">Price: ${{ artwork.price }}</p>
-								<a href="" class="mt-2 text-blue-500 hover:underline">View Details</a>
+								<!-- Price and Details Button -->
+								<div class="flex justify-between items-center p-4 bg-gray-100 rounded-b-xl">
+									<p class="text-lg font-bold text-indigo-600">Price: ${{ artwork.price }}</p>
+									<a href="{% url 'viewArtworkById' artwork.artwork_id %}" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-lg shadow-md transition-colors duration-300 ease-in-out">
+										View Details
+									</a>
+								</div>
 							</div>
 							{% empty %}
-							<p class="text-center col-span-3">No artworks available at the moment.</p>
+							<p class="text-center col-span-3 text-gray-500">No artworks available at the moment.</p>
 							{% endfor %}
 						</div>
 					</div>
 
 
-					<!-- Art Listings Section >
-	<div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg mt-8 hidden">
-		<h3 class="text-2xl font-bold mb-4">Art Listings</h3>
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-			<!-- Example Art Listings>
-			<div class="bg-gray-100 p-4 rounded-lg shadow-md">
-				<h4 class="font-semibold text-xl mb-2">Artwork Title 1</h4>
-				<p class="text-gray-600 mb-2">Artist: Artist Name</p>
-				<p class="text-gray-600 mb-2">Description of artwork.</p>
-				<a href="#" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">View Details</a>
-			</div>
 
-			< Add more artwork listings as needed>
-		</div>
-	</div-->
+
+
+
 					<!-- Past Orders -->
 					<div class="bg-white p-6 rounded-lg shadow-lg mt-8">
 						<h3 class="text-2xl font-bold mb-4">Your Past Orders</h3>

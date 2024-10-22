@@ -2,6 +2,9 @@ from .validators import *
 from django.db import models
 from wsgiref.validate import validator
 
+#added
+
+
 
 
 class User(models.Model):
@@ -65,10 +68,10 @@ class Request(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='requests')
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('fulfilled', 'Fulfilled'), ('canceled', 'Canceled')])
     created_at = models.DateTimeField(auto_now_add=True)
-    deadline = models.DateTimeField()
-    is_video = models.BooleanField(default=False)
+    deadline = models.DateTimeField(null=True)
+    #is_video = models.BooleanField(default=False)
     video_path = models.CharField(max_length=255, blank=True, null=True)
-    is_image = models.BooleanField(default=False)
+    #is_image = models.BooleanField(default=False)
     image_path = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     artist_accept_date = models.DateTimeField(blank=True, null=True)
@@ -110,11 +113,11 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     order_status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('completed', 'Completed'), ('canceled', 'Canceled')])
     created_at = models.DateTimeField(auto_now_add=True)
-    artist_delivery_date = models.DateTimeField()
+    artist_delivery_date = models.DateTimeField(null=True   )
     actual_delivery_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return f"Order {self.order_id} by {self.user}"
+        return f"Order #{self.order_id} by {self.user.username} - Artwork: {self.artwork.title} - Status: {self.order_status.capitalize()} - Total: ${self.total_price:.2f}"
 
 
 class Payment(models.Model):
