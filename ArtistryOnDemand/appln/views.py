@@ -1,18 +1,22 @@
 import os
 import json
+import stripe
+from datetime import datetime
 from .Debug import *
+from django.db.models import Avg
 from .logout_middleware import *
 from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
+from django.contrib.auth import get_user
 from django.contrib.auth.models import User
-from .models import Artist, Artwork, ArtistProfile, User as userModel
+from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm
+from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm
 
 #set debugging to True or False
 dbg = SimpleDebugger(enabled=True)
@@ -262,19 +266,29 @@ def UserView(request):
     dbg.info("Fetching all artworks for UserView.")
     artworks = Artwork.objects.all()
     Profile_artworks = Artwork.objects.select_related('artist').prefetch_related('artist__profiles').all()
+    order_count = Order.objects.filter(user_id=request.user.id).count()
 
     search_query = request.GET.get('search', '')
     if search_query:
         dbg.info(f"Search query received: {search_query}")
-    
-    if search_query:
         artworks = artworks.filter(title__icontains=search_query)
         dbg.info(f"Filtered artworks based on search query: {search_query} (Total: {artworks.count()})")
     else:
         dbg.info(f"No search query provided. Total artworks: {artworks.count()}")
-        
+
+    for artwork in artworks:
+        # Use the correct filtering for feedbacks via request
+        rating = Feedback.objects.filter(request__artwork=artwork).aggregate(Avg('rating'))['rating__avg']
+        artwork.average_rating = rating if rating is not None else "No ratings yet"
+
     dbg.info("Rendering UserHomePage.")
-    return render(request, 'appln/UserHomePage.html', {'artworks': artworks, 'search_query':search_query,'Profile_artworks':Profile_artworks})
+    return render(request, 'appln/UserHomePage.html', {
+        'artworks': artworks,
+        'search_query': search_query,
+        'Profile_artworks': Profile_artworks,
+        'order_count':order_count
+    })
+
 
 @login_required
 def custom_logout(request):
@@ -343,3 +357,114 @@ def edit_profile(request, artist_id):
         form = ArtistProfileForm(instance=artist_profile)
 
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
+
+from django.db.models import Avg
+
+def viewArtworkById(request, artwork_id):
+    artwork = None
+    try:
+        artwork = Artwork.objects.get(artwork_id=artwork_id)
+        dbg.info(f"Artwork Found with ID: '{artwork_id}'")
+        
+        rating = Feedback.objects.filter(request__artwork=artwork).aggregate(Avg('rating'))['rating__avg']
+        artwork.average_rating = rating if rating is not None else 0
+       
+        return render(request, 'appln/ArtworkById.html', { 'artwork': artwork })
+
+    except Artwork.DoesNotExist:
+        dbg.error(f"No Artwork Found with ID: '{artwork_id}'")
+        messages.error(request, "No Artwork Found")
+        
+    except Exception as e:
+        dbg.error(f"Error retrieving artwork with ID: '{artwork_id}': {str(e)}")
+        messages.error(request, "Something Went Wrong")
+
+    return render(request, 'appln/ArtworkById.html', {'artwork': artwork})
+
+# Stripe API key
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+def orderNow(request, artwork_id):
+    artwork = get_object_or_404(Artwork, pk=artwork_id)
+    
+    if request.method == 'POST':
+        form = RequestForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': 'cad',
+                        'product_data': {
+                            'name': artwork.title,
+                        },
+                        'unit_amount': int(artwork.price * 100),  
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                success_url=request.build_absolute_uri('/success/') + '?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=request.build_absolute_uri('/cancel/'),
+            )
+
+            request.session['temp_form_data'] = {
+                'description': form.cleaned_data['description'],
+                'image_path': form.cleaned_data['image_path'] if form.cleaned_data['image_path'] else None,
+                'video_path': form.cleaned_data['video_path'] if form.cleaned_data['video_path'] else None,
+                'artwork_id': artwork_id,
+                'user_id': request.user.id
+            }
+            
+            return JsonResponse({'sessionId': session.id})
+
+    else:
+        form = RequestForm()
+
+    return render(request, 'appln/order_now.html', {'form': form, 'artwork': artwork, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY})
+
+def payment_success(request):
+    session_id = request.GET.get('session_id')
+    
+    if session_id:
+        session = stripe.checkout.Session.retrieve(session_id)
+        
+        if session.payment_status == 'paid':
+            temp_data = request.session.pop('temp_form_data', None)
+            if temp_data:
+               
+                request_instance = Request.objects.create(
+                    description=temp_data['description'],
+                    image_path=temp_data['image_path'],
+                    video_path=temp_data['video_path'],
+                    user_id=temp_data['user_id'],
+                    artwork_id=temp_data['artwork_id'],
+                    artist_id=Artwork.objects.get(pk=temp_data['artwork_id']).artist_id,
+                    status='pending',
+                    created_at=datetime.now()
+
+                )
+                
+                order_instance = Order()
+                order_instance.total_price = Artwork.objects.get(pk=temp_data['artwork_id']).price
+                order_instance.order_status = 'pending'
+                order_instance.created_at = datetime.now()
+                order_instance.artist_id = Artwork.objects.get(pk=temp_data['artwork_id']).artist_id
+                order_instance.artwork = Artwork.objects.get(pk=temp_data['artwork_id'])
+                
+                from .models import User as CustomUser  
+                user = get_user(request) 
+                custom_user = CustomUser.objects.get(username=user.username)
+                
+                order_instance.user = custom_user
+                order_instance.save()
+                dbg.info(f"Order Details: {order_instance}")
+                
+
+                messages.success(request, f"Order Placed Successfully with Order ID: {order_instance.order_id}")
+                return redirect('UserView')
+    
+    return redirect('orderNow')
+
+def payment_cancel(request):
+    return render(request, 'payment_cancel.html')
