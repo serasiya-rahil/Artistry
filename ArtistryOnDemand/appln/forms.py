@@ -1,12 +1,12 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from .models import Artist, User as CustomUser, Artwork, Request, ArtistProfile
-from django.core.exceptions import ValidationError
 import re
-from django.utils.translation import gettext_lazy as _
+from django import forms
 #custom module Author: Rahil Serasiya, Date: 11-Oct-2024
 from .validators import *
+from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import UserCreationForm
+from .models import Artist, User as CustomUser, Artwork, Request, ArtistProfile
+from django.core.exceptions import ValidationError
 
 class CustomUserSignupForm(UserCreationForm):
     first_name = forms.CharField(max_length=255, validators=[ValidateNameImpl])
@@ -20,7 +20,7 @@ class CustomUserSignupForm(UserCreationForm):
     country = forms.CharField(max_length=255,validators=[ValidateStringImpl])
     
     class Meta:
-        model = User  # This links to Django's auth_user model
+        model = User  
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
     
     def clean_username(self):
@@ -75,7 +75,6 @@ class ArtistSignupForm(forms.ModelForm):
     def save(self, commit=True):
         artist = super().save(commit=False)
         
-        # Create the User
         user = User(
             username=self.cleaned_data['username'],
             email=self.cleaned_data['email'],
@@ -86,8 +85,7 @@ class ArtistSignupForm(forms.ModelForm):
         if commit:
             user.save()
 
-        # Now save the Artist record
-        artist.password = user.password  # Store the hashed password in the Artist model too
+        artist.password = user.password 
         if commit:
             artist.save()
         return artist

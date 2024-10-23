@@ -1,6 +1,6 @@
 import os
-from datetime import datetime
 import inspect
+from datetime import datetime
 
 class SimpleDebugger:
     def __init__(self, log_filename="debugger.txt", line_number_filename="line_number.txt", enabled=True):
@@ -29,7 +29,7 @@ class SimpleDebugger:
             return  
 
         
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]  # Keep milliseconds
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
 
         if not isinstance(message, str):
             message = str(message)
@@ -39,7 +39,6 @@ class SimpleDebugger:
         func_line_width = 30
         message_width = 85
 
-        # Create the header
         header = (
             f"{'-' * self.log_line_width()}"
             f"{'-' * state_width}"
@@ -58,9 +57,8 @@ class SimpleDebugger:
             f"{'-' * message_width}\n"
         )
 
-        # Format the log entry with specified widths
-        func_signature = f"{func_name}() Line: {line_number}"  # Full function signature with line number
-        log_entry = (f"| {str(self.log_line_number + 1).ljust(self.log_line_width())} | "  # Log line number
+        func_signature = f"{func_name}() Line: {line_number}" 
+        log_entry = (f"| {str(self.log_line_number + 1).ljust(self.log_line_width())} | " 
                      f"{state.ljust(state_width)} | "
                      f"{timestamp} | "
                      f"{func_signature.ljust(func_line_width)} | "
@@ -72,26 +70,22 @@ class SimpleDebugger:
                      f"{'-' * message_width}\n"
         )
 
-        # Write the header and log entry to the file
         with open(self.log_filename, 'a') as f:
-            # Write the header only once
-            if f.tell() == 0:  # Check if the file is empty
+            if f.tell() == 0: 
                 f.write(header)
 
-            # Increment log line number before writing the log entry
             self.log_line_number += 1
             
             f.write(log_entry)
 
-        # Save the current log line number to a separate file
         self._save_log_line_number()
 
     def log_line_width(self):
-        return len(str(self.log_line_number + 1))  # Dynamic width based on log line number
+        return len(str(self.log_line_number + 1)) 
 
     def info(self, message):
         """Log an info message."""
-        if self.enabled:  # Only log if the debugger is enabled
+        if self.enabled:  
             frame = inspect.currentframe().f_back
             func_name = frame.f_code.co_name
             line_number = frame.f_lineno
@@ -99,7 +93,7 @@ class SimpleDebugger:
 
     def warn(self, message):
         """Log a warning message."""
-        if self.enabled:  # Only log if the debugger is enabled
+        if self.enabled:  
             frame = inspect.currentframe().f_back
             func_name = frame.f_code.co_name
             line_number = frame.f_lineno
@@ -107,7 +101,7 @@ class SimpleDebugger:
 
     def error(self, message):
         """Log an error message."""
-        if self.enabled:  # Only log if the debugger is enabled
+        if self.enabled: 
             frame = inspect.currentframe().f_back
             func_name = frame.f_code.co_name
             line_number = frame.f_lineno

@@ -4,10 +4,13 @@
     "\\ArtistryOnDemand",
     "\\ArtistryOnDemand\\appln",
     "\\ArtistryOnDemand\\appln\\static",
-    "\\ArtistryOnDemand\\appln\\templates",
     "\\ArtistryOnDemand\\appln\\templates\\appln",
-    "\\ArtistryOnDemand\\ArtistryOnDemand"
+    "\\ArtistryOnDemand\\ArtistryOnDemand",
+    "\\ArtistryOnDemand\\media",
+    "\\ArtistryOnDemand\\media\\images",
+    "\\ArtistryOnDemand\\media\\images\\artworks",
+    "\\ArtistryOnDemand\\media\\images\\artworks\\5"
   ],
-  "SelectedNode": "\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
+  "SelectedNode": "\\ArtistryOnDemand\\media\\images\\artworks\\5\\image_5.jpg",
   "PreviewInSolutionExplorer": false
 }
