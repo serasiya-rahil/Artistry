@@ -4,10 +4,10 @@
     "\\ArtistryOnDemand",
     "\\ArtistryOnDemand\\appln",
     "\\ArtistryOnDemand\\appln\\static",
-    "\\ArtistryOnDemand\\appln\\static\\images",
     "\\ArtistryOnDemand\\appln\\templates",
-    "\\ArtistryOnDemand\\appln\\templates\\appln"
+    "\\ArtistryOnDemand\\appln\\templates\\appln",
+    "\\ArtistryOnDemand\\ArtistryOnDemand"
   ],
-  "SelectedNode": "\\ArtistryOnDemand\\appln\\views.py",
+  "SelectedNode": "\\ArtistryOnDemand\\ArtistryOnDemand\\settings.py",
   "PreviewInSolutionExplorer": false
 }
