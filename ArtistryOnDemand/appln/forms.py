@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Artist, User as CustomUser, Artwork
+from .models import Artist, User as CustomUser, Artwork, Request, ArtistProfile
 from django.core.exceptions import ValidationError
 import re
 from django.utils.translation import gettext_lazy as _
@@ -108,16 +108,6 @@ class EditArtworkForm(forms.ModelForm):
         fields = ['title', 'description', 'artwork_type', 'price', 'image_path', 'video_path', 'requirements']
         
 
-# from .models import ArtistProfile
-
-# class ArtistProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = ArtistProfile
-#         fields = ['artist', 'bio', 'website', 'social_links', 'profile_photo']
-        
-# appln/forms.py
-from django import forms
-from .models import ArtistProfile
 
 class ArtistProfileForm(forms.ModelForm):
     class Meta:
@@ -140,11 +130,6 @@ class ArtistProfileForm(forms.ModelForm):
                     'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
                     }),
         }
-        
-# forms.py
-
-from django import forms
-from .models import Request
 
 class RequestForm(forms.ModelForm):
     class Meta:

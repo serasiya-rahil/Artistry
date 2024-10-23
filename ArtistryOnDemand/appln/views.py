@@ -1,26 +1,29 @@
 import os
 import json
+import shutil
 import stripe
-from datetime import datetime
 from .Debug import *
+from django.db import models
+from datetime import datetime
 from django.db.models import Avg
 from .logout_middleware import *
 from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
+from .models import User as CustomUser
 from django.contrib.auth import get_user
 from django.contrib.auth.models import User
-from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order
+from django.core.files.base import ContentFile
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order
 from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm
 
-#set debugging to True or False
-dbg = SimpleDebugger(enabled=True)
-#create Session expiry object
+dbg = SimpleDebugger(enabled=False)
 lgt = SessionExpiryMiddleware(MiddlewareMixin)
 
 def home(request):
@@ -289,7 +292,6 @@ def UserView(request):
         'order_count':order_count
     })
 
-
 @login_required
 def custom_logout(request):
     dbg.info(f"User {request.user} is logging out.")
@@ -391,6 +393,7 @@ def orderNow(request, artwork_id):
         form = RequestForm(request.POST, request.FILES)
         
         if form.is_valid():
+            # Create Stripe session
             session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[{
@@ -408,14 +411,29 @@ def orderNow(request, artwork_id):
                 cancel_url=request.build_absolute_uri('/cancel/'),
             )
 
-            request.session['temp_form_data'] = {
+            # Initialize temp_form_data for session storage
+            temp_form_data = {
                 'description': form.cleaned_data['description'],
-                'image_path': form.cleaned_data['image_path'] if form.cleaned_data['image_path'] else None,
-                'video_path': form.cleaned_data['video_path'] if form.cleaned_data['video_path'] else None,
                 'artwork_id': artwork_id,
-                'user_id': request.user.id
+                'user_id': request.user.id,
             }
             
+            # Use FileSystemStorage to save files temporarily in media/tmp/
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'tmp'))
+            
+            if 'image_path' in request.FILES:
+                image_file = request.FILES['image_path']
+                image_filename = fs.save(image_file.name, image_file)
+                temp_form_data['image_path'] = image_filename  # Save the filename, not the URL
+
+            if 'video_path' in request.FILES:
+                video_file = request.FILES['video_path']
+                video_filename = fs.save(video_file.name, video_file)
+                temp_form_data['video_path'] = video_filename  # Save the filename, not the URL
+
+            # Save the temporary form data in session
+            request.session['temp_form_data'] = temp_form_data
+
             return JsonResponse({'sessionId': session.id})
 
     else:
@@ -431,40 +449,64 @@ def payment_success(request):
         
         if session.payment_status == 'paid':
             temp_data = request.session.pop('temp_form_data', None)
+            
             if temp_data:
-               
+                # Create a new request record
                 request_instance = Request.objects.create(
                     description=temp_data['description'],
-                    image_path=temp_data['image_path'],
-                    video_path=temp_data['video_path'],
                     user_id=temp_data['user_id'],
                     artwork_id=temp_data['artwork_id'],
                     artist_id=Artwork.objects.get(pk=temp_data['artwork_id']).artist_id,
                     status='pending',
                     created_at=datetime.now()
-
                 )
-                
-                order_instance = Order()
-                order_instance.total_price = Artwork.objects.get(pk=temp_data['artwork_id']).price
-                order_instance.order_status = 'pending'
-                order_instance.created_at = datetime.now()
-                order_instance.artist_id = Artwork.objects.get(pk=temp_data['artwork_id']).artist_id
-                order_instance.artwork = Artwork.objects.get(pk=temp_data['artwork_id'])
-                
-                from .models import User as CustomUser  
-                user = get_user(request) 
-                custom_user = CustomUser.objects.get(username=user.username)
-                
-                order_instance.user = custom_user
+
+                # Move image from media/tmp/ to media/images/artworks/
+                if temp_data.get('image_path'):
+                    image_temp_path = os.path.join('tmp', temp_data['image_path'])
+                    image_permanent_path = f"images/artworks/{temp_data['artwork_id']}/image_{temp_data['artwork_id']}.jpg"
+                    if move_file_to_permanent_storage(image_temp_path, image_permanent_path):
+                        request_instance.image_path = image_permanent_path
+
+                # Move video from media/tmp/ to media/videos/artworks/
+                if temp_data.get('video_path'):
+                    video_temp_path = os.path.join('tmp', temp_data['video_path'])
+                    video_permanent_path = f"videos/artworks/{temp_data['artwork_id']}/video_{temp_data['artwork_id']}.mp4"
+                    if move_file_to_permanent_storage(video_temp_path, video_permanent_path):
+                        request_instance.video_path = video_permanent_path
+
+                request_instance.save()
+
+                # Create the order record
+                order_instance = Order(
+                    total_price=Artwork.objects.get(pk=temp_data['artwork_id']).price,
+                    order_status='pending',
+                    created_at=datetime.now(),
+                    artist_id=Artwork.objects.get(pk=temp_data['artwork_id']).artist_id,
+                    artwork=Artwork.objects.get(pk=temp_data['artwork_id']),
+                    user=CustomUser.objects.get(username=request.user.username)
+                )
                 order_instance.save()
-                dbg.info(f"Order Details: {order_instance}")
-                
 
                 messages.success(request, f"Order Placed Successfully with Order ID: {order_instance.order_id}")
                 return redirect('UserView')
-    
+
     return redirect('orderNow')
+
+def move_file_to_permanent_storage(temp_path, permanent_path):
+    temp_full_path = os.path.join(settings.MEDIA_ROOT, temp_path)
+    permanent_full_path = os.path.join(settings.MEDIA_ROOT, permanent_path)
+    
+    os.makedirs(os.path.dirname(permanent_full_path), exist_ok=True)
+
+    if os.path.exists(temp_full_path):
+        try:
+            shutil.move(temp_full_path, permanent_full_path)
+            return True
+        except Exception as e:
+            return False
+    else:
+        return False
 
 def payment_cancel(request):
     return render(request, 'payment_cancel.html')
