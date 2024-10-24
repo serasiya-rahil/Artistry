@@ -59,10 +59,7 @@
 				<h2 class="text-xl font-semibold mb-4">Dashboard Menu</h2>
 				<ul class="space-y-4">
 					<li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-500">View Art Listings</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Make a Request</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Modify Requests</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Cancel Requests</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">View Past Orders: {{ order_count }}</a></li>
+					<li><a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-blue-500">View Past Orders: {{ order_count }}</a></li>
 					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Give Feedback</a></li>
 				</ul>
 			</aside>
@@ -70,19 +67,19 @@
 			<!-- Main Content -->
 			<div class="col-span-3">
 				{% if messages %}
-				<div class="mb-4">
+				<div class="mb-6">
 					{% for message in messages %}
-					<div id="alert-{{ forloop.counter }}" class="p-4 rounded-lg shadow-md mb-3 transition duration-300 relative
-                        {% if message.tags == 'success' %} bg-green-500 text-white
-                        {% elif message.tags == 'error' %} bg-red-500 text-white
-                        {% elif message.tags == 'warning' %} bg-yellow-500 text-black
-                        {% elif message.tags == 'info' %} bg-blue-500 text-white
-                        {% else %} bg-gray-300 text-black {% endif %}">
+					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300 
+						{% if message.tags == 'success' %} bg-green-100 border border-green-300 text-green-700
+						{% elif message.tags == 'error' %} bg-red-100 border border-red-300 text-red-700
+						{% elif message.tags == 'warning' %} bg-yellow-100 border border-yellow-300 text-yellow-700
+						{% elif message.tags == 'info' %} bg-blue-100 border border-blue-300 text-blue-700
+						{% endif %}">
 						<div class="flex items-center">
-							<div class="flex-grow">{{ message }}</div>
-							<button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-4 text-white hover:text-gray-300">
+							<span>{{ message }}</span>
+							<button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-auto text-gray-500 hover:text-gray-700">
 								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
 								</svg>
 							</button>
 						</div>
@@ -92,7 +89,9 @@
 				{% endif %}
 				<!-- Overview Section -->
 				<div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+					
 					<h3 class="text-2xl font-bold mb-4">Welcome Back! {{user.first_name}}</h3>
+					
 					<p class="text-gray-600 mb-6">Here's what's Trending around your likes</p>
 
 					<div class="container mx-auto mb-6">
@@ -110,7 +109,7 @@
 					<!-- Art Listings Section -->
 
 					<div id="art-listings" class="bg-white p-8 rounded-lg shadow-lg mt-8">
-						<h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Explore Artworks</h3>
+						
 						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 							{% for artwork in artworks %}
 							<div class="bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:scale-105 overflow-hidden">
@@ -160,27 +159,6 @@
 							</div>
 							{% empty %}
 							<p class="text-center col-span-3 text-gray-500">No artworks available at the moment.</p>
-							{% endfor %}
-						</div>
-					</div>
-
-
-
-
-
-
-					<!-- Past Orders -->
-					<div class="bg-white p-6 rounded-lg shadow-lg mt-8">
-						<h3 class="text-2xl font-bold mb-4">Your Past Orders</h3>
-						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-							{% for order in past_orders %}
-							<div class="bg-gray-100 p-4 rounded-lg shadow-md">
-								<h4 class="font-semibold text-xl mb-2">{{ order.art_title }}</h4>
-								<p class="text-gray-600 mb-2">Completed on: {{ order.completed_date }}</p>
-								<a href="{% url 'order_details' order.id %}" class="block bg-blue-500 text-white text-center py-2 rounded mt-4">View Details</a>
-							</div>
-							{% empty %}
-							<p class="text-center col-span-3">No past orders found.</p>
 							{% endfor %}
 						</div>
 					</div>

@@ -21,6 +21,8 @@ urlpatterns = [
     path('Order-Now/<int:artwork_id>', views.orderNow, name='orderNow'),
     path('success/', views.payment_success, name='payment_success'),
     path('cancel/', views.payment_cancel, name='payment_cancel'),
+    path('View-Past-Orders/', views.PastOrders, name='PastOrders'),
+    path('Edit-Request/<int:request_id>', views.edit_request, name='edit_request'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

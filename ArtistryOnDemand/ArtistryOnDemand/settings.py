@@ -146,3 +146,6 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 STRIPE_SECRET_KEY = ''
 
 STRIPE_PUBLIC_KEY = ''
+
+#Defines time in seconds user can edit their request, Usage in Request Model
+EDITABLE_TIME_LIMIT = 10800
