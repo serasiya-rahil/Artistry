@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
 from .models import User as CustomUser
-from django.contrib.auth import get_user
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
@@ -23,7 +22,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order
 from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm
 
-dbg = SimpleDebugger(enabled=False)
+dbg = SimpleDebugger(enabled=True)
 lgt = SessionExpiryMiddleware(MiddlewareMixin)
 
 def home(request):
@@ -450,6 +449,7 @@ def payment_success(request):
         if session.payment_status == 'paid':
             temp_data = request.session.pop('temp_form_data', None)
             
+
             if temp_data:
                 # Create a new request record
                 request_instance = Request.objects.create(
@@ -460,18 +460,20 @@ def payment_success(request):
                     status='pending',
                     created_at=datetime.now()
                 )
+                RequestNumber = request_instance.request_id
+                
 
                 # Move image from media/tmp/ to media/images/artworks/
                 if temp_data.get('image_path'):
                     image_temp_path = os.path.join('tmp', temp_data['image_path'])
-                    image_permanent_path = f"images/artworks/{temp_data['artwork_id']}/image_{temp_data['artwork_id']}.jpg"
+                    image_permanent_path = f"images/artworks/{RequestNumber}/image_{RequestNumber}.jpg"
                     if move_file_to_permanent_storage(image_temp_path, image_permanent_path):
                         request_instance.image_path = image_permanent_path
 
                 # Move video from media/tmp/ to media/videos/artworks/
                 if temp_data.get('video_path'):
                     video_temp_path = os.path.join('tmp', temp_data['video_path'])
-                    video_permanent_path = f"videos/artworks/{temp_data['artwork_id']}/video_{temp_data['artwork_id']}.mp4"
+                    video_permanent_path = f"videos/artworks/{RequestNumber}/video_{RequestNumber}.mp4"
                     if move_file_to_permanent_storage(video_temp_path, video_permanent_path):
                         request_instance.video_path = video_permanent_path
 
@@ -486,6 +488,7 @@ def payment_success(request):
                     artwork=Artwork.objects.get(pk=temp_data['artwork_id']),
                     user=CustomUser.objects.get(username=request.user.username)
                 )
+                order_instance.request = request_instance
                 order_instance.save()
 
                 messages.success(request, f"Order Placed Successfully with Order ID: {order_instance.order_id}")
@@ -510,3 +513,94 @@ def move_file_to_permanent_storage(temp_path, permanent_path):
 
 def payment_cancel(request):
     return render(request, 'payment_cancel.html')
+
+def PastOrders(request):
+    try:
+        allOrders = Order.objects.filter(user_id=request.user.id)
+        dbg.info(f"Orders Count: {allOrders.count()}")
+
+        for order in allOrders:
+            dbg.info(f"Order found: {order.order_id}")
+            dbg.info(f"Artwork ID: {order.artwork.artwork_id}")
+            dbg.info(f"Status: {order.request.status}")
+
+    except:
+        allOrders = None
+
+    return render(request, 'appln/PastOrders.html',{'allOrders':allOrders})
+
+def edit_request(request, request_id):
+    request_instance = get_object_or_404(Request, request_id=request_id)
+    RequestNumber = request_instance.request_id
+
+    # Check if the request is editable
+    if not request_instance.is_editable():
+        messages.info(request,"This request cannot be edited as it has already passed the allowed time for modifications.")
+        return redirect('PastOrders')
+
+    if request.method == 'POST':
+        form = RequestForm(request.POST, request.FILES, instance=request_instance)
+
+        if form.is_valid():
+            # Track changes in the instance
+            changes_made = False
+
+            # Check for image upload
+            if 'image_path' in request.FILES and request.FILES['image_path']:
+                image_file = request.FILES['image_path']
+
+                # If a new image is uploaded, delete the old one and update the path
+                if request_instance.image_path:
+                    old_image_path = os.path.join(settings.MEDIA_ROOT, request_instance.image_path)
+                    if os.path.exists(old_image_path):
+                        os.remove(old_image_path)  # Delete the old image if it exists
+
+                # Update the image path
+                request_instance.image_path = f"images/artworks/{RequestNumber}/image_{RequestNumber}.jpg"
+                changes_made = True
+
+                # Ensure the target directory exists
+                target_directory = os.path.dirname(os.path.join(settings.MEDIA_ROOT, request_instance.image_path))
+                if not os.path.exists(target_directory):
+                    os.makedirs(target_directory)
+
+                # Save the new image directly to the permanent path
+                with open(os.path.join(settings.MEDIA_ROOT, request_instance.image_path), 'wb+') as destination:
+                    for chunk in image_file.chunks():
+                        destination.write(chunk)
+
+            # Check for video upload
+            if 'video_path' in request.FILES and request.FILES['video_path']:
+                video_file = request.FILES['video_path']
+
+                # If a new video is uploaded, delete the old one and update the path
+                if request_instance.video_path:
+                    old_video_path = os.path.join(settings.MEDIA_ROOT, request_instance.video_path)
+                    if os.path.exists(old_video_path):
+                        os.remove(old_video_path)  # Delete the old video if it exists
+
+                # Update the video path
+                request_instance.video_path = f"videos/artworks/{RequestNumber}/video_{RequestNumber}.mp4"
+                changes_made = True
+
+                # Ensure the target directory exists
+                target_directory = os.path.dirname(os.path.join(settings.MEDIA_ROOT, request_instance.video_path))
+                if not os.path.exists(target_directory):
+                    os.makedirs(target_directory)
+
+                # Save the new video directly to the permanent path
+                with open(os.path.join(settings.MEDIA_ROOT, request_instance.video_path), 'wb+') as destination:
+                    for chunk in video_file.chunks():
+                        destination.write(chunk)
+
+            # If any changes were made (to image or video), save the instance
+            if changes_made:
+                request_instance.save()  # Save the instance after changes
+
+            messages.success(request, "Request updated successfully.")
+            return redirect('UserView')  # Adjust this as necessary
+
+    else:
+        form = RequestForm(instance=request_instance)
+
+    return render(request, 'appln/edit_request.html', {'form': form, 'request': request_instance})

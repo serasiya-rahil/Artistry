@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Request | Artistry On Demand</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+    <link rel="stylesheet" href="{% static 'appln/styles.css' %}">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed top-0 left-0 w-full z-10">
+        <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+            <a href="" class="text-3xl font-bold text-indigo-600">Artistry On Demand</a>
+            <div class="space-x-6">
+                <a href="{% url 'home' %}" class="text-gray-600 hover:text-indigo-500">Home</a>
+                <a href="#" class="text-gray-600 hover:text-indigo-500">About</a>
+                <a href="#" class="text-gray-600 hover:text-indigo-500">Services</a>
+                <a href="#" class="text-gray-600 hover:text-indigo-500">Contact</a>
+                <form method="post" action="{% url 'logout' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-gray-600 hover:text-indigo-500 border-none cursor-pointer">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Section -->
+    <section class="container mx-auto pt-32 pb-12 px-6">
+        <div class="flex space-x-6">
+            <!-- Sidebar -->
+            <aside class="bg-white shadow-lg rounded-lg p-6 w-1/4">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Dashboard Menu</h2>
+                <ul class="space-y-4">
+                    <li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-indigo-600">View Art Listings</a></li>
+                    <li><a href="#" class="block text-gray-600 hover:text-indigo-600">View Past Orders: {{ order_count }}</a></li>
+                    <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Give Feedback</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="bg-white shadow-md rounded-lg p-6 flex-1">
+                <h2 class="text-3xl font-bold mb-6 text-center text-indigo-600">Edit Request</h2>
+
+                <!-- Alerts for Messages -->
+                {% if messages %}
+				<div class="mb-6">
+					{% for message in messages %}
+					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300 
+						{% if message.tags == 'success' %} bg-green-100 border border-green-300 text-green-700
+						{% elif message.tags == 'error' %} bg-red-100 border border-red-300 text-red-700
+						{% elif message.tags == 'warning' %} bg-yellow-100 border border-yellow-300 text-yellow-700
+						{% elif message.tags == 'info' %} bg-blue-100 border border-blue-300 text-blue-700
+						{% endif %}">
+						<div class="flex items-center">
+							<span>{{ message }}</span>
+							<button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-auto text-gray-500 hover:text-gray-700">
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+								</svg>
+							</button>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+
+                <!-- Form for Editing Request -->
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="id_description" class="block text-gray-700">Description</label>
+                        <input type="text" name="description" id="id_description" value="{{ form.description.value|default:'' }}" class="form-control border border-gray-300 rounded p-2 w-full" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="id_image_path" class="block text-gray-700">New Image</label>
+                        <input type="file" name="image_path" id="id_image_path" class="form-control border border-gray-300 rounded p-2 w-full">
+                    </div>
+
+                    <!-- Existing Video Display -->
+                    {% if form.instance.video_path %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Current Video</label>
+                        <video controls class="mb-2 border border-gray-300 rounded" style="max-width: 100%; height: auto;">
+                            <source src="{{ form.instance.video_path.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <p class="text-gray-600">Video Path: {{ form.instance.video_path.url }}</p>  <!-- Display the video path -->
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-4">
+                        <label for="id_video_path" class="block text-gray-700">New Video</label>
+                        <input type="file" name="video_path" id="id_video_path" class="form-control border border-gray-300 rounded p-2 w-full">
+                    </div>
+
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition duration-300">Save Changes</button>
+                    <a href="{% url 'UserView' %}" class="text-gray-500 hover:text-indigo-600 ml-4">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
