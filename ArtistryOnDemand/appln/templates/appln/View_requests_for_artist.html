@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Dashboard - Requests</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md mb-6">
+        <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
+            <div class="space-x-6 flex items-center">
+                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
+                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
+                        Logout
+                    </button>
+                </form>
+                <div class="flex items-center">
+                    <span class="mr-3 text-blue-500">{{ artist.first_name }}</span>
+                    <img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}"
+                         alt="Profile Image"
+                         class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Requests for {{ artist.first_name }}</h1>
+
+        {% if allRequests %}
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <table class="min-w-full border-collapse bg-white">
+                    <thead class="bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 text-gray-700 uppercase text-sm font-semibold">
+                        <tr>
+                            <th class="py-4 px-4 text-center">Request ID</th>
+                            <th class="py-4 px-4 text-center">Artwork</th>
+                            <th class="py-4 px-4 text-center">User</th>
+                            <th class="py-4 px-4 text-center">Status</th>
+                            <th class="py-4 px-4 text-center">Deadline</th>
+                            <th class="py-4 px-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in allRequests %}
+                        <tr class="border-b last:border-none hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-4 text-center">{{ request.request_id }}</td>
+                            <td class="py-4 px-4 text-center">{{ request.artwork.title }}</td>
+                            <td class="py-4 px-4 text-center">{{ request.user.username }}</td>
+                            <td class="py-4 px-4 text-center">
+                                <select id="status-dropdown-{{ request.request_id }}" 
+                                        data-request-id="{{ request.request_id }}" 
+                                        class="status-dropdown bg-gray-100 border rounded px-3 py-1">
+                                    {% for choice_value, choice_label in status_choices %}
+                                        <option value="{{ choice_value }}" {% if request.status == choice_value %}selected{% endif %}>
+                                            {{ choice_label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="py-4 px-4 text-center">{{ request.deadline|date:"Y-m-d H:i" }}</td>
+                            <td class="py-4 px-4 text-center space-x-2">
+                                <!-- View Button -->
+                                <a href="{% url 'view_request' request.request_id %}" class="inline-flex items-center justify-center text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
+                                    <span class="material-icons mr-1">visibility</span> View
+                                </a>
+                                <!-- Mark as Complete Button -->
+                                <form method="post" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="inline-flex items-center justify-center text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
+                                        <span class="material-icons mr-1">done</span> Complete
+                                    </button>
+                                </form>
+                                <!-- Upload Image Button -->
+                                <a href="#" class="inline-flex items-center justify-center text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
+                                    <span class="material-icons mr-1">cloud_upload</span> Upload
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600 mt-8">No requests found for you at this time.</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // AJAX to update status on dropdown change
+            $('.status-dropdown').change(function(){
+                let requestId = $(this).data('request-id');
+                let newStatus = $(this).val();
+
+                $.ajax({
+                    url: "{% url 'update_request_status' %}",  // Update with your URL pattern name for status update
+                    type: "POST",
+                    data: {
+                        'request_id': requestId,
+                        'status': newStatus,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert("Status updated to: " + response.new_status);
+                        } else {
+                            alert("Failed to update status.");
+                        }
+                    },
+                    error: function() {
+                        alert("Error updating status.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

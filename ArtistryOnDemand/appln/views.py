@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import shutil
 import stripe
 from .Debug import *
@@ -318,11 +319,6 @@ def view_profile(request):
         artist_profile = None
         dbg.warn(f"No profile found for artist: {artist.username}")
 
-    #messages.success(request, 'Your profile has been updated successfully!')
-    #messages.error(request, 'An error occurred while updating your profile.')
-    #messages.warning(request, 'Please check the information you provided.')
-    #messages.info(request, 'Your changes have been saved.')
-
     return render(request, 'appln/artist_profile_form.html', {'artist_profile': artist_profile,'profile':profile})
 
 def edit_profile(request, artist_id):
@@ -338,7 +334,6 @@ def edit_profile(request, artist_id):
                
                 links_list = [link.strip() for link in social_links.split(',')]
                 form.instance.social_links = ', '.join(links_list) 
-            
             
             if 'profile_photo' in request.FILES:
                
@@ -358,8 +353,6 @@ def edit_profile(request, artist_id):
         form = ArtistProfileForm(instance=artist_profile)
 
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
-
-from django.db.models import Avg
 
 def viewArtworkById(request, artwork_id):
     artwork = None
@@ -604,3 +597,55 @@ def edit_request(request, request_id):
         form = RequestForm(instance=request_instance)
 
     return render(request, 'appln/edit_request.html', {'form': form, 'request': request_instance})
+
+@login_required
+def ViewRequestForArtist(request):
+    artistToSearch = Artist.objects.get(username=request.user)
+    
+    try:
+        allRequests = Request.objects.filter(artist_id=artistToSearch.artist_id)
+        for req in allRequests:
+            dbg.info(f"Request id: {req.request_id}")
+    except Request.DoesNotExist:
+        allRequests = None
+
+    status_choices = Request._meta.get_field('status').choices
+    
+    return render(request, 'appln/View_requests_for_artist.html', {
+        'allRequests': allRequests,
+        'status_choices': status_choices,
+    })
+
+def update_request_status(request):
+    if request.method == 'POST':
+        request_id = request.POST.get('request_id')
+        new_status = request.POST.get('status')
+        
+        req_instance = get_object_or_404(Request, pk=request_id)
+
+        req_instance.status = new_status
+        req_instance.save()
+
+        return JsonResponse({'success': True, 'new_status': new_status})
+    
+    return JsonResponse({'success': False})
+
+@login_required
+def view_request(request, request_id):
+    artistProfile = Artist.objects.get(username=request.user)
+
+    request_instance = get_object_or_404(Request, request_id=request_id)
+
+    if request.method == 'POST':
+        # Update the request details
+        request_instance.deadline = request.POST.get('deadline')
+        request_instance.artist_accept_date = request.POST.get('artist_accept_date')
+        request_instance.artist_delivery_date = request.POST.get('artist_delivery_date')
+        request_instance.save()
+        return redirect('view_request', request_id=request_instance.request_id)
+
+    context = {
+        'request': request_instance
+    }
+    return render(request, 'appln/view_requestByID.html', context)
+
