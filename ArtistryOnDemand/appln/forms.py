@@ -138,8 +138,3 @@ class RequestForm(forms.ModelForm):
             'image_path': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'video_path': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-
-
-
-
-

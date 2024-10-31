@@ -38,7 +38,13 @@ class Artist(models.Model):
     is_account_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.username})"
+        return (
+            f"Artist ID: {self.artist_id}, User: {self.user}, "
+            f"First Name: {self.first_name}, Last Name: {self.last_name}, "
+            f"Username: {self.username}, Password: {self.password}, "
+            f"Email: {self.email}, Created At: {self.created_at}, "
+            f"Phone Number: {self.phone_number}, Account Active: {self.is_account_active}"
+        )
 
 
 class Artwork(models.Model):

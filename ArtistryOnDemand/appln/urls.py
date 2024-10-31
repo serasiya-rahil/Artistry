@@ -23,6 +23,9 @@ urlpatterns = [
     path('cancel/', views.payment_cancel, name='payment_cancel'),
     path('View-Past-Orders/', views.PastOrders, name='PastOrders'),
     path('Edit-Request/<int:request_id>', views.edit_request, name='edit_request'),
+    path('View-Request-For-Artist/', views.ViewRequestForArtist, name='ViewRequestForArtist'),
+    path('update-request-status/', views.update_request_status, name='update_request_status'),
+    path('request/<int:request_id>/', views.view_request, name='view_request'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
