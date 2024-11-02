@@ -350,6 +350,7 @@ def edit_profile(request, artist_id):
             form.save()
             return redirect('view_profile') 
     else:
+        artist_profile=None
         form = ArtistProfileForm(instance=artist_profile)
 
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
@@ -647,5 +648,6 @@ def view_request(request, request_id):
     context = {
         'request': request_instance
     }
+    
     return render(request, 'appln/view_requestByID.html', context)
 
