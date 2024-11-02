@@ -16,7 +16,7 @@
 		<div class="container mx-auto px-6 py-5 flex justify-between items-center">
 			<a href="" class="text-3xl font-bold text-indigo-600">Artistry On Demand</a>
 			<div class="space-x-6">
-				<a href="home" class="text-gray-600 hover:text-indigo-500">Home</a>
+				<a href="{% url 'UserView' %}" class="text-gray-600 hover:text-indigo-500">Home</a>
 				<a href="#" class="text-gray-600 hover:text-indigo-500">About</a>
 				<a href="#" class="text-gray-600 hover:text-indigo-500">Services</a>
 				<a href="#" class="text-gray-600 hover:text-indigo-500">Contact</a>
@@ -80,7 +80,7 @@
 								<th class="py-3 px-4 text-left">Artist</th>
 								<th class="py-3 px-4 text-left">Status</th>
 								<th class="py-3 px-4 text-left">Created At</th>
-								<th class="py-3 px-4 text-left">Deadline</th>
+								
 								<th class="py-3 px-4 text-left">Actions</th>
 							</tr>
 						</thead>
@@ -91,7 +91,7 @@
 								<td class="py-4 px-4">{{ request.artwork }}</td>
 								<td class="py-4 px-4">{{ request.artist.first_name }}</td>
 								<td class="py-4 px-4">
-									<span class="px-2 py-1 rounded-full text-xs font-semibold 
+									<span class="px-2 py-1 rounded-full text-xs font-semibold
 										{% if request.request.status == 'pending' %}
 											bg-yellow-200 text-yellow-800
 										{% elif request.request.status == 'accepted' %}
@@ -105,15 +105,23 @@
 									</span>
 								</td>
 								<td class="py-4 px-4">{{ request.created_at }}</td>
-								<td class="py-4 px-4">{{ request.request.deadline }} </td>
+								
 								<td class="py-4 px-4">
 									<div class="flex space-x-2">
-										<a href="{% url 'edit_request' request.request_id %}" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded transition duration-300 inline-block">Edit</a>
-										<button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded transition duration-300">Cancel</button>
-										<a href="{% url 'viewArtworkById' request.artwork.artwork_id %}" class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded transition duration-300 inline-block">View Artwork</a>
-										
+										<a href="{% url 'edit_request' request.request_id %}"
+										   class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300 inline-block">
+											Edit
+										</a>
+										<button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300">
+											Cancel
+										</button>
+										<a href="{% url 'viewArtworkById' request.artwork.artwork_id %}"
+										   class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300 inline-block">
+											View Art
+										</a>
 									</div>
 								</td>
+
 							</tr>
 							{% endfor %}
 						</tbody>
