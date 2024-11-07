@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     {% load static %}
     <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+    
 </head>
 <body class="bg-gray-100">
 
@@ -82,9 +83,13 @@
                                     </button>
                                 </form>
                                 <!-- Upload Image Button -->
-                                <a href="#" class="inline-flex items-center justify-center text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
-                                    <span class="material-icons mr-1">cloud_upload</span> Upload
-                                </a>
+                                
+                               <a href="{% url 'upload_file' request_id=request.request_id %}" 
+   class="inline-flex items-center justify-center text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
+    <span class="material-icons mr-1">cloud_upload</span> Upload
+</a>
+
+                                
                             </td>
                         </tr>
                         {% endfor %}
@@ -95,36 +100,36 @@
             <p class="text-center text-gray-600 mt-8">No requests found for you at this time.</p>
         {% endif %}
     </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // AJAX to update status on dropdown change
+        $('.status-dropdown').change(function(){
+            let requestId = $(this).data('request-id');
+            let newStatus = $(this).val();
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            // AJAX to update status on dropdown change
-            $('.status-dropdown').change(function(){
-                let requestId = $(this).data('request-id');
-                let newStatus = $(this).val();
-
-                $.ajax({
-                    url: "{% url 'update_request_status' %}",  // Update with your URL pattern name for status update
-                    type: "POST",
-                    data: {
-                        'request_id': requestId,
-                        'status': newStatus,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            alert("Status updated to: " + response.new_status);
-                        } else {
-                            alert("Failed to update status.");
-                        }
-                    },
-                    error: function() {
-                        alert("Error updating status.");
+            $.ajax({
+                url: "{% url 'update_request_status' %}",  // Update with your URL pattern name for status update
+                type: "POST",
+                data: {
+                    'request_id': requestId,
+                    'status': newStatus,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert("Status updated to: " + response.new_status);
+                    } else {
+                        alert("Failed to update status.");
                     }
-                });
+                },
+                error: function() {
+                    alert("Error updating status.");
+                }
             });
         });
-    </script>
+    });
+</script>
+    
 </body>
 </html>

@@ -26,6 +26,7 @@ urlpatterns = [
     path('View-Request-For-Artist/', views.ViewRequestForArtist, name='ViewRequestForArtist'),
     path('update-request-status/', views.update_request_status, name='update_request_status'),
     path('request/<int:request_id>/', views.view_request, name='view_request'),
+    path('upload/<int:request_id>/', views.upload_file, name='upload_file'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

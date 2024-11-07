@@ -143,9 +143,9 @@ class Payment(models.Model):
 
 class Upload(models.Model):
     upload_id = models.AutoField(primary_key=True)
-    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='uploads')
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='uploads', unique=True)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='uploads')
-    file_path = models.CharField(max_length=255)
+    file_path = models.FileField(max_length=255)
     upload_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -631,6 +631,7 @@ def update_request_status(request):
     
     return JsonResponse({'success': False})
 
+#Artist will view this when a request is made by the user
 @login_required
 def view_request(request, request_id):
     artistProfile = Artist.objects.get(username=request.user)
@@ -651,3 +652,45 @@ def view_request(request, request_id):
     
     return render(request, 'appln/view_requestByID.html', context)
 
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from .models import Request, Order, Upload
+from .forms import UploadForm
+
+def upload_file(request, request_id):
+    # Get the Request instance by request_id
+    request_instance = Request.objects.get(request_id=request_id)
+
+    # Check if an upload already exists for this request
+    upload_instance = Upload.objects.filter(request=request_instance).first()
+
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES, instance=upload_instance)  # If upload_instance exists, pre-populate the form with it
+        if form.is_valid():
+            # Save the form data to the upload_instance (this could be new or an update)
+            upload_instance = form.save(commit=False)
+            upload_instance.request = request_instance  # Ensure request is set correctly
+            
+            # Optionally, set the artist if it's not handled in the form
+            upload_instance.artist = request_instance.artist  # Assuming the request has an artist linked
+
+            # Save the upload instance
+            upload_instance.save()
+
+            # After saving the upload, mark the request as fulfilled and set the artist_delivery_date
+            request_instance.status = 'fulfilled'
+            request_instance.artist_delivery_date = timezone.now()  # Set to current time
+            request_instance.save()
+
+            # Update the associated Order status to completed and set the actual_delivery_date
+            order_instance = Order.objects.get(request=request_instance)  # Assuming each request has an associated order
+            order_instance.order_status = 'completed'
+            order_instance.actual_delivery_date = timezone.now()  # Set to current time
+            order_instance.save()
+
+            # Redirect to a success page or back to the request view
+            return redirect('ViewRequestForArtist')  # Replace with your actual URL name
+    else:
+        form = UploadForm(instance=upload_instance)  # If editing, pre-populate form with existing data
+
+    return render(request, 'appln/upload_file.html', {'form': form, 'request': request_instance})

@@ -138,3 +138,18 @@ class RequestForm(forms.ModelForm):
             'image_path': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'video_path': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+        
+
+# forms.py
+from django import forms
+from .models import Upload
+
+class UploadForm(forms.ModelForm):
+    class Meta:
+        model = Upload
+        fields = ['file_path', 'upload_type']  # Assuming these are the fields you need in the form
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # You can also set additional fields or initial values here if needed
+
