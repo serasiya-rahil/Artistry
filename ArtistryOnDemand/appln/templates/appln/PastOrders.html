@@ -33,7 +33,7 @@
 	<!-- Main Dashboard Section -->
 	<section class="container mx-auto pt-32 pb-12 px-6">
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-			
+
 			<!-- Sidebar Menu -->
 			<aside class="bg-white shadow-lg rounded-lg p-6">
 				<h2 class="text-2xl font-semibold mb-4 text-gray-800">Dashboard Menu</h2>
@@ -42,16 +42,20 @@
 					<li><a href="#" class="block text-gray-600 hover:text-indigo-600">Give Feedback</a></li>
 				</ul>
 			</aside>
-
+			<!-- Hidden Red Alert Message -->
+			
 			<!-- Main Content -->
 			<div class="col-span-3">
+				<div id="alertMessage" class="hidden bg-red-500 text-white py-2 px-4 rounded-md mt-4 text-center">
+					<p>Request will be completed before it can be viewed.</p>
+				</div>
 				<h2 class="text-3xl font-bold mb-6 text-center text-indigo-600">Request Management</h2>
-				
+
 				<!-- Alerts for Messages -->
 				{% if messages %}
 				<div class="mb-6">
 					{% for message in messages %}
-					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300 
+					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300
 						{% if message.tags == 'success' %} bg-green-100 border border-green-300 text-green-700
 						{% elif message.tags == 'error' %} bg-red-100 border border-red-300 text-red-700
 						{% elif message.tags == 'warning' %} bg-yellow-100 border border-yellow-300 text-yellow-700
@@ -80,7 +84,7 @@
 								<th class="py-3 px-4 text-left">Artist</th>
 								<th class="py-3 px-4 text-left">Status</th>
 								<th class="py-3 px-4 text-left">Created At</th>
-								
+
 								<th class="py-3 px-4 text-left">Actions</th>
 							</tr>
 						</thead>
@@ -105,16 +109,29 @@
 									</span>
 								</td>
 								<td class="py-4 px-4">{{ request.created_at }}</td>
-								
+
 								<td class="py-4 px-4">
 									<div class="flex space-x-2">
 										<a href="{% url 'edit_request' request.request_id %}"
 										   class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300 inline-block">
 											Edit
 										</a>
-										<button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300">
-											Cancel
-										</button>
+										<div class="flex flex-col gap-4">
+											{% if request.request.status == 'fulfilled' %}
+											<!-- Active View Button if request is fulfilled -->
+											<a href="{% url 'upload_details' request.request_id %}">
+												<button class="bg-blue-900 hover:bg-blue-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300">
+													View
+												</button>
+											</a>
+											{% else %}
+											<!-- Disabled View Button with Tooltip if request is not fulfilled -->
+											<button class="bg-gray-400 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded cursor-not-allowed" onclick="showMessage()">
+												View
+											</button>
+											{% endif %}
+										</div>
+
 										<a href="{% url 'viewArtworkById' request.artwork.artwork_id %}"
 										   class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300 inline-block">
 											View Art
@@ -130,5 +147,17 @@
 			</div>
 		</div>
 	</section>
+	<script>
+		function showMessage() {
+			// Show the alert message when the disabled button is clicked
+			const alertMessage = document.getElementById('alertMessage');
+			alertMessage.classList.remove('hidden');
+
+			// Optionally hide the alert message after 5 seconds
+			setTimeout(() => {
+				alertMessage.classList.add('hidden');
+			}, 5000);
+		}
+	</script>
 </body>
 </html>

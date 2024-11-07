@@ -9,6 +9,7 @@ from datetime import datetime
 from django.db.models import Avg
 from .logout_middleware import *
 from django.conf import settings
+from django.utils import timezone
 from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -20,11 +21,15 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order
-from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm
+from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order, Upload
+from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm, UploadForm
+
 
 dbg = SimpleDebugger(enabled=True)
 lgt = SessionExpiryMiddleware(MiddlewareMixin)
+
+#STRIPE API KEY FROM SETTINGS
+stripe.api_key = settings.STRIPE_SECRET_KEY 
 
 def home(request):
     
@@ -376,9 +381,6 @@ def viewArtworkById(request, artwork_id):
 
     return render(request, 'appln/ArtworkById.html', {'artwork': artwork})
 
-# Stripe API key
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
 def orderNow(request, artwork_id):
     artwork = get_object_or_404(Artwork, pk=artwork_id)
     
@@ -652,11 +654,6 @@ def view_request(request, request_id):
     
     return render(request, 'appln/view_requestByID.html', context)
 
-from django.shortcuts import render, redirect
-from django.utils import timezone
-from .models import Request, Order, Upload
-from .forms import UploadForm
-
 def upload_file(request, request_id):
     # Get the Request instance by request_id
     request_instance = Request.objects.get(request_id=request_id)
@@ -694,3 +691,18 @@ def upload_file(request, request_id):
         form = UploadForm(instance=upload_instance)  # If editing, pre-populate form with existing data
 
     return render(request, 'appln/upload_file.html', {'form': form, 'request': request_instance})
+
+def upload_details(request, request_id):
+  
+    request_instance = get_object_or_404(Request, request_id=request_id)
+    
+    try:
+        upload_instance = Upload.objects.get(request=request_instance)
+    except Upload.DoesNotExist:
+        upload_instance = None
+    
+    return render(request, 'appln/upload_details.html', {
+        'request': request_instance,
+        'upload': upload_instance
+    })
+
