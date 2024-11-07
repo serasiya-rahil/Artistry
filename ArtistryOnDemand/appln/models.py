@@ -89,7 +89,7 @@ class Request(models.Model):
 
 class Feedback(models.Model):
     feedback_id = models.AutoField(primary_key=True)
-    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='feedbacks')
+    request = models.OneToOneField(Request, on_delete=models.CASCADE, related_name='feedbacks')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='feedbacks')
     rating = models.IntegerField()
     comments = models.TextField()
@@ -143,7 +143,7 @@ class Payment(models.Model):
 
 class Upload(models.Model):
     upload_id = models.AutoField(primary_key=True)
-    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='uploads', unique=True)
+    request = models.OneToOneField(Request, on_delete=models.CASCADE, related_name='uploads')
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='uploads')
     file_path = models.FileField(max_length=255)
     upload_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])

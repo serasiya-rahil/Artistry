@@ -706,3 +706,46 @@ def upload_details(request, request_id):
         'upload': upload_instance
     })
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Request, Feedback
+from .forms import FeedbackForm
+
+def give_feedback(request, request_id):
+    request_instance = get_object_or_404(Request, request_id=request_id)
+    currenrUser = userModel.objects.get(username=request.user)
+    existing_feedback = Feedback.objects.filter(request=request_instance).first()
+    star_values = [5, 4, 3, 2, 1]
+
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            if existing_feedback:
+                feedback = existing_feedback
+                feedback.rating = form.cleaned_data['rating']
+                feedback.comments = form.cleaned_data['comments']
+                messages.success(request,"Rating Edited Successfully")
+            else:
+                feedback = form.save(commit=False)
+                feedback.request = request_instance
+                feedback.user = currenrUser
+                messages.success(request,"Rating Provided Successfully")
+            feedback.save()
+           
+            return redirect('UserView')
+    else:
+        if existing_feedback:
+            form = FeedbackForm(instance=existing_feedback)
+            existing_rating = existing_feedback.rating  # Ensure it's an integer
+        else:
+            form = FeedbackForm()
+            existing_rating = None
+
+    return render(request, 'appln/feedback_form.html', {
+        'form': form,
+        'request': request_instance,
+        'existing_rating': existing_rating,  # This will be an integer,
+        'star_values': star_values,
+    })
+
+ 
+
