@@ -25,9 +25,10 @@ urlpatterns = [
     path('Edit-Request/<int:request_id>', views.edit_request, name='edit_request'),
     path('View-Request-For-Artist/', views.ViewRequestForArtist, name='ViewRequestForArtist'),
     path('update-request-status/', views.update_request_status, name='update_request_status'),
-    path('request/<int:request_id>/', views.view_request, name='view_request'),
-    path('upload/<int:request_id>/', views.upload_file, name='upload_file'),
-    path('upload-details/<int:request_id>/', views.upload_details, name='upload_details'),
+    path('Request/<int:request_id>/', views.view_request, name='view_request'),
+    path('Upload/<int:request_id>/', views.upload_file, name='upload_file'),
+    path('View-Artwork-For-Request/<int:request_id>/', views.upload_details, name='upload_details'),
+    path('Feedback/<int:request_id>/', views.give_feedback, name='give_feedback'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

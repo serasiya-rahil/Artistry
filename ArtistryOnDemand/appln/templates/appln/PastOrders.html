@@ -8,6 +8,7 @@
 	{% load static %}
 	<link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 	<link rel="stylesheet" href="{% static 'appln/styles.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body class="bg-gray-100">
 
@@ -42,13 +43,14 @@
 					<li><a href="#" class="block text-gray-600 hover:text-indigo-600">Give Feedback</a></li>
 				</ul>
 			</aside>
-			<!-- Hidden Red Alert Message -->
-			
+
 			<!-- Main Content -->
 			<div class="col-span-3">
+				<!-- Hidden Red Alert Message -->
 				<div id="alertMessage" class="hidden bg-red-500 text-white py-2 px-4 rounded-md mt-4 text-center">
 					<p>Request will be completed before it can be viewed.</p>
 				</div>
+
 				<h2 class="text-3xl font-bold mb-6 text-center text-indigo-600">Request Management</h2>
 
 				<!-- Alerts for Messages -->
@@ -84,7 +86,6 @@
 								<th class="py-3 px-4 text-left">Artist</th>
 								<th class="py-3 px-4 text-left">Status</th>
 								<th class="py-3 px-4 text-left">Created At</th>
-
 								<th class="py-3 px-4 text-left">Actions</th>
 							</tr>
 						</thead>
@@ -96,49 +97,43 @@
 								<td class="py-4 px-4">{{ request.artist.first_name }}</td>
 								<td class="py-4 px-4">
 									<span class="px-2 py-1 rounded-full text-xs font-semibold
-										{% if request.request.status == 'pending' %}
-											bg-yellow-200 text-yellow-800
-										{% elif request.request.status == 'accepted' %}
-											bg-blue-200 text-blue-800
-										{% elif request.request.status == 'fulfilled' %}
-											bg-green-200 text-green-800
-										{% else %}
-											bg-red-200 text-red-800
-										{% endif %}">
+										{% if request.request.status == 'pending' %} bg-yellow-200 text-yellow-800
+										{% elif request.request.status == 'accepted' %} bg-blue-200 text-blue-800
+										{% elif request.request.status == 'fulfilled' %} bg-green-200 text-green-800
+										{% else %} bg-red-200 text-red-800 {% endif %}">
 										{{ request.request.status }}
 									</span>
 								</td>
 								<td class="py-4 px-4">{{ request.created_at }}</td>
+								<td class="py-4 px-4 flex gap-4 items-center">
+									<!-- Edit as icon -->
+									<a href="{% url 'edit_request' request.request_id %}" class="text-blue-500 hover:text-blue-700" title="Edit Request">
+										<i class="fas fa-edit text-xl"></i> <!-- Pencil icon for Edit -->
+									</a>
 
-								<td class="py-4 px-4">
-									<div class="flex space-x-2">
-										<a href="{% url 'edit_request' request.request_id %}"
-										   class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300 inline-block">
-											Edit
-										</a>
-										<div class="flex flex-col gap-4">
-											{% if request.request.status == 'fulfilled' %}
-											<!-- Active View Button if request is fulfilled -->
-											<a href="{% url 'upload_details' request.request_id %}">
-												<button class="bg-blue-900 hover:bg-blue-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300">
-													View
-												</button>
-											</a>
-											{% else %}
-											<!-- Disabled View Button with Tooltip if request is not fulfilled -->
-											<button class="bg-gray-400 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded cursor-not-allowed" onclick="showMessage()">
+									<div class="flex gap-4 items-center">
+										{% if request.request.status == 'fulfilled' %}
+										<!-- Active View Button if request is fulfilled -->
+										<a href="{% url 'upload_details' request.request_id %}">
+											<button class="bg-blue-900 hover:bg-blue-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300">
+												<i class="fas fa-eye mr-2"></i> <!-- Eye Icon for View -->
 												View
 											</button>
-											{% endif %}
-										</div>
-
-										<a href="{% url 'viewArtworkById' request.artwork.artwork_id %}"
-										   class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded transition duration-300 inline-block">
-											View Art
 										</a>
+
+										<a href="{% url 'give_feedback' request.request_id %}" class="relative group">
+											<button class="bg-green-500 hover:bg-green-400 text-white p-2 rounded-full transition duration-300" title="Give Feedback">
+												<i class="fas fa-comment-dots text-2xl"></i> <!-- Comment icon for Feedback -->
+											</button>
+										</a>
+										{% else %}
+										<!-- Disabled View Button with Tooltip if request is not fulfilled -->
+										<button class="bg-gray-400 text-white py-2 px-4 w-24 h-10 flex items-center justify-center rounded cursor-not-allowed" onclick="showMessage()">
+											View
+										</button>
+										{% endif %}
 									</div>
 								</td>
-
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -147,6 +142,13 @@
 			</div>
 		</div>
 	</section>
+
+	<!-- Footer (Optional) -->
+	<footer class="bg-gray-900 text-white text-center py-4">
+		<p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
+	</footer>
+
+	<!-- JavaScript -->
 	<script>
 		function showMessage() {
 			// Show the alert message when the disabled button is clicked
@@ -159,5 +161,6 @@
 			}, 5000);
 		}
 	</script>
+
 </body>
 </html>

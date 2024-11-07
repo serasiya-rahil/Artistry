@@ -152,4 +152,23 @@ class UploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # You can also set additional fields or initial values here if needed
+        
+
+from django import forms
+from .models import Feedback
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['rating', 'comments']
+        widgets = {
+            'comments': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
+        }
+     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['comments'].widget.attrs.update({
+            'class': 'p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500'
+        })
+
 
