@@ -53,6 +53,7 @@
                 <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
                 <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">settings</span> <span>Account Settings</span></a></li>
                 <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
+                <li><a href="{% url 'dashboard' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Analytics</span></a></li>
             </ul>
         </aside>
 
@@ -205,21 +206,11 @@
         </main>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto text-center">
-            <div class="mb-4">
-                <a href="#" class="text-xl font-bold text-white">Artistry On Demand</a>
-            </div>
-            <div class="mb-4 space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white">Home</a>
-                <a href="#" class="text-gray-400 hover:text-white">About</a>
-                <a href="#" class="text-gray-400 hover:text-white">Services</a>
-                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
-            </div>
-            <p class="text-gray-400">&copy; 2024 Artistry On Demand. All rights reserved.</p>
-        </div>
+    <!-- Footer (Optional) -->
+    <footer class="bg-gray-900 text-white text-center py-4">
+        <p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
     </footer>
+
     <script>
         function openModal(artworkId, artworkTitle) {
             // Set the title in the modal

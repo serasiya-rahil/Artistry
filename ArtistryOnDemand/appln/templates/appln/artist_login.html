@@ -18,7 +18,7 @@
 
     <!-- Navbar -->
     <nav class="bg-white shadow">
-        <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
             <div class="space-x-6">
                 <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
@@ -41,19 +41,7 @@
         </div>
     </nav>
 
-    <div class="flex container mx-auto mt-10">
-
-        <!-- Sidebar -->
-        <aside class="w-1/4 bg-white-600 p-6">
-            <h2 class="text-xl font-semibold mb-4">Quick Links</h2>
-            <ul class="space-y-2">
-                <li><a href="#" class="text-blue-600 hover:underline">Portfolio</a></li>
-                <li><a href="#" class="text-blue-600 hover:underline">Testimonials</a></li>
-                <li><a href="#" class="text-blue-600 hover:underline">Pricing</a></li>
-                <li><a href="#" class="text-blue-600 hover:underline">FAQs</a></li>
-            </ul>
-        </aside>
-
+    <div class="flex container mx-auto">
         <!-- Hero Section -->
         <section class="flex-grow bg-white-600 text-blue py-10 px-6 ">
             <div class="text-center">
@@ -78,83 +66,75 @@
                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500" />
                     </div>
                     <button type="submit"
-                            class="w-full bg-blue-600 text-white-900 font-semibold py-2 rounded-md hover:bg-green-900 transition duration-200">
+                            class="w-full bg-blue-600 font-semibold py-2 rounded-md hover:bg-green-900 transition duration-200">
                         Login
                     </button>
+
+                    <a href="javascript:history.back()" class="go-back">
+                        <button class="w-full bg-gray-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300 ease-in-out transform hover:scale-105 mt-2">
+                            Go Back
+                        </button>
+                    </a>
+
+
                 </form>
 
                 {% if messages %}
-				<div class="mb-6">
-					{% for message in messages %}
-					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300 
+                <div class="mb-6">
+                    {% for message in messages %}
+                    <div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300
 						{% if message.tags == 'success' %} bg-green-100 border border-green-300 text-green-700
 						{% elif message.tags == 'error' %} bg-red-100 border border-red-300 text-red-700
 						{% elif message.tags == 'warning' %} bg-yellow-100 border border-yellow-300 text-yellow-700
 						{% elif message.tags == 'info' %} bg-blue-100 border border-blue-300 text-blue-700
 						{% endif %}">
-						<div class="flex items-center">
-							<span>{{ message }}</span>
-							<button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-auto text-gray-500 hover:text-gray-700">
-								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-								</svg>
-							</button>
-						</div>
-					</div>
-					{% endfor %}
-				</div>
-				{% endif %}
+                        <div class="flex items-center">
+                            <span>{{ message }}</span>
+                            <button onclick="document.getElementById('alert-{{ forloop.counter }}').style.display='none'" class="ml-auto text-gray-500 hover:text-gray-700">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </section>
     </div>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-800 text-white py-8 mt-10">
-        <div class="container mx-auto text-center">
-            <div class="mb-4">
-                <a href="#" class="text-xl font-bold text-white">Artistry On Demand</a>
-            </div>
-            <div class="mb-4 space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white">Home</a>
-                <a href="#" class="text-gray-400 hover:text-white">About</a>
-                <a href="#" class="text-gray-400 hover:text-white">Services</a>
-                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
-            </div>
-            <div class="space-x-4 mb-6">
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-            </div>
-            <p class="text-gray-400">&copy; 2024 Artistry On Demand. All rights reserved.</p>
-        </div>
+    <footer class="bg-gray-900 text-white text-center py-4">
+        <p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
     </footer>
 
     <script>
-		// Handle dropdown toggling
-		document.addEventListener('DOMContentLoaded', function () {
-			const dropdowns = document.querySelectorAll('.dropdown');
+        // Handle dropdown toggling
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdowns = document.querySelectorAll('.dropdown');
 
-			dropdowns.forEach(dropdown => {
-				const button = dropdown.querySelector('button');
-				const content = dropdown.querySelector('.dropdown-content');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.dropdown-content');
 
-				button.addEventListener('click', function () {
-					// Toggle dropdown content display
-					const isVisible = content.style.display === 'block';
-					content.style.display = isVisible ? 'none' : 'block';
-				});
-			});
+                button.addEventListener('click', function () {
+                    // Toggle dropdown content display
+                    const isVisible = content.style.display === 'block';
+                    content.style.display = isVisible ? 'none' : 'block';
+                });
+            });
 
-			// Close dropdown if clicked outside
-			window.addEventListener('click', function (event) {
-				dropdowns.forEach(dropdown => {
-					const content = dropdown.querySelector('.dropdown-content');
-					if (!dropdown.contains(event.target) && content.style.display === 'block') {
-						content.style.display = 'none';
-					}
-				});
-			});
-		});
+            // Close dropdown if clicked outside
+            window.addEventListener('click', function (event) {
+                dropdowns.forEach(dropdown => {
+                    const content = dropdown.querySelector('.dropdown-content');
+                    if (!dropdown.contains(event.target) && content.style.display === 'block') {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+        });
     </script>
 
 </body>
