@@ -34,7 +34,7 @@
 					</button>
 					<div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="userDropdownContent">
 						<a href="{% url 'login_user' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
-						<a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
+						<a href="{% url 'UserSignup' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
 					</div>
 				</div>
 			</div>
@@ -42,32 +42,21 @@
 	</nav>
 
 	<div class="flex container mx-auto mt-10">
-
-		<!-- Sidebar -->
-		<aside class="w-1/4 bg-white-600 p-6">
-			<h2 class="text-xl font-semibold mb-4">Quick Links</h2>
-			<ul class="space-y-2">
-				<li><a href="#" class="text-blue-600 hover:underline">Portfolio</a></li>
-				<li><a href="#" class="text-blue-600 hover:underline">Testimonials</a></li>
-				<li><a href="#" class="text-blue-600 hover:underline">Pricing</a></li>
-				<li><a href="#" class="text-blue-600 hover:underline">FAQs</a></li>
-			</ul>
-		</aside>
-
 		<!-- Hero Section -->
 		<section class="flex-grow bg-white-600 text-blue py-10 px-6 ">
 			<div class="text-center">
 				<h1 class="text-2xl font-bold">Welcome to Artistry On Demand</h1>
 				<p class="mt-2 text-lg">Your one-stop solution for personalized artistic creations.</p>
-				
-			</div>
 
+			</div>
+			</br>
+			<h2 class="text-2xl font-bold text-center mb-6">Login</h2>
 			<!-- Login Form -->
 			<div class="mt-5 mx-auto w-full max-w-sm">
 				{% if messages %}
 				<div class="mb-6">
 					{% for message in messages %}
-					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300 
+					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300
 						{% if message.tags == 'success' %} bg-green-100 border border-green-300 text-green-700
 						{% elif message.tags == 'error' %} bg-red-100 border border-red-300 text-red-700
 						{% elif message.tags == 'warning' %} bg-yellow-100 border border-yellow-300 text-yellow-700
@@ -85,7 +74,7 @@
 					{% endfor %}
 				</div>
 				{% endif %}
-				<h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+
 				<form method="POST" action="{% url 'login_user' %}">
 					{% csrf_token %}
 					<div class="mb-4">
@@ -110,20 +99,6 @@
 	<!-- Footer Section -->
 	<footer class="bg-gray-800 text-white py-8 mt-10">
 		<div class="container mx-auto text-center">
-			<div class="mb-4">
-				<a href="#" class="text-xl font-bold text-white">Artistry On Demand</a>
-			</div>
-			<div class="mb-4 space-x-6">
-				<a href="#" class="text-gray-400 hover:text-white">Home</a>
-				<a href="#" class="text-gray-400 hover:text-white">About</a>
-				<a href="#" class="text-gray-400 hover:text-white">Services</a>
-				<a href="#" class="text-gray-400 hover:text-white">Contact</a>
-			</div>
-			<div class="space-x-4 mb-6">
-				<a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-				<a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-				<a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-			</div>
 			<p class="text-gray-400">&copy; 2024 Artistry On Demand. All rights reserved.</p>
 		</div>
 	</footer>

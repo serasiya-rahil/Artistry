@@ -42,28 +42,43 @@ def home(request):
     artworks = Artwork.objects.all()
     Profile_artworks = None
     
+    artworks_with_ratings = []
+    for artwork in artworks:
+        avg_rating, total_rating = artwork.get_rating_stats()
+        artworks_with_ratings.append({
+            'artwork': artwork,
+            'avg_rating': avg_rating,
+            'total_rating': total_rating
+        })
+    
     dbg.info(f"Rendering Page home.html...")
-    return render(request, 'appln/home.html', {'artworks': artworks,'Profile_artworks':Profile_artworks})
+    return render(request, 'appln/home.html', {'artworks': artworks,'Profile_artworks':Profile_artworks,'artworks_with_ratings': artworks_with_ratings})
 
 def UserSignup(request):
     if request.method == 'POST':
-        form = CustomUserSignupForm(request.POST)
+        form = CustomUserSignupForm(request.POST)  # Populate the form with submitted data
         if form.is_valid():
             user = form.save()
             if user:
-                dbg.info(f"User Saved in Db User:{request.user}")
+                dbg.info(f"User saved in Db User: {user.username}")  # Log the specific user saved
             else:
-                dbg.error("Failed to saved the user")
-            login(request, user)  
-            return redirect('home')
+                dbg.error("Failed to save the user.")
+                
+            login(request, user)
+            messages.success(request, "Account Created Successfully")
+            return redirect('login_user')
         else:
-            dbg.error(f"Signup form is not valid...Proceed to send signup form")
+            dbg.error("Signup form is not valid...Proceed to send signup form.")
+            messages.error(request, "Signup form is not valid")
+            # Render with the form containing the invalid data to show errors and prefill fields
+            return render(request, 'appln/UserSignup.html', {'form': form})
     else:
-        dbg.info(f"User requested for a signup form")
-        form = CustomUserSignupForm()
+        form = CustomUserSignupForm()  # Empty form for GET requests
+        dbg.info("User requested for a signup form.")
     
-    dbg.info(f"Rendering UserSignup.html for Signup...")
+    dbg.info("Rendering UserSignup.html for Signup...")
     return render(request, 'appln/UserSignup.html', {'form': form})
+
 
 def login_user(request):
     if request.method == 'POST':
@@ -76,7 +91,7 @@ def login_user(request):
             userObj = userModel.objects.get(username=username)
             dbg.info(f"User found: {userObj.username}")
         except:
-            messages.error(request, "User does not exist.")
+            messages.error(request, "Invalid username or password.")
             dbg.error(f"User does not exist: {username}")
             
             return render(request, 'appln/login.html')
@@ -276,6 +291,23 @@ def UserView(request):
     Profile_artworks = Artwork.objects.select_related('artist').prefetch_related('artist__profiles').all()
     order_count = Order.objects.filter(user_id=request.user.id).count()
 
+    avg_rating_dict = (
+        Feedback.objects
+        .values('request__artwork_id')
+        .annotate(
+            avg_rating=models.Avg('rating'),
+            rating_count=models.Count('rating')
+        )
+    )
+
+    avg_rating_dict = {item['request__artwork_id']: {'avg_rating': item['avg_rating'], 'rating_count': item['rating_count']} for item in avg_rating_dict}
+
+    for artwork in artworks:
+        rating_info = avg_rating_dict.get(artwork.artwork_id, {'avg_rating': "0", 'rating_count': 0})
+        artwork.avg_rating = rating_info['avg_rating']
+        artwork.rating_count = rating_info['rating_count']
+
+
     search_query = request.GET.get('search', '')
     if search_query:
         dbg.info(f"Search query received: {search_query}")
@@ -284,17 +316,13 @@ def UserView(request):
     else:
         dbg.info(f"No search query provided. Total artworks: {artworks.count()}")
 
-    for artwork in artworks:
-        # Use the correct filtering for feedbacks via request
-        rating = Feedback.objects.filter(request__artwork=artwork).aggregate(Avg('rating'))['rating__avg']
-        artwork.average_rating = rating if rating is not None else "No ratings yet"
-
     dbg.info("Rendering UserHomePage.")
     return render(request, 'appln/UserHomePage.html', {
         'artworks': artworks,
         'search_query': search_query,
         'Profile_artworks': Profile_artworks,
-        'order_count':order_count
+        'order_count':order_count,
+        'avg_rating_dict': avg_rating_dict,
     })
 
 @login_required
@@ -747,5 +775,42 @@ def give_feedback(request, request_id):
         'star_values': star_values,
     })
 
- 
+from django.shortcuts import render
+from .models import User, Artist, Artwork, Request, Order
+from django.db.models import Avg
+
+def dashboard(request):
+    
+    total_users = User.objects.filter(is_account_active=True).count()
+    total_artists = Artist.objects.count()
+    total_artwork = Artwork.objects.count()
+    my_total_artwork = Artwork.objects.filter(username=request.user).count()
+    avg_price_of_listing = Artwork.objects.aggregate(Avg('price'))['price__avg']
+    my_total_request = Request.objects.filter(user=request.user).count()
+    pending_request = Request.objects.filter(user=request.user, status='pending').count()
+    accepted_request = Request.objects.filter(user=request.user, status='accepted').count()
+    fulfilled_request = Request.objects.filter(user=request.user, status='fulfilled').count()
+    canceled_request = Request.objects.filter(user=request.user, status='canceled').count()
+    my_avg_rating = Feedback.objects.filter(user=request.user).aggregate(Avg('rating'))['rating__avg']
+    my_total_sales = Order.objects.filter(artist__user=request.user).aggregate(Avg('total_price'))['total_price__avg']
+
+    orders = Order.objects.filter(user=request.user).values('user__first_name', 'user__last_name', 'total_price', 'order_status')
+
+    context = {
+        'total_users': total_users,
+        'total_artists': total_artists,
+        'total_artwork': total_artwork,
+        'my_total_artwork': my_total_artwork,
+        'avg_price_of_listing': avg_price_of_listing,
+        'my_total_request': my_total_request,
+        'pending_request': pending_request,
+        'accepted_request': accepted_request,
+        'fulfilled_request': fulfilled_request,
+        'canceled_request': canceled_request,
+        'my_avg_rating': my_avg_rating,
+        'my_total_sales': my_total_sales,
+        'orders': orders
+    }
+
+    return render(request, 'dashboard.html', context)
 

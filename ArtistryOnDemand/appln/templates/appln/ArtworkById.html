@@ -49,7 +49,7 @@
 		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
 			<a href="" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
 			<div class="space-x-6">
-				<a href="home" class="text-gray-600 hover:text-gray-900">Home</a>
+				<a href="{% url 'home' %}" class="text-gray-600 hover:text-gray-900">Home</a>
 				<a href="#" class="text-gray-600 hover:text-gray-900">About</a>
 				<a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
 				<a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
@@ -71,10 +71,7 @@
 				<h2 class="text-xl font-semibold mb-4">Dashboard Menu</h2>
 				<ul class="space-y-4">
 					<li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-500">View Art Listings</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Make a Request</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Modify Requests</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Cancel Requests</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">View Past Orders</a></li>
+					<li><a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-blue-500">View Past Orders: {{ order_count }}</a></li>
 					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Give Feedback</a></li>
 				</ul>
 			</aside>
@@ -82,7 +79,7 @@
 				{% if messages %}
 				<div class="mb-6">
 					{% for message in messages %}
-					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300 
+					<div id="alert-{{ forloop.counter }}" class="p-4 mb-4 rounded-lg shadow-md relative transition duration-300
 						{% if message.tags == 'success' %} bg-green-100 border border-green-300 text-green-700
 						{% elif message.tags == 'error' %} bg-red-100 border border-red-300 text-red-700
 						{% elif message.tags == 'warning' %} bg-yellow-100 border border-yellow-300 text-yellow-700
@@ -162,6 +159,9 @@
 		</div>
 
 	</section>
-
+	<!-- Footer (Optional) -->
+	<footer class="bg-gray-900 text-white text-center py-4">
+		<p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
+	</footer>
 </body>
 </html>

@@ -2,6 +2,8 @@ from .validators import *
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.db.models import Avg, Count
+
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
@@ -61,6 +63,16 @@ class Artwork(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_rating_stats(self):
+        # Aggregate ratings from Feedback through Request
+        feedbacks = Feedback.objects.filter(request__artwork=self).aggregate(
+            avg_rating=Avg('rating'),
+            total_rating=Count('rating')
+        )
+        avg_rating = feedbacks['avg_rating'] if feedbacks['avg_rating'] is not None else 0
+        total_rating = feedbacks['total_rating']
+        return avg_rating, total_rating
 
 
 class Request(models.Model):
@@ -125,7 +137,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.order_id} by {self.user.username} - Artwork: {self.artwork.title}pyth- Status: {self.order_status.capitalize()} - Total: ${self.total_price:.2f}"
-
 
 class Payment(models.Model):
     payment_id = models.AutoField(primary_key=True)
