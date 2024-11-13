@@ -6,9 +6,32 @@
 	<title>Upload Details Dashboard</title>
 	<!-- Tailwind CSS -->
 	<script src="https://cdn.tailwindcss.com"></script>
+	{% load static %}
 </head>
 <body class="bg-gray-100">
-
+	<!-- Navbar -->
+	<nav class="bg-white shadow-md mb-6">
+		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
+			<a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
+			<div class="space-x-6 flex items-center">
+				<a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
+				<a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+				<form method="post" action="{% url 'logout' %}" class="inline">
+					{% csrf_token %}
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
+						Logout
+					</button>
+				</form>
+				<div class="flex items-center">
+					<span class="mr-3 text-blue-500">{{ artist.first_name }}</span>
+					<img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}"
+						 alt="Profile Image"
+						 class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
+				</div>
+			</div>
+		</div>
+	</nav>
 	<div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
 
 		<!-- Dashboard Heading -->
@@ -51,12 +74,11 @@
 						Back to All Requests
 					</a>
 				</div>
-
-
 			</form>
 		</div>
-
 	</div>
-
+	<footer class="bg-gray-900 text-white text-center py-4">
+		<p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
+	</footer>
 </body>
 </html>
