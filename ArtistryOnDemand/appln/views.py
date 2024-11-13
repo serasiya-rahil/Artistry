@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.http import HttpResponse
 from .models import User as CustomUser
+from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
@@ -22,8 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order, Upload
-from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm, UploadForm
-
+from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm, UploadForm, FeedbackForm
 
 dbg = SimpleDebugger(enabled=True)
 lgt = SessionExpiryMiddleware(MiddlewareMixin)
@@ -167,13 +167,20 @@ def artistDashboard(request):
         artist = Artist.objects.get(username=request.user)
         dbg.info(f"Artist found: {artist.username}")
         
+        TotalRequest = Request.objects.filter(artist=artist.artist_id).count()
+        CompletedRequest = Request.objects.filter(artist=artist.artist_id, status='Fulfilled').count()
+        PendingRequest = Request.objects.filter(artist=artist.artist_id).exclude(status__in=['Fulfilled', 'Cancelled']).count()
+        
         artworks = Artwork.objects.filter(artist=artist)
         dbg.info(f"Total artworks found: {artworks.count()}")
         
         profile = ArtistProfile.objects.filter(artist_id=artist.artist_id).first()
-        if not profile:
-            messages.warning(request, "Your Profile is missing few details, Kindly update your profile")
-            dbg.warn(f"Please Update your profile: {request.user}")
+        if not request.session.get('profile_update_message_shown', False):
+            if not profile:
+                messages.warning(request, "Your Profile is missing few details, Kindly update your profile")
+                dbg.warn(f"Please Update your profile: {request.user}")
+           
+                request.session['profile_update_message_shown'] = True
             
         total_artworks = artworks.count()
         
@@ -185,10 +192,14 @@ def artistDashboard(request):
     except Artist.DoesNotExist:
         artworks = []
         artist = None 
-        profile=None
+        profile = None
+        TotalRequest = None
+        CompletedRequest = None
+        PendingRequest = None
         dbg.error(f"Artist does not exist for user: {request.user}")
 
-    return render(request, 'appln/artistDashboard.html', {'artist': artist, 'artworks': artworks, 'total_artworks': total_artworks, 'search_query': search_query,'profile': profile
+    return render(request, 'appln/artistDashboard.html', {'artist': artist, 'artworks': artworks, 'total_artworks': total_artworks, 'search_query': search_query,
+                                                          'profile': profile, 'TotalRequest':TotalRequest,'CompletedRequest':CompletedRequest,'PendingRequest':PendingRequest,
     })
 
 @login_required
@@ -221,24 +232,43 @@ def add_artwork(request):
 
 @login_required
 def delete_artwork(request, artwork_id):
+    isDeletable = True 
     artist = get_object_or_404(Artist, username=request.user)
     artwork = get_object_or_404(Artwork, artwork_id=artwork_id, artist=artist)
+    
+    #this status options cannot be deleted untill the request is not completed
+    statusOptions = ['Pending', 'Accepted']
+    
+    #Count if any request is present or not for above status options
+    request_count = Request.objects.filter(
+    artwork_id=artwork_id,
+    artist=artist,
+    status__in=statusOptions
+    ).count()
+
+    #set the flag to False
+    if request_count > 0:
+        isDeletable = False
+    
     dbg.info(f"Attempting to delete artwork: {artwork.title} by artist: {artist.username}")
     
-    if request.method == "POST":
-        if artwork.image_path and os.path.isfile(artwork.image_path.path):
-            os.remove(artwork.image_path.path)
-            dbg.info(f"Deleted image at path: {artwork.image_path.path}")
+    if(isDeletable):
+        if request.method == "POST":
+            if artwork.image_path and os.path.isfile(artwork.image_path.path):
+                os.remove(artwork.image_path.path)
+                dbg.info(f"Deleted image at path: {artwork.image_path.path}")
 
-        if artwork.video_path and os.path.isfile(artwork.video_path.path):
-            os.remove(artwork.video_path.path)
-            dbg.info(f"Deleted video at path: {artwork.video_path.path}")
+            if artwork.video_path and os.path.isfile(artwork.video_path.path):
+                os.remove(artwork.video_path.path)
+                dbg.info(f"Deleted video at path: {artwork.video_path.path}")
             
-        artwork.delete()
-        dbg.info(f"Artwork deleted successfully: {artwork.title}")
-        return redirect('artistDashboard')  
+            artwork.delete()
+            dbg.info(f"Artwork deleted successfully: {artwork.title}")
+    else:
+        dbg.warn(f"Artwork cannot be deleted: {artwork.title}, as it has active orders present in the Request Table")
+        messages.warning(request, f"The artwork '{artwork.title}' cannot be deleted as there are currently {request_count} pending orders associated with it. Please complete all outstanding orders before attempting deletion.")
+
     
-    dbg.warn(f"Delete request was not a POST request for artwork: {artwork.title}")
     return redirect('artistDashboard') 
 
 @login_required
@@ -651,12 +681,28 @@ def update_request_status(request):
     if request.method == 'POST':
         request_id = request.POST.get('request_id')
         new_status = request.POST.get('status')
-        
         req_instance = get_object_or_404(Request, pk=request_id)
-
-        req_instance.status = new_status
-        req_instance.save()
-
+        
+        if(new_status == 'fulfilled'):
+            try:
+                isRequestCompleted = Upload.objects.get(request=request_id)
+                if(isRequestCompleted):
+                    req_instance.status = new_status
+                    req_instance.save()
+                    messages.info(request,f"Status updated to {new_status}")
+                    return JsonResponse({'success': True, 'new_status': new_status})
+            except:
+                isRequestCompleted = None
+            
+            print(isRequestCompleted)
+            messages.info(request,f"Cannot update the status to 'Fulfilled' yet. Please upload the artwork, and the status will be updated to 'Fulfilled'")
+            return JsonResponse({'success': True, 'new_status': req_instance.status})
+        else:
+            
+            req_instance.status = new_status
+            req_instance.save()
+            messages.info(request,f"Status updated to {new_status}")
+            return JsonResponse({'success': True, 'new_status': new_status})
         return JsonResponse({'success': True, 'new_status': new_status})
     
     return JsonResponse({'success': False})
@@ -734,10 +780,6 @@ def upload_details(request, request_id):
         'upload': upload_instance
     })
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Request, Feedback
-from .forms import FeedbackForm
-
 def give_feedback(request, request_id):
     request_instance = get_object_or_404(Request, request_id=request_id)
     currenrUser = userModel.objects.get(username=request.user)
@@ -775,42 +817,71 @@ def give_feedback(request, request_id):
         'star_values': star_values,
     })
 
-from django.shortcuts import render
-from .models import User, Artist, Artwork, Request, Order
-from django.db.models import Avg
-
 def dashboard(request):
+    userDetails = Artist.objects.get(username=request.user)
+    active_user_count = User.objects.count()
+    artist_user_count = Artist.objects.count()
+    artwork_count = Artwork.objects.count()
+    my_artwork_count = Artwork.objects.filter(artist_id=userDetails.artist_id).count()
+    avg_price = Artwork.objects.aggregate(Avg('price'))['price__avg']
+    my_total_request = Request.objects.filter(artist_id=userDetails.artist_id).count()
+    my_pending_request = Request.objects.filter(artist_id=userDetails.artist_id,status__in=['pending', 'accepted']).count()
     
-    total_users = User.objects.filter(is_account_active=True).count()
-    total_artists = Artist.objects.count()
-    total_artwork = Artwork.objects.count()
-    my_total_artwork = Artwork.objects.filter(username=request.user).count()
-    avg_price_of_listing = Artwork.objects.aggregate(Avg('price'))['price__avg']
-    my_total_request = Request.objects.filter(user=request.user).count()
-    pending_request = Request.objects.filter(user=request.user, status='pending').count()
-    accepted_request = Request.objects.filter(user=request.user, status='accepted').count()
-    fulfilled_request = Request.objects.filter(user=request.user, status='fulfilled').count()
-    canceled_request = Request.objects.filter(user=request.user, status='canceled').count()
-    my_avg_rating = Feedback.objects.filter(user=request.user).aggregate(Avg('rating'))['rating__avg']
-    my_total_sales = Order.objects.filter(artist__user=request.user).aggregate(Avg('total_price'))['total_price__avg']
+    
 
-    orders = Order.objects.filter(user=request.user).values('user__first_name', 'user__last_name', 'total_price', 'order_status')
+    # Step 1: Get all the requests for the given user (or artist)
+    my_request = Request.objects.filter(artist_id=userDetails.artist_id)
+
+    # Step 2: Get the feedbacks related to these requests
+    feedbacks = Feedback.objects.filter(request__in=my_request)
+
+    # Step 3: Calculate the average rating from the feedbacks
+    avg_rating = feedbacks.aggregate(Avg('rating'))['rating__avg'] or 0
+
+    result = []
+    for req in my_request:
+        # Get customer name
+        customer_name = f"{req.user.first_name} {req.user.last_name}"
+        
+        # Get artwork title and price
+        artwork_title = req.artwork.title
+        artwork_price = req.artwork.price
+        
+        # Get request status
+        request_status = req.status
+        
+        # Append the information to the result list
+        result.append({
+            'customer_name': customer_name,
+            'artwork_title': artwork_title,
+            'price': artwork_price,
+            'status': request_status
+        })
+    
 
     context = {
-        'total_users': total_users,
-        'total_artists': total_artists,
-        'total_artwork': total_artwork,
-        'my_total_artwork': my_total_artwork,
-        'avg_price_of_listing': avg_price_of_listing,
+        'active_user_count': active_user_count,
+        'artist_user_count': artist_user_count,
+        'artwork_count':artwork_count,
+        'my_artwork_count':my_artwork_count,
+        'avg_price': avg_price,
         'my_total_request': my_total_request,
-        'pending_request': pending_request,
-        'accepted_request': accepted_request,
-        'fulfilled_request': fulfilled_request,
-        'canceled_request': canceled_request,
-        'my_avg_rating': my_avg_rating,
-        'my_total_sales': my_total_sales,
-        'orders': orders
+        'my_pending_request':my_pending_request,
+        'avg_rating': avg_rating,
+        'requests_data': result,
     }
+    
+    return render(request, 'appln/artist_analytics.html', context)
 
-    return render(request, 'dashboard.html', context)
+def myListings(request):
+    artist = Artist.objects.get(username=request.user)
+    artworks = Artwork.objects.filter(artist=artist)
+
+    # Set up pagination with 10 artworks per page
+    paginator = Paginator(artworks, 2)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'appln/MyListings.html', {'page_obj': page_obj})
+
 
