@@ -32,6 +32,9 @@ urlpatterns = [
     path('Artist-Analytics/', views.dashboard, name='dashboard'),
     path('My-Listings/', views.myListings, name='myListings'),
     path('Services/', views.Services, name='Services'),
+    path('search-suggestions/', views.search_suggestions, name='search_suggestions'),
+    path('get-artwork-details/', views.get_artwork_details, name='get_artwork_details'),
+    path('feedback/<int:artwork_id>/', views.artwork_feedback, name='artwork_feedback'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

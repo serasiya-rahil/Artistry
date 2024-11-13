@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Artist Dashboard</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	{% load static %}
+	<link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+</head>
+
+<body class="bg-gray-50">
+
+	<nav class="bg-white shadow fixed top-0 left-0 w-full z-10">
+		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
+			<a href="" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
+			<div class="space-x-6">
+				<a href="{% url 'UserView' %}" class="text-gray-600 hover:text-gray-900">Home</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
+				<a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
+				<form method="post" action="{% url 'logout' %}" style="display: inline;">
+					{% csrf_token %}
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
+						Logout
+					</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Main Content -->
+	<div class="container mx-auto flex flex-col md:flex-row mt-24 space-x-6 px-4">
+
+		<!-- Sidebar Menu -->
+		<aside class="bg-white shadow-md rounded-lg p-6">
+			<h2 class="text-xl font-semibold mb-4">Dashboard Menu</h2>
+			<ol class="space-y-4">
+				<li><a href="{% url 'UserView' %}" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-500">View Art Listings</a></li>
+				<li><a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-blue-500">View Past Orders {{ order_count }}</a></li>
+			
+			</ol>
+		</aside>
+
+		<!-- Artwork Details and Feedback Section -->
+		<div class="flex-1 space-y-6">
+			<!-- Feedback Section -->
+			<div class="bg-white p-6 rounded-lg shadow-lg">
+				{% if feedbacks %}
+				<div class="space-y-6">
+					<h1 class="text-3xl font-semibold text-gray-900">{{ artwork.title }}</h1>
+
+					<!-- Average Rating -->
+					<div class="text-blue-700 text-sm font-bold mt-2">
+						
+						<div class="flex items-center space-x-1">
+							<span>Avg Rating</span>
+							{% for i in star_range %}
+							{% if i <= average_rating %}
+							<span>⭐</span> <!-- Full star -->
+							{% elif i == average_rating|add:0.5 %}
+							<span>⭐</span> <!-- Half star -->
+							{% else %}
+							<span>☆</span> <!-- Empty star -->
+							{% endif %}
+							{% endfor %}
+							<span>({{ average_rating|floatformat:1 }} ratings)</span>
+						</div>
+					</div>
+
+					<!-- All Feedback Section -->
+					<h2 class="text-xl font-semibold text-gray-900 mb-4 px-2">All Feedback</h2>
+					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+						{% for feedback in feedbacks %}
+						<div class="flex flex-col items-center space-y-4 border-b pb-6 bg-white rounded-3xl shadow-xl px-6 py-4 hover:scale-105 transition-all duration-300">
+							<!-- User Avatar (Logo Icon for Feedback) -->
+							<div class="w-16 h-16 rounded-full bg-gray-300 flex justify-center items-center border-4 border-white shadow-lg">
+								<img src="https://www.w3schools.com/w3images/avatar2.png" alt="User Avatar" class="w-full h-full object-cover rounded-full">
+							</div>
+
+							<div class="flex flex-col items-center">
+								<!-- Feedback Text and User Info -->
+								<div class="text-center">
+									<span class="font-semibold text-lg text-gray-800 block">{{ feedback.user.username }}</span>
+									<span class="text-sm text-gray-400 capitalize block">{{ feedback.created_at|date:"b d, Y" }}</span>
+								</div>
+
+
+								<!-- Display User Rating (Stars) -->
+								<div class="mt-2 text-yellow-500">
+									{% for i in star_range %}
+									{% if i <= feedback.rating %}
+									<span>⭐</span> <!-- Full star -->
+									{% elif i == feedback.rating|add:0.5 %}
+									<span>⭐</span> <!-- Half star -->
+									{% else %}
+									<span>☆</span> <!-- Empty star -->
+									{% endif %}
+									{% endfor %}
+								</div>
+
+								<!-- Feedback Comments -->
+								<p class="mt-2 text-center text-gray-800">{{ feedback.comments }}</p>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+
+					<!-- Pagination Links -->
+					<div class="mt-6">
+						<div class="flex justify-center space-x-4">
+							{% if feedbacks.has_previous %}
+							<a href="?page=1" class="text-blue-600">First</a>
+							<a href="?page={{ feedbacks.previous_page_number }}" class="text-blue-600">Previous</a>
+							{% endif %}
+							<span class="text-gray-600">Page {{ feedbacks.number }} of {{ feedbacks.paginator.num_pages }}</span>
+							{% if feedbacks.has_next %}
+							<a href="?page={{ feedbacks.next_page_number }}" class="text-blue-600">Next</a>
+							<a href="?page={{ feedbacks.paginator.num_pages }}" class="text-blue-600">Last</a>
+							{% endif %}
+						</div>
+					</div>
+
+				</div>
+				{% else %}
+				<p class="text-center text-gray-500">No feedback available yet.</p>
+				{% endif %}
+			</div>
+		</div>
+
+
+	</div>
+
+</body>
+
+</html>
