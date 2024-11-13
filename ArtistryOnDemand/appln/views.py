@@ -3,10 +3,11 @@ import json
 import re
 import shutil
 import stripe
+import requests
 from .Debug import *
 from django.db import models
 from datetime import datetime
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from .logout_middleware import *
 from django.conf import settings
 from django.utils import timezone
@@ -24,6 +25,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback, Request, Order, Upload
 from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm, UploadForm, FeedbackForm
+
 
 dbg = SimpleDebugger(enabled=True)
 lgt = SessionExpiryMiddleware(MiddlewareMixin)
@@ -318,6 +320,8 @@ def edit_artwork(request, artwork_id):
 def UserView(request):
     dbg.info("Fetching all artworks for UserView.")
     artworks = Artwork.objects.all()
+   
+    
     Profile_artworks = Artwork.objects.select_related('artist').prefetch_related('artist__profiles').all()
     order_count = Order.objects.filter(user_id=request.user.id).count()
 
@@ -333,8 +337,9 @@ def UserView(request):
     avg_rating_dict = {item['request__artwork_id']: {'avg_rating': item['avg_rating'], 'rating_count': item['rating_count']} for item in avg_rating_dict}
 
     for artwork in artworks:
-        rating_info = avg_rating_dict.get(artwork.artwork_id, {'avg_rating': "0", 'rating_count': 0})
-        artwork.avg_rating = rating_info['avg_rating']
+        rating_info = avg_rating_dict.get(artwork.artwork_id, {'avg_rating': 0, 'rating_count': 0})
+        artwork.avg_rating = float(rating_info['avg_rating'])
+        dbg.info(f"Rating: {artwork.avg_rating} {type(artwork.avg_rating)}")
         artwork.rating_count = rating_info['rating_count']
 
 
@@ -345,7 +350,13 @@ def UserView(request):
         dbg.info(f"Filtered artworks based on search query: {search_query} (Total: {artworks.count()})")
     else:
         dbg.info(f"No search query provided. Total artworks: {artworks.count()}")
+    
+    paginator = Paginator(artworks, 3) 
 
+   
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     dbg.info("Rendering UserHomePage.")
     return render(request, 'appln/UserHomePage.html', {
         'artworks': artworks,
@@ -353,6 +364,8 @@ def UserView(request):
         'Profile_artworks': Profile_artworks,
         'order_count':order_count,
         'avg_rating_dict': avg_rating_dict,
+        'star_range': range(1, 6),
+        'page_obj':page_obj,
     })
 
 @login_required
@@ -569,8 +582,36 @@ def payment_cancel(request):
     return render(request, 'payment_cancel.html')
 
 def PastOrders(request):
+    
+    fallback_quote = "Art is the only way to run away without leaving home."
+    fallback_author = "Twyla Tharp"
+
     try:
-        allOrders = Order.objects.filter(user_id=request.user.id)
+        # Fetch a random art quote from They Said So API
+        url = "https://quotes.rest/qod?category=art"
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for bad responses
+        quote_data = response.json()
+
+        # Extract the quote text and author from the API response
+        quote = quote_data['contents']['quotes'][0]['quote']
+        author = quote_data['contents']['quotes'][0]['author']
+
+    except requests.exceptions.RequestException as e:
+        # In case of any error, use the fallback quote
+        quote = fallback_quote
+        author = fallback_author
+
+    top_5_artwork_ids = Request.objects.values('artwork') \
+        .annotate(request_count=Count('artwork')) \
+        .order_by('-request_count')[:5] \
+        .values_list('artwork', flat=True)
+        
+    top_5_artworks = Artwork.objects.filter(artwork_id__in=top_5_artwork_ids)
+
+    try:
+        allOrders = Order.objects.filter(user_id=request.user.id).order_by('-created_at')
+        
         dbg.info(f"Orders Count: {allOrders.count()}")
 
         for order in allOrders:
@@ -578,10 +619,11 @@ def PastOrders(request):
             dbg.info(f"Artwork ID: {order.artwork.artwork_id}")
             dbg.info(f"Status: {order.request.status}")
 
+        
     except:
         allOrders = None
 
-    return render(request, 'appln/PastOrders.html',{'allOrders':allOrders})
+    return render(request, 'appln/PastOrders.html',{'allOrders':allOrders, 'top_5_artworks':top_5_artworks, 'quote': quote, 'author': author})
 
 def edit_request(request, request_id):
     request_instance = get_object_or_404(Request, request_id=request_id)
@@ -887,4 +929,46 @@ def myListings(request):
 def Services(request):
     return render(request,'appln/Services.html')
 
+def search_suggestions(request):
+    query = request.GET.get('query', '')
+    suggestions = []
+    if query:
+        artworks = Artwork.objects.filter(title__icontains=query)[:10]  # Limit results to top 10
+        suggestions = [{'artwork_id': art.artwork_id, 'title': art.title} for art in artworks]
+    return JsonResponse(suggestions, safe=False)
 
+
+def get_artwork_details(request):
+    artwork_id = request.GET.get('artwork_id')
+    artwork = Artwork.objects.get(artwork_id=artwork_id)
+    artwork_data = {
+        'artwork_id': artwork.id,
+        'title': artwork.title,
+        'description': artwork.description,
+        'price': artwork.price
+    }
+    return JsonResponse(artwork_data)
+
+def artwork_feedback(request, artwork_id):
+    artwork = get_object_or_404(Artwork, artwork_id=artwork_id)
+
+    # Get all feedbacks related to the artwork, filtering via the related 'request'
+    feedbacks = Feedback.objects.filter(request__artwork=artwork).order_by('-created_at')
+
+    # Paginate feedbacks (show 5 feedbacks per page)
+    paginator = Paginator(feedbacks, 3)
+    page_number = request.GET.get('page')
+    feedbacks_page = paginator.get_page(page_number)
+
+    # Calculate average rating
+    average_rating = feedbacks.aggregate(Avg('rating'))['rating__avg']
+
+    # Pass the artwork, feedbacks, and pagination to the template
+    context = {
+        'artwork': artwork,
+        'feedbacks': feedbacks_page,
+        'star_range': range(1, 6),
+        'average_rating': average_rating,
+    }
+
+    return render(request, 'appln/feedback_list.html', context)

@@ -60,7 +60,7 @@
 				<ul class="space-y-4">
 					<li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-500">View Art Listings</a></li>
 					<li><a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-blue-500">View Past Orders: {{ order_count }}</a></li>
-					<li><a href="#" class="block text-gray-600 hover:text-blue-500">Give Feedback</a></li>
+					
 				</ul>
 			</aside>
 
@@ -95,38 +95,44 @@
 					<p class="text-gray-600 mb-6">Here's what's Trending around your likes</p>
 
 					<div class="container mx-auto mb-6">
-						<form method="GET" action="" class="flex">
-							<input type="text" name="search" value="{{ search_query }}"
+						<form method="GET" id="search" class="flex">
+							<input type="text" id="search-input" name="search" value="{{ search_query }}"
 								   placeholder="Search artworks..."
 								   class="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300" />
-							<button type="submit"
-									class="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none">
+							<button type="submit" id="searchButton" class="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none">
 								Search
 							</button>
 						</form>
+						<div id="suggestions" class="mt-2 bg-white border border-gray-300 rounded-lg shadow-md max-h-60 overflow-y-auto"></div>
 					</div>
+
 
 					<div id="art-listings" class="bg-white p-8 rounded-lg shadow-lg mt-8">
 
-						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-							{% for artwork in artworks %}
-							<div class="bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:scale-105 overflow-hidden">
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
+
+							{% for artwork in page_obj %}
+							<div class="bg-gray-50 rounded-xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 ease-in-out transform hover:scale-105 overflow-hidden border-4 border-black-100">
+
 								<!-- Artist Info -->
 								<div class="flex items-center p-4 bg-white border-b border-gray-200">
 									{% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
-									<img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-12 h-12 rounded-full object-cover mr-3 shadow-sm">
+									<img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-10 h-10 rounded-full object-cover mr-3 shadow-sm">
 									{% else %}
-									<img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-12 h-12 rounded-full object-cover mr-3 shadow-sm">
+									<img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-10 h-10 rounded-full object-cover mr-2 shadow-sm">
 									{% endif %}
 									<div>
-										<span class="text-gray-800 font-medium">by {{ artwork.artist.first_name }}</span>
+										<span class="text-gray-500 font-semibold" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">
+											{{ artwork.artist.first_name }}
+										</span>
+
 									</div>
 								</div>
 
 								<div class="relative mb-4">
 									<!-- Artwork Image or Video -->
 									{% if artwork.image_path %}
-									<img class="rounded-t-xl w-full h-48 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
+									<img class="rounded-t-sm w-full h-48 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
 									{% elif artwork.video_path %}
 									<video class="rounded-t-xl w-full h-48 object-cover" controls>
 										<source src="{{ artwork.video_path.url }}" type="video/mp4">
@@ -136,29 +142,58 @@
 
 								</div>
 
+
 								<!-- Artwork Details -->
-								<div class="p-4">
-									<h3 class="text-xl font-semibold text-gray-800 truncate mb-1">{{ artwork.title }}</h3>
+								<div class="px-4">
+									<h3 class="text-xl font-semibold text-blue-900 truncate mb-1" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);">
+										{{ artwork.title }}
+									</h3>
+
+									<hr class="border border-gray-300 my-2 px-0">
+
 									{% if artwork.avg_rating %}
 									<div class="text-blue-700 text-xs font-bold flex items-center space-x-1">
-										<span>⭐</span>
-										<span>Rating: {{ artwork.avg_rating }} ({{ artwork.rating_count }} ratings)</span>
+										<span>Rating</span>
+										{% for i in star_range %}
+										{% if i <= artwork.avg_rating %}
+										<a href="{% url 'artwork_feedback' artwork.artwork_id %}" class="cursor-pointer">⭐</a> <!-- Full star -->
+										{% elif i == artwork.avg_rating|add:0.5 %}
+										<a href="{% url 'artwork_feedback' artwork.artwork_id %}" class="cursor-pointer">⭐</a> <!-- Half star -->
+										{% else %}
+										<a href="{% url 'artwork_feedback' artwork.artwork_id %}" class="cursor-pointer">☆</a> <!-- Empty star -->
+										{% endif %}
+										{% endfor %}
+										<span>({{ artwork.rating_count }} ratings)</span>
 									</div>
+									{% else %}
+									<div class="text-blue-700 text-xs font-bold flex items-center space-x-1">
+										<span>Rating</span>
+										{% for i in star_range %}
+										<span>☆</span> <!-- Empty star when no rating -->
+										{% endfor %}
+										(0 ratings)
+									</div>
+
 									{% endif %}
+								</div>
+								<div class="px-4 py-2">
+									<p class="text-gray-500 text-sm font-semibold truncate mb-2">{{ artwork.description }}</p>
 
 								</div>
-								<div class="p-3">
-
-									<p class="text-gray-600 text-sm truncate mb-2">{{ artwork.description }}</p>
-								</div>
-
+								<hr class="border border-gray-300">
 								<!-- Price and Details Button -->
 								<div class="flex justify-between items-center p-4 bg-gray-100 rounded-b-xl">
-									<p class="text-lg font-bold text-indigo-600">Price: ${{ artwork.price }}</p>
-									<a href="{% url 'viewArtworkById' artwork.artwork_id %}" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-lg shadow-md transition-colors duration-300 ease-in-out">
+									<hr class="border-t-2 border-gray-300 my-2">
+									<p class="text-md font-bold text-indigo-600" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);">
+										Price: ${{ artwork.price }}
+									</p>
+
+									<a href="{% url 'viewArtworkById' artwork.artwork_id %}" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-md shadow-lg transition-colors duration-300 ease-in-out transform hover:scale-105">
 										View Details
 									</a>
+
 								</div>
+
 							</div>
 							{% empty %}
 							<p class="text-center col-span-3 text-gray-500">No artworks available at the moment.</p>
@@ -166,12 +201,94 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Pagination Controls -->
+				<div class="flex justify-center mt-6">
+					<nav aria-label="Page navigation">
+						<ul class="inline-flex space-x-2">
+							<!-- Previous Button -->
+							{% if page_obj.has_previous %}
+							<li>
+								<a href="?search={{ search_query }}&page={{ page_obj.previous_page_number }}"
+								   class="w-10 h-10 flex items-center justify-center bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-colors duration-300">
+									&#9664;
+								</a>
+							</li>
+							{% endif %}
+
+							<!-- Page Numbers -->
+							{% for num in page_obj.paginator.page_range %}
+							{% if page_obj.number == num %}
+							<li>
+								<span class="w-10 h-10 flex items-center justify-center bg-blue-800 text-white rounded-full font-bold">{{ num }}</span>
+							</li>
+							{% else %}
+							<li>
+								<a href="?search={{ search_query }}&page={{ num }}"
+								   class="w-10 h-10 flex items-center justify-center bg-blue-500 text-white rounded-full hover:bg-indigo-600 transition-colors duration-300">{{ num }}</a>
+							</li>
+							{% endif %}
+							{% endfor %}
+
+							<!-- Next Button -->
+							{% if page_obj.has_next %}
+							<li>
+								<a href="?search={{ search_query }}&page={{ page_obj.next_page_number }}"
+								   class="w-10 h-10 flex items-center justify-center bg-blue-300 text-white rounded-full hover:bg-indigo-600 transition-colors duration-300">
+									&#9654;
+								</a>
+							</li>
+							{% endif %}
+						</ul>
+					</nav>
+				</div>
+
+
 			</div>
 		</div>
+
+
 	</section>
 	<!-- Footer (Optional) -->
 	<footer class="bg-gray-900 text-white text-center py-4">
 		<p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
 	</footer>
+	<script>
+		// Function to fill the search box with the clicked suggestion and submit the form
+		function fillSearchBoxAndSubmit(title) {
+			// Fill the search input box with the clicked suggestion
+			document.querySelector('#search-input[name="search"]').value = title;
+
+			// Trigger the form submission to show results immediately
+			document.querySelector('#search').submit();
+		}
+
+		document.getElementById('search-input').addEventListener('input', async function () {
+			const query = this.value;
+
+			// If the search input is empty, clear the suggestions and submit the form to get all artworks
+			if (query.length < 1) {
+				document.getElementById('suggestions').innerHTML = '';
+				document.querySelector('#search').submit();  // Submit form to return all results
+				return;
+			}
+
+			// Fetch search suggestions based on input
+			const response = await fetch(`/search-suggestions/?query=${query}`);
+			const results = await response.json();
+
+			// Display suggestions dynamically as the user types
+			const suggestionsDiv = document.getElementById('suggestions');
+			suggestionsDiv.innerHTML = results.map(result => `
+        <div class="p-2 cursor-pointer hover:bg-gray-200"
+             onclick="fillSearchBoxAndSubmit('${result.title}')">
+            ${result.title}
+        </div>
+    `).join('');
+		});
+
+
+	</script>
+
 </body>
 </html>
