@@ -884,4 +884,7 @@ def myListings(request):
 
     return render(request, 'appln/MyListings.html', {'page_obj': page_obj})
 
+def Services(request):
+    return render(request,'appln/Services.html')
+
 

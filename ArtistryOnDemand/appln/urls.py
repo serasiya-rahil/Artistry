@@ -31,6 +31,7 @@ urlpatterns = [
     path('Feedback/<int:request_id>/', views.give_feedback, name='give_feedback'),
     path('Artist-Analytics/', views.dashboard, name='dashboard'),
     path('My-Listings/', views.myListings, name='myListings'),
+    path('Services/', views.Services, name='Services'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
