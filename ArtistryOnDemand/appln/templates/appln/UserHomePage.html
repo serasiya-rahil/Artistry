@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>User Dashboard | Artistry On Demand</title>
 	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	{% load static %}
 	<link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 	<link rel="stylesheet" href="{% static 'appln/styles.css' %}">
@@ -18,8 +19,39 @@
 
 		.visible {
 			opacity: 1;
-			max-height: 500px; 
+			max-height: 500px;
 			transition: opacity 1s ease, max-height 0.5s ease;
+		}
+		/* Add the blinking effect */
+		@keyframes blink {
+			50% {
+				opacity: 0;
+			}
+		}
+
+		.blink-text {
+			animation: blink 1.5s infinite;
+		}
+
+		/* Add subtle text shadow effect */
+		.text-shadow {
+			text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+		}
+
+		/* Hover effect to highlight artwork titles */
+		li:hover {
+			background-color: #f7fafc;
+		}
+
+		/* Styling for the icons */
+		i {
+			font-size: 18px; /* Adjust icon size */
+		}
+
+		/* Make the artwork titles more prominent */
+		li a:hover .font-semibold {
+			font-size: 1.125rem; /* Increase size on hover */
+			transition: font-size 0.3s ease-in-out;
 		}
 	</style>
 
@@ -55,14 +87,50 @@
 	<section class="container mx-auto pt-32 pb-12">
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 			<!-- Sidebar Menu -->
-			<aside class="bg-white shadow-md rounded-lg p-6">
-				<h2 class="text-xl font-semibold mb-4">Dashboard Menu</h2>
-				<ul class="space-y-4">
-					<li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-500">View Art Listings</a></li>
-					<li><a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-blue-500">View Past Orders: {{ order_count }}</a></li>
-					
+			<aside class="bg-white shadow-lg rounded-lg p-6 max-w-xs w-full mx-auto">
+				<h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Menu</h2>
+
+				<ul class="space-y-6">
+					<!-- View Art Listings -->
+					<li>
+						<a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-blue-600 text-lg font-medium flex items-center space-x-3">
+							<i class="fas fa-list-alt text-blue-500"></i>
+							<span>View Art Listings</span>
+						</a>
+					</li>
+
+					<!-- View Past Orders -->
+					<li>
+						<a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-blue-600 text-lg font-medium flex items-center space-x-3">
+							<i class="fas fa-box text-blue-500"></i>
+							<span>View Past Orders: {{ order_count }}</span>
+						</a>
+					</li>
+
+					<!-- Section Title for Trending Artworks -->
+					<li class="font-semibold text-lg text-gray-900 mt-6">
+						<span class="text-xl text-indigo-600 blink-text">What's Trending Around the Globe</span>
+					</li>
+
+					<!-- Top 5 Trending Artworks -->
+					{% for artwork in top_5_artworks %}
+					<li class="border-b-2 pb-3 mb-3 hover:bg-indigo-50 rounded-lg transition-colors duration-300">
+						<a href="{% url 'viewArtworkById' artwork_id=artwork.artwork_id %}" class="block text-gray-700 hover:text-indigo-600 flex items-center space-x-3">
+							<i class="fas fa-paint-brush text-indigo-600"></i>
+							<span class="font-semibold text-lg">{{ artwork.title }}</span>
+						</a>
+					</li>
+					{% endfor %}
+
+					<!-- Optional: Call-to-Action for more artworks -->
+					<li class="mt-4">
+						<a href="{% url 'UserView' %}" class="block text-gray-600 hover:text-indigo-600 text-sm text-center">
+							<span class="font-medium">See More Trending Artworks</span>
+						</a>
+					</li>
 				</ul>
 			</aside>
+
 
 			<!-- Main Content -->
 			<div class="col-span-3">

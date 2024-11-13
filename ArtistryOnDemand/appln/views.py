@@ -318,6 +318,14 @@ def edit_artwork(request, artwork_id):
 
 @login_required
 def UserView(request):
+    
+    top_5_artwork_ids = Request.objects.values('artwork') \
+        .annotate(request_count=Count('artwork')) \
+        .order_by('-request_count')[:10] \
+        .values_list('artwork', flat=True)
+        
+    top_5_artworks = Artwork.objects.filter(artwork_id__in=top_5_artwork_ids)
+
     dbg.info("Fetching all artworks for UserView.")
     artworks = Artwork.objects.all()
    
@@ -366,6 +374,7 @@ def UserView(request):
         'avg_rating_dict': avg_rating_dict,
         'star_range': range(1, 6),
         'page_obj':page_obj,
+        'top_5_artworks':top_5_artworks,
     })
 
 @login_required
@@ -582,25 +591,6 @@ def payment_cancel(request):
     return render(request, 'payment_cancel.html')
 
 def PastOrders(request):
-    
-    fallback_quote = "Art is the only way to run away without leaving home."
-    fallback_author = "Twyla Tharp"
-
-    try:
-        # Fetch a random art quote from They Said So API
-        url = "https://quotes.rest/qod?category=art"
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an exception for bad responses
-        quote_data = response.json()
-
-        # Extract the quote text and author from the API response
-        quote = quote_data['contents']['quotes'][0]['quote']
-        author = quote_data['contents']['quotes'][0]['author']
-
-    except requests.exceptions.RequestException as e:
-        # In case of any error, use the fallback quote
-        quote = fallback_quote
-        author = fallback_author
 
     top_5_artwork_ids = Request.objects.values('artwork') \
         .annotate(request_count=Count('artwork')) \
@@ -623,7 +613,7 @@ def PastOrders(request):
     except:
         allOrders = None
 
-    return render(request, 'appln/PastOrders.html',{'allOrders':allOrders, 'top_5_artworks':top_5_artworks, 'quote': quote, 'author': author})
+    return render(request, 'appln/PastOrders.html',{'allOrders':allOrders, 'top_5_artworks':top_5_artworks})
 
 def edit_request(request, request_id):
     request_instance = get_object_or_404(Request, request_id=request_id)
