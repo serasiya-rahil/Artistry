@@ -963,3 +963,6 @@ def artwork_feedback(request, artwork_id):
     }
 
     return render(request, 'appln/feedback_list.html', context)
+
+def ContactUs(request):
+    return render(request, 'appln/ContactUs.html')
