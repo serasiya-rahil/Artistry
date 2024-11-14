@@ -440,6 +440,7 @@ def edit_profile(request, artist_id):
 
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
 
+@login_required
 def viewArtworkById(request, artwork_id):
     artwork = None
     try:
