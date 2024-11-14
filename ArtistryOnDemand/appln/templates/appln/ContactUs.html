@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Artistry On Demand</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 font-sans leading-normal tracking-normal">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white py-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold">Contact Us</h1>
+            <p class="mt-2">Get in touch with us for your custom artistic creations!</p>
+        </div>
+    </header>
+
+    <!-- Contact Section with Image and Info -->
+    <section class="py-10">
+        <div class="container mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Image and Info Section -->
+                <div class="space-y-6">
+                    <div class="flex justify-center gap-4">
+                        <img src="images/art5.avif" alt="Artist working on custom artwork" class="w-1/3 h-auto rounded-full shadow-lg">
+                        <img src="images/art6.jpg" alt="Artist working on custom artwork" class="w-1/3 h-auto rounded-full shadow-lg">
+                    </div>
+                    <h2 class="text-2xl font-semibold text-gray-800">Why Should You Get in Touch with Us?</h2>
+                    <p class="text-gray-800">
+                        Our platform is made to make it simple for you to realise your imaginative ideas. Our artists are prepared to create something genuinely unique for you, from customised sketches to original animations.
+                    </p>
+                    <p class="text-gray-800">
+                        We carefully consider every aspect of your request and collaborate with artists who specialised in producing custom artwork for any occasion.
+                    </p>
+                    <p class="text-gray-800">
+                        Please get in touch if you would like more details or suggestions for a partnership. Together, let's create art! </p>
+                </div>
+
+                <!-- Contact Form Section -->
+                <div class="bg-white p-5 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-1">Reach Out to Us</h2>
+                    <p class="text-gray-600 mb-6">
+                        Would you want a personalised greeting, cartoon, animation, or sketch? Tell us how we can help you realise your vision by completing the form below.
+                    </p>
+                    <form action="#" method="POST">
+                        <div class="grid grid-cols-1 gap-0">
+                            <!-- Name -->
+                            <div>
+                                <label for="name" class="block text-gray-700 font-semibold">Name</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="Your name" required>
+                            </div>
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-gray-700 font-semibold">Email</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="Your email" required>
+                            </div>
+                            <!-- Subject -->
+                            <div>
+                                <label for="subject" class="block text-gray-700 font-semibold">Subject</label>
+                                <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="What is your request about?" required>
+                            </div>
+                            <!-- Message -->
+                            <div>
+                                <label for="message" class="block text-gray-700 font-semibold">Message</label>
+                                <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="Describe your custom art needs" required></textarea>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="mt-1 text-center">
+                                <button type="submit" class="bg-blue-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue    -900 transition duration-300">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-4">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Artistry On Demand. All Rights Reserved.</p>
+            <p>Designed to connect artists and clients for unique, high-quality creations.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
