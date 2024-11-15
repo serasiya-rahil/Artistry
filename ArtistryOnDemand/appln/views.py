@@ -446,6 +446,7 @@ def edit_profile(request, artist_id):
 
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
 
+@login_required
 def viewArtworkById(request, artwork_id):
     artwork = None
     try:
@@ -968,3 +969,6 @@ def artwork_feedback(request, artwork_id):
     }
 
     return render(request, 'appln/feedback_list.html', context)
+
+def ContactUs(request):
+    return render(request, 'appln/ContactUs.html')

@@ -7,9 +7,38 @@
     {% load static %}
     <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Add Swiper CDN for Carousel -->
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 
     <link rel="stylesheet" href="{% static 'appln/styles.css' %}">
-   
+    <style>
+		/* Custom Swiper CSS */
+		.swiper-container {
+			width: 100%;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+
+		.swiper-slide {
+			display: flex;
+			justify-content: center;
+		}
+
+		.swiper-pagination {
+			position: absolute;
+			bottom: 10px;
+			width: 100%;
+			text-align: center;
+		}
+
+		
+
+    </style>
 </head>
 <body class="bg-gray-100">
 
@@ -63,61 +92,32 @@
         <div class="absolute inset-0 bg-fit bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2022/06/24/12/00/hd-wallpaper-7281586_1280.jpg');opacity:20%"></div>
     </section>
 
-    <!-- Art Illustration Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold mb-6">Our Custom Art Services</h2>
-            <p class="text-gray-600 mb-8">We create personalized artwork based on your requests, from hand-drawn sketches to animated videos. Take a look at some of our featured services below:</p>
-
+    <section class="py-1 bg-white">
+        <div id="art-listings" class="bg-white p-8 rounded-lg shadow-lg mt-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Illustration 1 -->
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <img src="https://cdn.pixabay.com/photo/2019/09/05/05/28/eye-4453129_1280.jpg" alt="Custom Sketch" class="art-image mb-4 mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">Custom Hand-Drawn Sketch</h3>
-                    <p class="text-gray-600">Turn your photos into hand-drawn sketches by our talented artists.</p>
-                </div>
-
-                <!-- Illustration 2 -->
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <img src="https://cdn.pixabay.com/photo/2023/07/30/11/39/girl-8158685_1280.jpg" alt="Cartoon Sketch" class="art-image mb-4 mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">Cartoon Sketch</h3>
-                    <p class="text-gray-600">Get a fun and creative cartoon version of yourself or a loved one.</p>
-                </div>
-
-                <!-- Illustration 3 -->
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <img src="https://cdn.pixabay.com/photo/2017/03/07/23/33/technology-2125547_1280.jpg" alt="Animated Video" class="art-image mb-4 mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">Custom Animated Videos</h3>
-                    <p class="text-gray-600">Bring your stories to life with personalized animated videos.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <section class="py-16 bg-white">
-        <div id="art-listings" class="bg-white p-6 rounded-lg shadow-lg">
-            <h3 class="text-2xl font-bold mb-4">Art Listings</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {% for artwork in artworks %}
-                <div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
-                    <div class="flex items-center">
-                        <div class="transition-transform transform hover:scale-90 hover:shadow-lg">
-                            {% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
-                            <img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
-                            {% else %}
-                            <img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-8 h-8 rounded-full object-cover mr-2">
-                            {% endif %}
+                <div class="bg-gray-50 rounded-xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 ease-in-out transform hover:scale-105 overflow-hidden border-4 border-gray-200">
+
+                    <!-- Artist Info -->
+                    <div class="flex items-center p-4 bg-white border-b border-gray-200">
+                        {% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
+                        <img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-10 h-10 rounded-full object-cover mr-3 shadow-sm">
+                        {% else %}
+                        <img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-10 h-10 rounded-full object-cover mr-2 shadow-sm">
+                        {% endif %}
+                        <div>
+                            <span class="text-gray-500 font-semibold" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">
+                                {{ artwork.artist.first_name }}
+                            </span>
                         </div>
-                        <span class="text-gray-500 font-semibold">{{ artwork.artist.first_name }}</span>
                     </div>
-                    <br />
+
                     <!-- Artwork Image or Video -->
-                    <div class="w-full mb-4 transition-transform transform hover:scale-105">
+                    <div class="relative mb-4">
                         {% if artwork.image_path %}
-                        <img class="rounded-lg w-full h-64 object-cover transition-transform duration-300 transform hover:scale-105" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
+                        <img class="rounded-t-sm w-full h-48 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
                         {% elif artwork.video_path %}
-                        <video class="rounded-lg w-full h-64 object-cover transition-transform duration-300 transform hover:scale-105" controls>
+                        <video class="rounded-t-xl w-full h-100 object-cover" controls>
                             <source src="{{ artwork.video_path.url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -125,19 +125,37 @@
                     </div>
 
                     <!-- Artwork Details -->
-                    <div class="flex-1">
-                        <h3 class="text-xl font-semibold text-gray-800 truncate">{{ artwork.title }}</h3>
-                        <p class="text-gray-600 truncate" style="max-height: 3.6em; overflow: hidden; text-overflow: ellipsis;">{{ artwork.description }}</p>
+                    <div class="px-4">
+                        <h3 class="text-xl font-semibold text-blue-900 truncate mb-1 flex items-center" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);">
+                            <i class="fas fa-palette mr-2 text-blue-700"></i> <!-- Palette icon -->
+                            {{ artwork.title }}
+                        </h3>
+
+                        <hr class="border border-gray-300 my-2 px-0">
+
                     </div>
 
-                    <!-- Price at the bottom -->
-                    <p class="text-gray-800 font-bold mt-2">Price: ${{ artwork.price }}</p>
+                    <!-- Description -->
+                    <div class="px-4 py-2">
+                        <p class="text-gray-500 text-sm font-semibold truncate mb-2">{{ artwork.description }}</p>
+                    </div>
+
+                    <!-- Price and Details Button -->
+                    <div class="flex justify-between items-center p-4 bg-gray-100 rounded-b-xl">
+                        <p class="text-md font-bold text-indigo-600" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);">
+                            Price: ${{ artwork.price }}
+                        </p>
+                        <a href="{% url 'viewArtworkById' artwork.artwork_id %}" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-md shadow-lg transition-colors duration-300 ease-in-out transform hover:scale-105">
+                            View Details
+                        </a>
+                    </div>
                 </div>
+                {% empty %}
+                <p class="text-center col-span-3 text-gray-500">No artworks available at the moment.</p>
                 {% endfor %}
             </div>
         </div>
     </section>
-
 
 
     <!-- Footer Section -->
@@ -171,6 +189,36 @@
                 });
             });
         });
+
+		var swiper = new Swiper('.swiper-container', {
+			slidesPerView: 1,   // Number of slides visible at once
+			spaceBetween: 10,    // Space between slides
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev'
+			},
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+			breakpoints: {
+				// Responsive breakpoints to show more slides on larger screens
+				640: {
+					slidesPerView: 2,
+				},
+				768: {
+					slidesPerView: 3,
+				},
+				1024: {
+					slidesPerView: 4,
+				},
+			},
+			loop: true,  // Infinite loop
+			autoplay: {
+				delay: 2500,  // Slide change delay
+				disableOnInteraction: false,
+			},
+		});
     </script>
 
 </body>
