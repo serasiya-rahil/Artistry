@@ -68,38 +68,46 @@
 					{% endfor %}
 				</div>
 				{% endif %}
-            <div class="container mx-auto my-10 p-8 bg-white shadow-lg rounded-lg border border-gray-200">
-                {% if artist_profile %}
-                <h2 class="text-4xl font-semibold text-gray-800 mb-6">Artist Profile</h2>
-                <div class="flex items-start mb-8">
-                    <div class="mr-6">
-                        <img src="{{ artist_profile.profile_photo.url }}" alt="Profile Photo" class="w-32 h-32 object-cover rounded-full border-2 border-indigo-600 shadow-md">
-                    </div>
-                    <div>
-                        <h3 class="text-3xl font-bold text-gray-900">{{ artist_profile.user.username }}</h3>
-                        <p class="text-gray-700 text-lg mt-2"><strong>Bio:</strong> {{ artist_profile.bio }}</p>
-                        <p class="text-gray-700 text-lg mt-2"><strong>Website:</strong> <a href="{{ artist_profile.website }}" class="text-indigo-600 hover:underline">{{ artist_profile.website }}</a></p>
-                        <p class="text-gray-700 text-lg mt-2"><strong>Social Links:</strong> {{ artist_profile.social_links }}</p>
-                    </div>
-                </div>
+                <div class="container mx-auto my-10 p-8 bg-white shadow-lg rounded-lg border border-gray-200">
+                    {% if artist_profile %}
+                    <h2 class="text-4xl font-semibold text-gray-800 mb-6">Artist Profile</h2>
+                    <div class="flex flex-col md:flex-row items-start mb-8 space-y-4 md:space-y-0">
+                        <!-- Profile Picture -->
+                        <div class="flex-shrink-0 md:mr-6">
+                            <img src="{{ artist_profile.profile_photo.url }}" alt="Profile Photo"
+                                 class="w-32 h-32 object-cover rounded-full border-2 border-indigo-600 shadow-md">
+                        </div>
 
-                <!-- Edit Profile Button -->
-                <div class="mt-6">
-                    <a href="{% url 'edit_profile' profile.artist_id %}" class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white rounded-lg shadow transition duration-300 hover:bg-indigo-700">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5H4.5" />
-                        </svg>
-                        Edit Profile
-                    </a>
-                </div>
-                {% else %}
-                <h2 class="text-4xl font-semibold text-gray-800 mb-6">No Artist Profile Found</h2>
-                <p class="text-lg text-gray-600 mb-4">Please create your profile to showcase your artistry.</p>
+                        <!-- Profile Details -->
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold text-gray-900">{{ artist_profile.user.username }}</h3>
+                            <p class="text-gray-700 text-lg mt-2"><strong>Bio:</strong> {{ artist_profile.bio }}</p>
+                            <p class="text-gray-700 text-lg mt-2">
+                                <strong>Website:</strong>
+                                <a href="{{ artist_profile.website }}" class="text-indigo-600 hover:underline break-words">{{ artist_profile.website }}</a>
+                            </p>
+                            <p class="text-gray-700 text-lg mt-2"><strong>Social Links:</strong> {{ artist_profile.social_links }}</p>
+                        </div>
+                    </div>
 
-                <!-- Form for creating a profile if none exists -->
-                <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
-                {% endif %}
-            </div>
+
+                    <!-- Edit Profile Button -->
+                    <div class="mt-6">
+                        <a href="{% url 'edit_profile' profile.artist_id %}" class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white rounded-lg shadow transition duration-300 hover:bg-indigo-700">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5H4.5" />
+                            </svg>
+                            Edit Profile
+                        </a>
+                    </div>
+                    {% else %}
+                    <h2 class="text-4xl font-semibold text-gray-800 mb-6">No Artist Profile Found</h2>
+                    <p class="text-lg text-gray-600 mb-4">Please create your profile to showcase your artistry.</p>
+
+                    <!-- Form for creating a profile if none exists -->
+                    <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
+                    {% endif %}
+                </div>
         </main>
     </div>
 
