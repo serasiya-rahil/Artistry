@@ -396,6 +396,8 @@ def view_profile(request):
     profile = ArtistProfile.objects.filter(artist_id=artist.artist_id).first()
     if not profile:
         dbg.warn(f"No Profile retrieved for artist ID {artist.artist_id}")
+        dbg.info(f"Proceeding to Redirect to Artist Profile Creation fort - {artist.first_name}")
+        return redirect('edit_profile', artist.artist_id)
        
     try:
         artist_profile = ArtistProfile.objects.get(artist=artist)
@@ -406,37 +408,41 @@ def view_profile(request):
 
     return render(request, 'appln/artist_profile_form.html', {'artist_profile': artist_profile,'profile':profile})
 
+import os
+
 def edit_profile(request, artist_id):
-    artist_profile = get_object_or_404(ArtistProfile, artist_id=artist_id)
-    
+    artist_profile = None
+    try:
+        artist_profile = get_object_or_404(ArtistProfile, artist_id=artist_id)
+    except:
+        pass  # Allow artist_profile to remain None if not found
+
     if request.method == 'POST':
-        form = ArtistProfileForm(request.POST, request.FILES, instance=artist_profile)
-        
+        if artist_profile:
+            # Updating an existing profile
+            form = ArtistProfileForm(request.POST, request.FILES, instance=artist_profile)
+        else:
+            # Creating a new profile - Ensure artist_id is assigned
+            form = ArtistProfileForm(request.POST, request.FILES)
+            artist_profile = ArtistProfile(artist_id=artist_id)  # Initialize with artist_id
+
         if form.is_valid():
+            if artist_profile and 'profile_photo' in request.FILES:
+                # Check and delete the old profile photo
+                if artist_profile.profile_photo and os.path.isfile(artist_profile.profile_photo.path):
+                    try:
+                        os.remove(artist_profile.profile_photo.path)
+                        print(f"Deleted old file: {artist_profile.profile_photo.path}")
+                    except Exception as e:
+                        print(f"Error deleting file: {e}")
             
-            social_links = form.cleaned_data.get('social_links', '')
-            if social_links:
-               
-                links_list = [link.strip() for link in social_links.split(',')]
-                form.instance.social_links = ', '.join(links_list) 
-            
-            if 'profile_photo' in request.FILES:
-               
-                if artist_profile.profile_photo:
-                    old_photo_path = artist_profile.profile_photo.path
-                    print(f"Attempting to delete: {old_photo_path}")  
-                    if os.path.isfile(old_photo_path):
-                        try:
-                            os.remove(old_photo_path)
-                            print(f"Deleted: {old_photo_path}")  
-                        except Exception as e:
-                            print(f"Error deleting file: {e}")  
-            
-            form.save()
-            return redirect('view_profile') 
+            profile = form.save(commit=False)  # Don't save to DB yet
+            profile.artist_id = artist_id  # Ensure artist_id is set
+            profile.save()  # Save the profile to DB
+            return redirect('view_profile')  # Redirect after successful save
     else:
-        artist_profile=None
-        form = ArtistProfileForm(instance=artist_profile)
+        # Initialize the form for GET requests
+        form = ArtistProfileForm(instance=artist_profile) if artist_profile else ArtistProfileForm()
 
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
 
@@ -622,7 +628,7 @@ def edit_request(request, request_id):
 
     # Check if the request is editable
     if not request_instance.is_editable():
-        messages.info(request,"This request cannot be edited as it has already passed the allowed time for modifications.")
+        messages.info(request,"This request cannot be edited as the 3-hour modification window has passed.")
         return redirect('PastOrders')
 
     if request.method == 'POST':
