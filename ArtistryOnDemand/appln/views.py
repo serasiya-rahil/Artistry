@@ -172,7 +172,7 @@ def artistDashboard(request):
         CompletedRequest = Request.objects.filter(artist=artist.artist_id, status='Fulfilled').count()
         PendingRequest = Request.objects.filter(artist=artist.artist_id).exclude(status__in=['Fulfilled', 'Cancelled']).count()
         
-        artworks = Artwork.objects.filter(artist=artist)[:2]
+        artworks = Artwork.objects.filter(artist=artist)
         dbg.info(f"Total artworks found: {artworks.count()}")
         
         profile = ArtistProfile.objects.filter(artist_id=artist.artist_id).first()
@@ -187,9 +187,12 @@ def artistDashboard(request):
         
         search_query = request.GET.get('search', '')
         if search_query:
-            artworks = artworks.filter(title__icontains=search_query)
+            from django.db.models import Q
+
+            artworks = artworks.filter(Q(title__icontains=search_query))
             dbg.info(f"Search query applied: {search_query}, Total artworks after search: {artworks.count()}")
             
+        artworks = artworks[:3]
     except Artist.DoesNotExist:
         artworks = []
         artist = None 
