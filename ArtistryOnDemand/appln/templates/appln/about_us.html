@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>About Us</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            const dropdowns = document.querySelectorAll('.dropdown');
+
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.dropdown-content');
+
+                button.addEventListener('click', function () {
+                    // Toggle dropdown content display
+                    const isVisible = content.style.display === 'block';
+                    content.style.display = isVisible ? 'none' : 'block';
+                });
+            });
+
+            // Close dropdown if clicked outside
+            window.addEventListener('click', function (event) {
+                dropdowns.forEach(dropdown => {
+                    const content = dropdown.querySelector('.dropdown-content');
+                    if (!dropdown.contains(event.target) && content.style.display === 'block') {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+    <nav class="bg-white  shadow fixed top-0 left-0 w-full z-10"></nav>
+        <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+            <a href="" class="text-2xl font-bold text-blue-900">Artistry On Demand</a>
+            <div class="space-x-6">
+                <a href="{% url 'home' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-home"></i> Home</a>
+                <a href="{% url 'aboutUs' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-info-circle"></i> About</a>
+                <a href="{% url 'Services' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-paint-brush"></i> Services</a>
+                <a href="{% url 'ContactUs' %}" class="text-blue-900 hover:text-blue-500"> <i class="fas fa-envelope"></i> Contact</a>
+                <!-- Dropdown: User -->
+                <div class="relative inline-block text-left dropdown">
+                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-blue-300" id="userDropdown">
+                        <i class="fas fa-user-circle mr-2"></i> User
+                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="userDropdownContent">
+                        <a href="{% url 'login_user' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"><i class="fas fa-sign-in-alt mr-2"></i> Login</a>
+                        <a href="{% url 'UserSignup' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"> <i class="fas fa-user-plus mr-2"></i> Signup</a>
+                    </div>
+                </div>
+                <!-- Dropdown: Artist -->
+                <div class="relative inline-block text-left dropdown">
+                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-green-300" id="artistDropdown"> <i class="fas fa-paint-brush mr-2"></i> 
+                        Artist
+                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="artistDropdownContent">
+                        <a href="{% url 'artist_login' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"> <i class="fas fa-sign-in-alt mr-2"></i>  Login</a>
+                        <a href="{% url 'artist_signup' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"><i class="fas fa-user-plus mr-2"></i> Signup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-12 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h1 class="text-5xl font-extrabold">About Us</h1>
+            <p class="text-lg mt-4">
+                Empowering creativity by connecting users with talented artists for unique, personalized creations.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-12">
+        <!-- Welcome Section -->
+        <section class="mb-16">
+            <div class="flex flex-col lg:flex-row items-center gap-8">
+                <img src="{% static 'images/about-us.png' %}" alt="Artistic creation" class="rounded-lg shadow-md w-full lg:w-1/2">
+                <div>
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-6">Welcome to Our Platform</h2>
+                    <p class="text-lg leading-relaxed text-gray-700">
+                        Our platform connects <span class="font-semibold">artists</span> with users seeking 
+                        <span class="font-semibold">personalized artistic creations</span>. Whether it's a 
+                        <span class="font-semibold">hand-drawn sketch</span>, a 
+                        <span class="font-semibold">cartoon version</span> of themselves, an 
+                        <span class="font-semibold">animated video</span>, or a custom-made greeting for a special occasion, 
+                        we ensure every creation is tailored to your needs.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Offer Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-indigo-600 mb-12 text-center">What We Offer</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-2">
+                    <div class="flex items-center justify-center h-16 w-16 bg-indigo-100 rounded-full mb-6 mx-auto">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M10 14h10m-6 4h6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-indigo-600 mb-4 text-center">High-Quality Outputs</h3>
+                    <p class="text-gray-700 text-center">
+                        Every creation is tailored to your specifications, ensuring unique, premium artwork.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-2">
+                    <div class="flex items-center justify-center h-16 w-16 bg-indigo-100 rounded-full mb-6 mx-auto">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11m-2 10H5m7-4H3m16-4l2 2-2 2m-2-2h-6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-indigo-600 mb-4 text-center">Seamless Experience</h3>
+                    <p class="text-gray-700 text-center">
+                        Connect directly with artists on our intuitive, easy-to-use platform.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-2">
+                    <div class="flex items-center justify-center h-16 w-16 bg-indigo-100 rounded-full mb-6 mx-auto">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4m16 8H4m16-16H4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-indigo-600 mb-4 text-center">Creative Freedom</h3>
+                    <p class="text-gray-700 text-center">
+                        Artists deliver exceptional work while keeping your ideas in focus.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section>
+            <h2 class="text-3xl font-bold text-indigo-600 mb-6 text-center">Our Mission</h2>
+            <p class="text-lg leading-relaxed text-center text-gray-700 max-w-3xl mx-auto">
+                To bridge the gap between <span class="font-semibold">artists</span> and <span class="font-semibold">clients</span>, 
+                ensuring every interaction results in a memorable and meaningful artistic experience.
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-sm">&copy; 2024 Artistic Creations. All rights reserved.</p>
+            <p class="text-sm">Designed with ❤ by Our Team.</p>
+        </div>
+    </footer>
+</body>
+</html>
