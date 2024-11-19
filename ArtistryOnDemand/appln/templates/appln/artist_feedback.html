@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork Feedback</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function toggleComments(id) {
+            const commentsDiv = document.getElementById(`comments-${id}`);
+            commentsDiv.classList.toggle('hidden');
+        }
+
+        // Function to generate star rating HTML
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += `<span class="text-yellow-400">&#9733;</span>`;  // Filled star
+                } else {
+                    stars += `<span class="text-gray-300">&#9733;</span>`;   // Empty star
+                }
+            }
+            return stars;
+        }
+
+        // Function to display stars in the HTML
+        function displayStars() {
+            const ratings = document.querySelectorAll('.rating');
+            ratings.forEach(ratingElement => {
+                const rating = parseInt(ratingElement.dataset.rating);
+                ratingElement.innerHTML = generateStars(rating);
+            });
+        }
+
+        // Call the displayStars function after the page is loaded
+        window.onload = displayStars;
+    </script>
+</head>
+<body class="bg-gradient-to-b from-gray-100 to-gray-300 text-gray-900 min-h-screen flex flex-col">
+
+    <nav class="bg-gradient-to-b from-gray-100 to-gray-300 shadow"></nav>
+        <div class="container mx-auto px-4 py-5 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
+            <div class="space-x-6 flex items-center">
+                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <a href="{% url 'Services' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <i class="fas fa-cogs mr-2"></i> Services
+                </a>
+                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <i class="fas fa-user mr-2"></i> Profile
+                </a>
+                
+                <!-- Logout Form -->
+                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </button>
+                </form>
+                
+                <div class="flex items-center">
+                    <!-- Artist Name -->
+                    <span class="mr-3 text-blue-500 flex items-center">
+                        <i class="fas fa-user-tag mr-2"></i> {{ artist.first_name }}
+                    </span>
+                
+                    <!-- Profile Image -->
+                    <img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}"
+                         alt="Profile Image"
+                         class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
+                </div>
+                
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Main Content with Sidebar -->
+    <div class="container mx-auto flex flex-col md:flex-row mt-6">
+        <!-- Sidebar -->
+        <aside class="bg-gradient-to-b from-gray-100 to-gray-200 shadow-md rounded-lg p-6 w-full md:w-1/4">
+            <h2 class="text-xl font-semibold">Dashboard Menu</h2>
+            <ul class="mt-4 space-y-4">
+                <li><a href="{% url 'ViewRequestForArtist' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
+                <li><a href="{% url 'myListings' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings: {{ total_artworks }}</span></a></li>
+                <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
+                <li>
+                    <a href="{% url 'dashboard' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2">
+                        <span class="material-icons">analytics</span>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Feedback Section -->
+        <main class="md:w-3/4 w-full p-6">
+            {% for artwork in page_obj %}
+            <div class="bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl shadow-md overflow-hidden mb-10 max-w-2xl mx-auto">
+                <!-- Artwork Section -->
+                <div class="flex items-center p-4">
+                    <img 
+                        src="{{ artwork.image_path.url }}" 
+                        alt="{{ artwork.title }}" 
+                        class="w-20 h-20 object-cover rounded-md shadow-md mr-4"
+                    />
+                    <div>
+                        <h2 class="text-xl font-bold text-blue-700">{{ artwork.title }}</h2>
+                        <p class="text-gray-600 text-sm">{{ artwork.description }}</p>
+                    </div>
+                    
+                </div>
+                <!-- Display Average Rating -->
+                <div class="flex items-center mt-2 px-4">
+                    <span class="font-semibold text-gray-700">Average Rating: </span>
+                    <div class="flex items-center ml-2">
+                        {% if artwork.average_rating > 0 %}
+                            {% for i in artwork.stars %}
+                                <span class="material-icons text-yellow-500">star</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-gray-500">No Rating Available</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Display Rating Count -->
+                <div class="mt-1 px-4">
+                    {% if artwork.rating_count > 0 %}
+                        <span class="text-sm text-gray-600">({{ artwork.rating_count }} ratings)</span>
+                    {% else %}
+                        <span class="text-sm text-gray-500">No ratings yet</span>
+                    {% endif %}
+                </div>
+
+                <!-- Feedback Toggle Button -->
+                <div class="p-4">
+                    <button 
+                        class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-200"
+                        onclick="toggleComments({{ artwork.artwork_id }})">
+                        View Feedback
+                    </button>
+                </div>
+
+                <!-- Comments Section -->
+                <div id="comments-{{ artwork.artwork_id }}" class="hidden p-4 bg-gray-50 border-t">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Comments</h3>
+                        <button 
+                            class="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600"
+                            onclick="toggleComments({{ artwork.artwork_id }})">
+                            Close
+                        </button>
+                    </div>
+
+                    <!-- Check if there are feedbacks for the artwork -->
+                    {% if artwork.requests.all %}
+                        {% for request in artwork.requests.all %}
+                            {% if request.feedbacks %}
+                                <div class="p-3 bg-white rounded-lg shadow-sm mb-3">
+                                    <div class="flex items-center justify-between">
+                                        <!-- Username and Rating in the same line -->
+                                        <div class="flex items-center">
+                                            <strong class="text-blue-700 mr-2">{{ request.feedbacks.user.username }}</strong>
+                                            <div class="rating" data-rating="{{ request.feedbacks.rating }}"></div> <!-- Star rating -->
+                                        </div>
+
+                                        <!-- Date in smaller text -->
+                                        <span class="text-gray-500 text-xs">{{ request.feedbacks.created_at|date:"d M Y" }}</span>
+                                    </div>
+
+                                    <!-- Comment below -->
+                                    <p class="text-gray-700 mt-2">{{ request.feedbacks.comments }}</p>
+                                </div>
+                            {% else %}
+                                <!-- Display this message if no feedback is available -->
+                                <p class="text-gray-500">No feedback available for this artwork.</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <!-- If no requests or feedbacks, display no feedback available -->
+                        <p class="text-gray-500">No feedback available for this artwork.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-10">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" 
+                       class="px-6 py-3 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 shadow-md transition-all">
+                        ← Previous
+                    </a>
+                {% endif %}
+                <span class="text-gray-600 font-semibold text-lg">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" 
+                       class="px-6 py-3 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 shadow-md transition-all">
+                        Next →
+                    </a>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-6 bg-gray-800 text-white text-center mt-auto">
+        <p class="text-sm">&copy; {{ year }} Artwork Feedback Platform. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

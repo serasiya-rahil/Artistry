@@ -16,14 +16,18 @@
 		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
 			<a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
 			<div class="space-x-6 flex items-center">
-				<a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
-				<a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
-
+				<a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+					<span class="material-icons mr-2">home</span> Home
+				</a>
+				<a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+					<span class="material-icons mr-2">person</span> Profile
+				</a>
+				
 				<!-- Logout Form -->
 				<form method="post" action="{% url 'logout' %}" style="display: inline;">
 					{% csrf_token %}
-					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
-						Logout
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center">
+						<span class="material-icons mr-2">logout</span> Logout
 					</button>
 				</form>
 				<div class="flex items-center">
@@ -44,7 +48,7 @@
 			<ul class="mt-4 space-y-4">
 				<li><a href="{% url 'ViewRequestForArtist' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
 				<li><a href="{% url 'myListings' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings {{ artwork }}</span></a></li>
-				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+                <li><a href="{% url 'artist_feedback_view'  %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
 				<li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
 				<li>
 					<a href="{% url 'dashboard' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2">
@@ -100,6 +104,7 @@
 								Edit
 							</button>
 						</div>
+						
 					</li>
 					{% empty %}
 					<p class="text-gray-600">No artworks found.</p>
