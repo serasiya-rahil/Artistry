@@ -35,7 +35,8 @@ urlpatterns = [
     path('search-suggestions/', views.search_suggestions, name='search_suggestions'),
     path('get-artwork-details/', views.get_artwork_details, name='get_artwork_details'),
     path('feedback/<int:artwork_id>/', views.artwork_feedback, name='artwork_feedback'),
-    path('ContactUs/', views.ContactUs, name='ContactUs'),
+    path('Contact-Us/', views.ContactUs, name='ContactUs'),
+    path('About-Us/', views.aboutUs, name='aboutUs'),
     path('Artist-Feedback-View/', views.artist_feedback_view, name='artist_feedback_view'),
     path('logout/', views.custom_logout, name='logout'),
     

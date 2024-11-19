@@ -35,7 +35,6 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def home(request):
     
-    lgt.process_request(request)
     if(request.user):
         dbg.info(f"User {request.user} logged in")
     else:
@@ -974,11 +973,6 @@ def artwork_feedback(request, artwork_id):
 def ContactUs(request):
     return render(request, 'appln/ContactUs.html')
 
-from django.shortcuts import render
-from django.core.paginator import Paginator
-from django.db.models import Avg
-from .models import Artist, Artwork, Feedback
-
 def artist_feedback_view(request):
     artist = Artist.objects.get(username=request.user)
     artworks = artist.artworks.all()
@@ -1003,7 +997,6 @@ def artist_feedback_view(request):
 
     return render(request, 'appln/artist_feedback.html', {'artist': artist, 'page_obj': page_obj})
 
-
-
-
+def aboutUs(request):
+    return render(request, 'appln/about_us.html')
 
