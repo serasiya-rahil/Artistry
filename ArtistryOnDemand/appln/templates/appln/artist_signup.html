@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Signup</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <script>
         // Handle dropdown toggling
         document.addEventListener('DOMContentLoaded', function () {
@@ -42,34 +44,20 @@
         <div class="container mx-auto px-4 py-5 flex justify-between items-center">
             <a href="" class="text-2xl font-bold text-gray-900">Artistry On Demand</a>
             <div class="space-x-6">
-                <a href="" class="text-gray-600 hover:text-gray-900">Home</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">About</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
-                <!-- Dropdown: User -->
+                <a href="" class="text-blue-900 hover:text-blue-500"><i class="fas fa-home"></i> Home</a>
+                <a href="#" class="text-blue-900 hover:text-blue-500"><i class="fas fa-info-circle"></i> About</a>
+                <a href="{% url 'Services' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-paint-brush"></i> Services</a>
+                <a href="{% url 'ContactUs' %}" class="text-blue-900 hover:text-blue-500"> <i class="fas fa-envelope"></i> Contact</a>
                 <div class="relative inline-block text-left dropdown">
-                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-blue-300" id="userDropdown">
-                        User
-                        <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="userDropdownContent">
-                        <a href="{% url 'login_user' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
-                        <a href="{% url 'UserSignup' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
-                    </div>
-                </div>
-                <!-- Dropdown: Artist -->
-                <div class="relative inline-block text-left dropdown">
-                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-green-300" id="artistDropdown">
+                    <button class="text-gray-600 hover:text-gray-900 inline-flex items-center rounded-full px-4 py-2 bg-green-300" id="artistDropdown"> <i class="fas fa-paint-brush mr-2"></i> 
                         Artist
                         <svg class="ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
                     <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg" id="artistDropdownContent">
-                        <a href="{% url 'artist_login' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
-                        <a href="{% url 'artist_signup' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Signup</a>
+                        <a href="{% url 'artist_login' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"> <i class="fas fa-sign-in-alt mr-2"></i>  Login</a>
+                        <a href="{% url 'artist_signup' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"><i class="fas fa-user-plus mr-2"></i> Signup</a>
                     </div>
                 </div>
             </div>

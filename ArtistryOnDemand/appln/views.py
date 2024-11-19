@@ -327,7 +327,7 @@ def UserView(request):
     top_5_artworks = Artwork.objects.filter(artwork_id__in=top_5_artwork_ids)
 
     dbg.info("Fetching all artworks for UserView.")
-    artworks = Artwork.objects.all()
+    artworks = Artwork.objects.all().order_by('artwork_id')
    
     
     Profile_artworks = Artwork.objects.select_related('artist').prefetch_related('artist__profiles').all()
@@ -914,7 +914,7 @@ def dashboard(request):
 
 def myListings(request):
     artist = Artist.objects.get(username=request.user)
-    artworks = Artwork.objects.filter(artist=artist)
+    artworks = Artwork.objects.filter(artist=artist).order_by('artwork_id')
 
     # Set up pagination with 10 artworks per page
     paginator = Paginator(artworks, 2)  
@@ -947,6 +947,7 @@ def get_artwork_details(request):
     return JsonResponse(artwork_data)
 
 def artwork_feedback(request, artwork_id):
+    
     artwork = get_object_or_404(Artwork, artwork_id=artwork_id)
 
     # Get all feedbacks related to the artwork, filtering via the related 'request'
@@ -972,3 +973,37 @@ def artwork_feedback(request, artwork_id):
 
 def ContactUs(request):
     return render(request, 'appln/ContactUs.html')
+
+from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.db.models import Avg
+from .models import Artist, Artwork, Feedback
+
+def artist_feedback_view(request):
+    artist = Artist.objects.get(username=request.user)
+    artworks = artist.artworks.all()
+
+    # Paginate artworks
+    paginator = Paginator(artworks, 1)  # Show 1 artwork per page for now
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # For each artwork, calculate the average rating and prepare a list of stars
+    for artwork in page_obj:
+        feedbacks = Feedback.objects.filter(request__artwork=artwork)
+        average_rating = feedbacks.aggregate(Avg('rating'))['rating__avg'] or 0
+        rating_count = feedbacks.count()  # Get the number of ratings
+        
+        # If there's no rating, set average_rating to 0 and indicate 'No Rating Available'
+        artwork.average_rating = round(average_rating) if average_rating else 0
+        artwork.rating_count = rating_count
+        
+        # Create a range of stars for the template (this will be a list)
+        artwork.stars = range(1, artwork.average_rating + 1)
+
+    return render(request, 'appln/artist_feedback.html', {'artist': artist, 'page_obj': page_obj})
+
+
+
+
+

@@ -6,6 +6,8 @@
     <title>Artist Dashboard - Requests</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     {% load static %}
     <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 </head>
@@ -16,13 +18,17 @@
         <div class="container mx-auto px-4 py-5 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
             <div class="space-x-6 flex items-center">
-                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
-                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <i class="fas fa-user mr-2"></i> Profile
+                </a>
+               
                 <form method="post" action="{% url 'logout' %}" class="inline">
                     {% csrf_token %}
-                    <button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">
-                        Logout
+                    <button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </button>
                 </form>
                 <div class="flex items-center">
@@ -31,6 +37,7 @@
                          alt="Profile Image"
                          class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
                 </div>
+                
             </div>
         </div>
     </nav>
@@ -44,7 +51,7 @@
             <ul class="mt-4 space-y-4">
                 <li><a href="{% url 'ViewRequestForArtist' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
                 <li><a href="{% url 'myListings' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings {{ total_artworks }}</span></a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+                <li><a href="{% url 'artist_feedback_view'  %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
                 <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
                 <li><a href="{% url 'dashboard' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">analytics</span> <span>Analytics</span></a></li>
             </ul>
@@ -150,9 +157,7 @@
             {% endif %}
         </div>
     </div>
-    <footer class="bg-gray-900 text-white text-center py-4">
-        <p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
-    </footer>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 		$(document).ready(function () {
@@ -185,6 +190,10 @@
 		});
 
     </script>
+    <!-- Footer -->
+    <footer class="py-6 bg-gray-800 text-white text-center mt-auto">
+        <p class="text-sm">&copy; {{ year }} Artwork Feedback Platform. All Rights Reserved.</p>
+    </footer>
 </body>
 
 </html>

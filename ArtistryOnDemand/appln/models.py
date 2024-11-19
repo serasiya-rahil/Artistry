@@ -39,6 +39,12 @@ class Artist(models.Model):
     phone_number = models.CharField(max_length=20, validators=[ValidatePhoneNumberImpl])
     is_account_active = models.BooleanField(default=True)
 
+    def get_all_feedback(self):
+        """
+        Retrieve all feedback for the artist's artworks.
+        """
+        return Feedback.objects.filter(request__artwork__artist=self)
+
     def __str__(self):
         return (
             f"Artist ID: {self.artist_id}, User: {self.user}, "

@@ -15,8 +15,12 @@
         <div class="container mx-auto px-4 py-5 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
             <div class="space-x-6 flex items-center">
-                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
-                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
+                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <span class="material-icons mr-2">home</span> Home
+                </a>
+                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                    <span class="material-icons mr-2">person</span> Profile
+                </a>
                
                 <!-- Logout Form -->
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
@@ -41,7 +45,7 @@
             <ul class="mt-4 space-y-4">
                 <li><a href="{% url 'ViewRequestForArtist' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
                 <li><a href="{% url 'myListings' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings {{ total_artworks }}</span></a></li>
-                <li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+                <li><a href="{% url 'artist_feedback_view'  %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
                 
             </ul>
         </aside>
