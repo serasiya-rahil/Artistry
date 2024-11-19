@@ -172,7 +172,7 @@ def artistDashboard(request):
         CompletedRequest = Request.objects.filter(artist=artist.artist_id, status='Fulfilled').count()
         PendingRequest = Request.objects.filter(artist=artist.artist_id).exclude(status__in=['Fulfilled', 'Cancelled']).count()
         
-        artworks = Artwork.objects.filter(artist=artist)
+        artworks = Artwork.objects.filter(artist=artist)[:2]
         dbg.info(f"Total artworks found: {artworks.count()}")
         
         profile = ArtistProfile.objects.filter(artist_id=artist.artist_id).first()
@@ -911,6 +911,7 @@ def dashboard(request):
     
     return render(request, 'appln/artist_analytics.html', context)
 
+
 def myListings(request):
     artist = Artist.objects.get(username=request.user)
     artworks = Artwork.objects.filter(artist=artist).order_by('artwork_id')
@@ -999,4 +1000,3 @@ def artist_feedback_view(request):
 
 def aboutUs(request):
     return render(request, 'appln/about_us.html')
-
