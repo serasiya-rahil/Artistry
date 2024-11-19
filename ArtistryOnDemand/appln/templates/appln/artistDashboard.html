@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     {% load static %}
-    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">    
 </head>
 <body class="bg-gray-100">
 
@@ -219,11 +219,21 @@
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </main>
-    </div>
 
+    </div>
+    <div class="flex flex-col items-center min-h-screen bg-gray-100">
+        <a href="{% url 'myListings' %}" class="flex items-center text-blue-600 hover:text-blue-800 text-lg mt-4 px-6 py-3 rounded-lg border-2 border-blue-600 hover:bg-blue-600 hover:text-white transition duration-300">
+            <span class="material-icons mr-2">arrow_forward</span>
+            <span>View More</span>
+        </a>
+    </div>
+    
+    
+    
     <!-- Footer (Optional) -->
     <footer class="bg-gray-900 text-white text-center py-4">
         <p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
