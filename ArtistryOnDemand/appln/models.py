@@ -59,7 +59,7 @@ class Artwork(models.Model):
     artwork_id = models.AutoField(primary_key=True)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artworks')
     title = models.CharField(max_length=255, validators=[ValidateTitleImpl])
-    description = models.TextField(validators=[ValidateTitleImpl])
+    description = models.TextField()
     artwork_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')])
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[ValidatePriceImpl])
     image_path = models.ImageField(max_length=255, blank=True, null=True)
