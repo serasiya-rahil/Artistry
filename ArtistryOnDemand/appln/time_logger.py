@@ -52,7 +52,7 @@ def save_global_stats(stats):
         with open(STATS_FILE, "w") as file:
             file.write(pretty_xml)
     except IOError as e:
-        dbg.error(f"⚠️ Failed to save stats ({e}).")
+        dbg.error(f"Failed to save stats ({e}).")
 
 
 global_stats = load_global_stats()
@@ -82,10 +82,10 @@ def measure_time(func):
         avg_time_sec = global_stats["current_avg"]
         avg_time_ms = avg_time_sec * 1000
 
-        if execution_time_sec > 3:
+        if execution_time_sec > 2:
             dbg.warn(
                 f"Function '{func.__name__}' executed in {execution_time_sec:.2f} seconds "
-                f"({execution_time_ms:.2f} ms), exceeding the 3-second threshold! "
+                f"({execution_time_ms:.2f} ms), exceeding the 2-second threshold! "
                 f"(Global Avg: {avg_time_sec:.2f} seconds / {avg_time_ms:.2f} ms)"
             )
         else:
