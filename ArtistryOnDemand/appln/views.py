@@ -1,25 +1,26 @@
 import os
-import json
+#import json
 import re
 import shutil
 import stripe
-import requests
+#import requests
+from .time_logger import *
 from .Debug import *
 from django.db import models
 from datetime import datetime
-from django.db.models import Avg, Count
 from .logout_middleware import *
 from django.conf import settings
 from django.utils import timezone
 from django.contrib import messages
 from django.http import JsonResponse
-from django.http import HttpResponse
+#from django.http import HttpResponse
 from .models import User as CustomUser
+from django.db.models import Avg, Count
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
-from django.core.files.base import ContentFile
+#from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
-from django.contrib.auth.hashers import make_password
+#from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
@@ -27,12 +28,13 @@ from .models import Artist, Artwork, ArtistProfile, User as userModel, Feedback,
 from .forms import CustomUserSignupForm, ArtistSignupForm, ArtistLoginForm, ArtworkForm, EditArtworkForm, ArtistProfileForm, RequestForm, UploadForm, FeedbackForm
 
 
-dbg = SimpleDebugger(enabled=True)
+dbg = SimpleDebugger(enabled=False)
 lgt = SessionExpiryMiddleware(MiddlewareMixin)
 
 #STRIPE API KEY FROM SETTINGS
 stripe.api_key = settings.STRIPE_SECRET_KEY 
 
+@measure_time
 def home(request):
     
     if(request.user):
@@ -55,6 +57,7 @@ def home(request):
     dbg.info(f"Rendering Page home.html...")
     return render(request, 'appln/home.html', {'artworks': artworks,'Profile_artworks':Profile_artworks,'artworks_with_ratings': artworks_with_ratings})
 
+@measure_time
 def UserSignup(request):
     if request.method == 'POST':
         form = CustomUserSignupForm(request.POST)  # Populate the form with submitted data
@@ -80,7 +83,7 @@ def UserSignup(request):
     dbg.info("Rendering UserSignup.html for Signup...")
     return render(request, 'appln/UserSignup.html', {'form': form})
 
-
+@measure_time
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -110,7 +113,8 @@ def login_user(request):
     else:
         dbg.info("Displaying login page.")
         return render(request, 'appln/login.html')
-    
+
+@measure_time
 def artist_signup(request):
     if request.method == 'POST':
         form = ArtistSignupForm(request.POST)
@@ -130,6 +134,7 @@ def artist_signup(request):
 
     return render(request, 'appln/artist_signup.html', {'form': form})
 
+@measure_time
 def artist_login(request):
     if request.method == 'POST':
         form = ArtistLoginForm(request.POST)
@@ -162,6 +167,7 @@ def artist_login(request):
     return render(request, 'appln/artist_login.html', {'form': form})
 
 @login_required
+@measure_time
 def artistDashboard(request):
     try:
         dbg.info(f"Current User: {request.user}")
@@ -207,6 +213,7 @@ def artistDashboard(request):
     })
 
 @login_required
+@measure_time
 def add_artwork(request):
     artistobj = Artist.objects.get(username=request.user)
     dbg.info(f"Adding artwork for artist: {artistobj.username}")
@@ -235,6 +242,7 @@ def add_artwork(request):
     return render(request, 'appln/add_artwork.html', {'form': form})
 
 @login_required
+@measure_time
 def delete_artwork(request, artwork_id):
     isDeletable = True 
     artist = get_object_or_404(Artist, username=request.user)
@@ -276,6 +284,7 @@ def delete_artwork(request, artwork_id):
     return redirect('artistDashboard') 
 
 @login_required
+@measure_time
 def edit_artwork(request, artwork_id):
     artwork = get_object_or_404(Artwork, artwork_id=artwork_id, artist__username=request.user)
     dbg.info(f"Editing artwork: {artwork.title} (ID: {artwork_id}) by artist: {request.user.username}")
@@ -319,6 +328,7 @@ def edit_artwork(request, artwork_id):
     })
 
 @login_required
+@measure_time
 def UserView(request):
     
     top_5_artwork_ids = Request.objects.values('artwork') \
@@ -380,6 +390,7 @@ def UserView(request):
     })
 
 @login_required
+@measure_time
 def custom_logout(request):
     dbg.info(f"User {request.user} is logging out.")
     logout(request)
@@ -410,8 +421,9 @@ def view_profile(request):
 
     return render(request, 'appln/artist_profile_form.html', {'artist_profile': artist_profile,'profile':profile})
 
-import os
 
+@login_required
+@measure_time
 def edit_profile(request, artist_id):
     artist_profile = None
     try:
@@ -449,6 +461,7 @@ def edit_profile(request, artist_id):
     return render(request, 'appln/edit_profile.html', {'form': form, 'artist_profile': artist_profile})
 
 @login_required
+@measure_time
 def viewArtworkById(request, artwork_id):
     artwork = None
     try:
@@ -470,6 +483,8 @@ def viewArtworkById(request, artwork_id):
 
     return render(request, 'appln/ArtworkById.html', {'artwork': artwork})
 
+@login_required
+@measure_time
 def orderNow(request, artwork_id):
     artwork = get_object_or_404(Artwork, pk=artwork_id)
     
@@ -524,6 +539,7 @@ def orderNow(request, artwork_id):
         form = RequestForm()
 
     return render(request, 'appln/order_now.html', {'form': form, 'artwork': artwork, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY})
+
 
 def payment_success(request):
     session_id = request.GET.get('session_id')
@@ -581,6 +597,7 @@ def payment_success(request):
 
     return redirect('orderNow')
 
+@measure_time
 def move_file_to_permanent_storage(temp_path, permanent_path):
     temp_full_path = os.path.join(settings.MEDIA_ROOT, temp_path)
     permanent_full_path = os.path.join(settings.MEDIA_ROOT, permanent_path)
@@ -596,9 +613,13 @@ def move_file_to_permanent_storage(temp_path, permanent_path):
     else:
         return False
 
+@login_required
+@measure_time
 def payment_cancel(request):
     return render(request, 'payment_cancel.html')
 
+@login_required
+@measure_time
 def PastOrders(request):
 
     top_5_artwork_ids = Request.objects.values('artwork') \
@@ -624,6 +645,8 @@ def PastOrders(request):
 
     return render(request, 'appln/PastOrders.html',{'allOrders':allOrders, 'top_5_artworks':top_5_artworks})
 
+@login_required
+@measure_time
 def edit_request(request, request_id):
     request_instance = get_object_or_404(Request, request_id=request_id)
     RequestNumber = request_instance.request_id
@@ -701,6 +724,7 @@ def edit_request(request, request_id):
     return render(request, 'appln/edit_request.html', {'form': form, 'request': request_instance})
 
 @login_required
+@measure_time
 def ViewRequestForArtist(request):
     artistToSearch = Artist.objects.get(username=request.user)
     
@@ -718,6 +742,8 @@ def ViewRequestForArtist(request):
         'status_choices': status_choices,
     })
 
+@login_required
+@measure_time
 def update_request_status(request):
     if request.method == 'POST':
         request_id = request.POST.get('request_id')
@@ -750,6 +776,7 @@ def update_request_status(request):
 
 #Artist will view this when a request is made by the user
 @login_required
+@measure_time
 def view_request(request, request_id):
     artistProfile = Artist.objects.get(username=request.user)
 
@@ -769,6 +796,8 @@ def view_request(request, request_id):
     
     return render(request, 'appln/view_requestByID.html', context)
 
+@login_required
+@measure_time
 def upload_file(request, request_id):
     # Get the Request instance by request_id
     request_instance = Request.objects.get(request_id=request_id)
@@ -806,7 +835,7 @@ def upload_file(request, request_id):
         form = UploadForm(instance=upload_instance)  # If editing, pre-populate form with existing data
 
     return render(request, 'appln/upload_file.html', {'form': form, 'request': request_instance})
-
+@measure_time
 def upload_details(request, request_id):
   
     request_instance = get_object_or_404(Request, request_id=request_id)
@@ -821,6 +850,8 @@ def upload_details(request, request_id):
         'upload': upload_instance
     })
 
+@login_required
+@measure_time
 def give_feedback(request, request_id):
     request_instance = get_object_or_404(Request, request_id=request_id)
     currenrUser = userModel.objects.get(username=request.user)
@@ -858,6 +889,8 @@ def give_feedback(request, request_id):
         'star_values': star_values,
     })
 
+@login_required
+@measure_time
 def dashboard(request):
     userDetails = Artist.objects.get(username=request.user)
     active_user_count = User.objects.count()
@@ -914,7 +947,8 @@ def dashboard(request):
     
     return render(request, 'appln/artist_analytics.html', context)
 
-
+@login_required
+@measure_time
 def myListings(request):
     artist = Artist.objects.get(username=request.user)
     artworks = Artwork.objects.filter(artist=artist).order_by('artwork_id')
@@ -926,9 +960,11 @@ def myListings(request):
 
     return render(request, 'appln/MyListings.html', {'page_obj': page_obj})
 
+@measure_time
 def Services(request):
     return render(request,'appln/Services.html')
 
+@measure_time
 def search_suggestions(request):
     query = request.GET.get('query', '')
     suggestions = []
@@ -937,7 +973,8 @@ def search_suggestions(request):
         suggestions = [{'artwork_id': art.artwork_id, 'title': art.title} for art in artworks]
     return JsonResponse(suggestions, safe=False)
 
-
+@login_required
+@measure_time
 def get_artwork_details(request):
     artwork_id = request.GET.get('artwork_id')
     artwork = Artwork.objects.get(artwork_id=artwork_id)
@@ -949,6 +986,8 @@ def get_artwork_details(request):
     }
     return JsonResponse(artwork_data)
 
+@login_required
+@measure_time
 def artwork_feedback(request, artwork_id):
     
     artwork = get_object_or_404(Artwork, artwork_id=artwork_id)
@@ -977,6 +1016,8 @@ def artwork_feedback(request, artwork_id):
 def ContactUs(request):
     return render(request, 'appln/ContactUs.html')
 
+@login_required
+@measure_time
 def artist_feedback_view(request):
     artist = Artist.objects.get(username=request.user)
     artworks = artist.artworks.all()
@@ -1001,5 +1042,6 @@ def artist_feedback_view(request):
 
     return render(request, 'appln/artist_feedback.html', {'artist': artist, 'page_obj': page_obj})
 
+@measure_time
 def aboutUs(request):
     return render(request, 'appln/about_us.html')
