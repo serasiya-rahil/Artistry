@@ -83,8 +83,8 @@ def measure_time(func):
         avg_time_ms = avg_time_sec * 1000
 
         if execution_time_sec > 3:
-            dbg.warning(
-                f"⚠️ Function '{func.__name__}' executed in {execution_time_sec:.2f} seconds "
+            dbg.warn(
+                f"Function '{func.__name__}' executed in {execution_time_sec:.2f} seconds "
                 f"({execution_time_ms:.2f} ms), exceeding the 3-second threshold! "
                 f"(Global Avg: {avg_time_sec:.2f} seconds / {avg_time_ms:.2f} ms)"
             )

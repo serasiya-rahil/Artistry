@@ -44,6 +44,8 @@ def home(request):
 
     artworks = Artwork.objects.all()
     Profile_artworks = None
+
+    time.sleep(3)
     
     artworks_with_ratings = []
     for artwork in artworks:
