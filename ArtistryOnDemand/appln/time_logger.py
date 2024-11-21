@@ -26,11 +26,11 @@ def load_global_stats():
                 try:
                     current_avg = float(current_avg_elem.text)
                 except ValueError:
-                    dbg.warning("⚠️ Invalid value for current_avg in XML. Using default value.")
+                    dbg.warn("Invalid value for current_avg in XML. Using default value.")
             
             return {"total_time": total_time, "count": count, "current_avg": current_avg}
         except (ET.ParseError, IOError, AttributeError, ValueError) as e:
-            dbg.warning(f"⚠️ Failed to load stats ({e}). Initializing new stats.")
+            dbg.warn(f"Failed to load stats ({e}). Initializing new stats.")
     return {"total_time": 0.0, "count": 0, "current_avg": 0.0}
 
 
