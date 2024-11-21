@@ -138,12 +138,7 @@
                             <a href="{% url 'view_request' request.request_id %}" class="inline-flex items-center justify-center text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
                                 <span class="material-icons mr-1">visibility</span> View
                             </a>
-                            <form method="post" class="inline">
-                                {% csrf_token %}
-                                <button type="submit" class="inline-flex items-center justify-center text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
-                                    <span class="material-icons mr-1">done</span> Complete
-                                </button>
-                            </form>
+                            
                             <a href="{% url 'upload_file' request_id=request.request_id %}" class="inline-flex items-center justify-center text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg transition transform hover:scale-105">
                                 <span class="material-icons mr-1">cloud_upload</span> Upload
                             </a>
