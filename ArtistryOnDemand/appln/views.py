@@ -36,17 +36,10 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @measure_time
 def home(request):
-    
-    if(request.user):
-        dbg.info(f"User {request.user} logged in")
-    else:
-        dbg.info(f"No User is Logged In Currently")
 
     artworks = Artwork.objects.all()
     Profile_artworks = None
 
-    
-    
     artworks_with_ratings = []
     for artwork in artworks:
         avg_rating, total_rating = artwork.get_rating_stats()
