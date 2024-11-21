@@ -148,4 +148,4 @@ STRIPE_SECRET_KEY = 'sk_test_51QCeaWLBlqwoHKLkah1eSaz4Hgr3BHqTknKKM7ikD33XpGXhSO
 STRIPE_PUBLIC_KEY = 'pk_test_51QCeaWLBlqwoHKLkHUyIjxSwlYRWv7Ht0McQeJ50eQkSIAwxtbwWqUeGsWNvY321M5F5VToSLlOpsAVdou14RUVv00tioEWhsv'
 
 #Defines time in seconds user can edit their request, Usage in Request Model
-EDITABLE_TIME_LIMIT = 10800
+EDITABLE_TIME_LIMIT = 1080000000000000000000000

@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     {% load static %}
     <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'appln/styles.css' %}">
 </head>
 <body class="bg-gray-100">
@@ -16,16 +18,18 @@
         <div class="container mx-auto px-6 py-5 flex justify-between items-center">
             <a href="" class="text-3xl font-bold text-indigo-600">Artistry On Demand</a>
             <div class="space-x-6">
-                <a href="{% url 'home' %}" class="text-gray-600 hover:text-indigo-500">Home</a>
-                <a href="#" class="text-gray-600 hover:text-indigo-500">About</a>
-                <a href="#" class="text-gray-600 hover:text-indigo-500">Services</a>
-                <a href="#" class="text-gray-600 hover:text-indigo-500">Contact</a>
+                <a href="{% url 'UserView' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-home"></i> Home</a>
+                <a href="{% url 'aboutUs' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-info-circle"></i> About</a>
+                <a href="{% url 'Services' %}" class="text-blue-900 hover:text-blue-500"><i class="fas fa-paint-brush"></i> Services</a>
+                <a href="{% url 'ContactUs' %}" class="text-blue-900 hover:text-blue-500"> <i class="fas fa-envelope"></i> Contact</a>
+                <!-- Dropdown: User -->
                 <form method="post" action="{% url 'logout' %}" class="inline">
                     {% csrf_token %}
-                    <button type="submit" class="text-gray-600 hover:text-indigo-500 border-none cursor-pointer">
-                        Logout
+                    <button type="submit" class="text-blue-900 hover:text-indigo-500 border-none cursor-pointer">
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </form>
+                
             </div>
         </div>
     </nav>
@@ -37,9 +41,8 @@
             <aside class="bg-white shadow-lg rounded-lg p-6 w-1/4">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">Dashboard Menu</h2>
                 <ul class="space-y-4">
-                    <li><a href="#" onclick="showArtListings()" class="block text-gray-600 hover:text-indigo-600">View Art Listings</a></li>
-                    <li><a href="#" class="block text-gray-600 hover:text-indigo-600">View Past Orders: {{ order_count }}</a></li>
-                    <li><a href="#" class="block text-gray-600 hover:text-indigo-600">Give Feedback</a></li>
+                    <li><a href="{% url 'UserView' %}" onclick="showArtListings()" class="block text-gray-600 hover:text-indigo-600">View Art Listings</a></li>
+                    <li><a href="{% url 'PastOrders' %}" class="block text-gray-600 hover:text-indigo-600">View Past Orders: {{ order_count }}</a></li>
                 </ul>
             </aside>
 

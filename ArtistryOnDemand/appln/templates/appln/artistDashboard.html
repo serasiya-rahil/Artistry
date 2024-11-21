@@ -16,22 +16,22 @@
     <!-- Navbar -->
     <nav class="bg-white shadow">
         <div class="container mx-auto px-4 py-5 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-gray-900">Artistry on Demand</a>
+            <a href="#" class="text-2xl font-bold text-blue-900">Artistry on Demand</a>
             <div class="space-x-6 flex items-center">
-                <a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                <a href="{% url 'artistDashboard' %}" class="text-blue-900 hover:text-gray-900 flex items-center">
                     <i class="fas fa-home mr-2"></i> Home
                 </a>
-                <a href="{% url 'Services' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
-                    <i class="fas fa-cogs mr-2"></i> Services
+                <a href="{% url 'Services' %}" class="text-blue-900 hover:text-gray-900 flex items-center">
+                    <i class="fas fa-paint-brush"></i>&nbsp; Services
                 </a>
-                <a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900 flex items-center">
+                <a href="{% url 'view_profile' %}" class="text-blue-900 hover:text-gray-900 flex items-center">
                     <i class="fas fa-user mr-2"></i> Profile
                 </a>
                 
                 <!-- Logout Form -->
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
                     {% csrf_token %}
-                    <button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center">
+                    <button type="submit" class="text-blue-900 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </button>
                 </form>
