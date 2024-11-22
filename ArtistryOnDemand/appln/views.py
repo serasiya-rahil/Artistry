@@ -880,7 +880,7 @@ def give_feedback(request, request_id):
     return render(request, 'appln/feedback_form.html', {
         'form': form,
         'request': request_instance,
-        'existing_rating': existing_rating,  # This will be an integer,
+        'existing_rating': existing_rating,  
         'star_values': star_values,
     })
 
