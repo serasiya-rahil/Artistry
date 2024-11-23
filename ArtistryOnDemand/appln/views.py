@@ -118,10 +118,12 @@ def artist_signup(request):
             artist = form.save()
             dbg.info(f"Artist signed up successfully: {artist.username}")
             user = User.objects.get(username=artist.username)
+            messages.success(request, "Account Created Successfully")
             login(request, user)
             dbg.info(f"User logged in: {user}")
-            return redirect('home')  
+            return redirect('artistDashboard')  
         else:
+            
             dbg.error("Artist signup form is not valid.")
     else:
         dbg.info("Displaying artist signup form.")

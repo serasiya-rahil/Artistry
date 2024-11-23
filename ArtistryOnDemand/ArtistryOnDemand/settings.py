@@ -80,9 +80,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'ArtistryOnDemand',  # Replace with your actual database name
-        'USER': '',       # Replace with your SQL Server username
-        'PASSWORD': '',   # Replace with your SQL Server password
-        'HOST': '(LocalDB)\\MSSQLLocalDB',  # SQL Server instance
+        'USER': 'rahil',       # Replace with your SQL Server username
+        'PASSWORD': 'rahil',   # Replace with your SQL Server password
+        'HOST': 'DESKTOP-99B9D8G\\SQLEXPRESS',  # SQL Server instance
         'PORT': '',  # Keep empty for default SQL Server port
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',  # Ensure you have this installed
