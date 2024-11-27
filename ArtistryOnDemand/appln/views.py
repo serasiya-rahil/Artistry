@@ -225,6 +225,7 @@ def add_artwork(request):
         
             artwork.save() 
             dbg.info(f"Artwork saved successfully: {artwork.title}")
+            messages.success(request,'{artwork.title} saved successfully')
             return redirect('artistDashboard')  
     else:
         form = ArtworkForm()
@@ -450,7 +451,8 @@ def edit_profile(request, artist_id):
             
             profile = form.save(commit=False)  # Don't save to DB yet
             profile.artist_id = artist_id  # Ensure artist_id is set
-            profile.save()  # Save the profile to DB
+            profile.save()
+            messages.success(request,f'Profile Saved Successfully') # Save the profile to DB
             return redirect('view_profile')  # Redirect after successful save
     else:
         # Initialize the form for GET requests
