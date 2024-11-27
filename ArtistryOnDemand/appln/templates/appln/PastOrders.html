@@ -127,7 +127,7 @@
 				</div>
 
 				<h2 class="text-3xl font-bold mb-2 text-center text-blue-800">Request Management</h2>
-
+				
 				<!-- Alerts for Messages -->
 				{% if messages %}
 				<div class="mb-6">
@@ -150,7 +150,16 @@
 					{% endfor %}
 				</div>
 				{% endif %}
-
+				<div class="p-4">
+					<a href="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'UserView' %}{% endif %}" 
+					   class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition ease-in-out duration-300">
+						<i class="fas fa-arrow-left mr-2"></i> Back
+					</a>
+					<a href="{% url 'UserView' %}" 
+					class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition ease-in-out duration-300">
+					 <i class="fas fa-home mr-2"></i> Home
+				 </a>
+				</div>
 				<!-- Table for Requests -->
 				<div class="overflow-x-auto">
 					<table class="min-w-full bg-gradient-to-r from-indigo-900 to-blue-900 text-white shadow-md rounded-lg overflow-hidden">

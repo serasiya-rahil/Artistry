@@ -313,6 +313,7 @@ def edit_artwork(request, artwork_id):
                 dbg.info(f"New video uploaded: {artwork.video_path.name}")
 
             artwork.save()
+            messages.success(request,f"{artwork.title} updated successfully: ")
             dbg.info(f"Artwork updated successfully: {artwork.title}")
             return redirect('artistDashboard')
     else:
@@ -504,7 +505,7 @@ def orderNow(request, artwork_id):
                 }],
                 mode='payment',
                 success_url=request.build_absolute_uri('/success/') + '?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=request.build_absolute_uri('/cancel/'),
+                cancel_url=request.build_absolute_uri(f'/Order-Now/{artwork_id}'),
             )
 
             # Initialize temp_form_data for session storage
@@ -1042,3 +1043,49 @@ def artist_feedback_view(request):
 @measure_time
 def aboutUs(request):
     return render(request, 'appln/about_us.html')
+
+@login_required
+@measure_time
+def viewProfileAndArtworks(request, username):
+    # Retrieve the artist by username
+    artist = get_object_or_404(Artist, username=username)
+
+    # Retrieve the artist's profile based on their ID
+    profile = get_object_or_404(ArtistProfile, artist_id=artist.artist_id)
+
+    # Retrieve all artworks associated with the artist
+    artworks = Artwork.objects.filter(artist_id=artist.artist_id)
+    avg_rating_dict = (
+        Feedback.objects
+        .values('request__artwork_id')
+        .annotate(
+            avg_rating=models.Avg('rating'),
+            rating_count=models.Count('rating')
+        )
+    )
+
+    # Map average ratings and counts to a dictionary
+    avg_rating_dict = {item['request__artwork_id']: {'avg_rating': item['avg_rating'], 'rating_count': item['rating_count']} for item in avg_rating_dict}
+
+    # Add average rating and count to each artwork
+    for artwork in artworks:
+        rating_info = avg_rating_dict.get(artwork.artwork_id, {'avg_rating': 0, 'rating_count': 0})
+        artwork.avg_rating = float(rating_info['avg_rating']) if rating_info['avg_rating'] else 0
+        dbg.info(f"Rating: {artwork.avg_rating} {type(artwork.avg_rating)}")
+        artwork.rating_count = rating_info['rating_count']
+
+    # Apply pagination
+    paginator = Paginator(artworks, 3)  # Display 6 artworks per page
+    page_number = request.GET.get('page')  # Get the current page number from the query parameters
+    page_obj = paginator.get_page(page_number)  # Get the artworks for the current page
+
+    # Pass data to the template
+    context = {
+        'artist': artist,
+        'profile': profile,
+        'page_obj': page_obj,  # Pass the paginated object to the template
+        'avg_rating_dict': avg_rating_dict,
+        'star_range': range(1, 6),
+    }
+
+    return render(request, 'appln/viewProfileAndArtworks.html', context)

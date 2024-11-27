@@ -38,6 +38,7 @@ urlpatterns = [
     path('Contact-Us/', views.ContactUs, name='ContactUs'),
     path('About-Us/', views.aboutUs, name='aboutUs'),
     path('Artist-Feedback-View/', views.artist_feedback_view, name='artist_feedback_view'),
+    path('View-Profile-Artworks/<str:username>', views.viewProfileAndArtworks, name='viewProfileAndArtworks'),
     path('logout/', views.custom_logout, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
