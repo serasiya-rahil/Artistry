@@ -78,16 +78,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ArtistryOnDemand.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-import os
-from django.db import connections
 
-# Try connecting to SQL Server first
-try:
-    connections['default'].cursor()
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'mssql',
             'NAME': 'ArtistryOnDemand',  # Replace with your actual database name
@@ -98,15 +91,6 @@ try:
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server',  # Ensure you have this installed
             },
-        }
-    }
-except Exception as e:
-    # If SQL Server is not available, fall back to SQLite
-    print(f"SQL Server not available, falling back to SQLite: {e}")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite3 backend
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Path to your SQLite database file
         }
     }
 
