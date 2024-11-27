@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Artist Dashboard</title>
 	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 	{% load static %}
 	<link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
 	<!-- Material Icons CDN for sidebar icons -->
@@ -13,38 +15,54 @@
 <body class="bg-gray-100">
 
 	<!-- Navbar -->
-	<nav class="bg-white shadow-md">
+	<nav class="bg-white shadow fixed top-0 left-0 w-full z-10">
 		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
-			<a href="#" class="text-2xl font-bold text-gray-800">Artistry on Demand</a>
+			<a href="" class="text-2xl font-bold text-blue-900 flex items-center space-x-2">
+				<i class="fas fa-palette text-indigo-600"></i> <!-- Main logo icon -->
+				<span >Artistry On Demand</span>
+			</a>
 			<div class="space-x-6 flex items-center">
-				<a href="{% url 'artistDashboard' %}" class="text-gray-600 hover:text-gray-900">Home</a>
-				<a href="{% url 'view_profile' %}" class="text-gray-600 hover:text-gray-900">Profile</a>
-				<a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+				<a href="{% url 'UserView' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-home"></i> <!-- Home icon -->
+					<span>Home</span>
+				</a>
+				<a href="{% url 'aboutUs' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-info-circle"></i> <!-- About icon -->
+					<span>About</span>
+				</a>
+				<a href="{% url 'Services' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-paint-brush"></i> <!-- Services icon -->
+					<span>Services</span>
+				</a>
+				<a href="{% url 'ContactUs' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-envelope"></i> <!-- Contact icon -->
+					<span>Contact</span>
+				</a>
 				<form method="post" action="{% url 'logout' %}" style="display: inline;">
 					{% csrf_token %}
-					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer">Logout</button>
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center space-x-2">
+						<i class="fas text-blue-900 fa-sign-out-alt"></i> <!-- Logout icon -->
+						<span>Logout</span>
+					</button>
 				</form>
-				<div class="flex items-center">
-					<span class="mr-3 text-blue-500">{{ artist.first_name }}</span>
-					<img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}{% static 'images/Default.png' %}{% endif %}" alt="Profile Image" class="w-8 h-8 rounded-full object-cover border-2 border-gray-300">
-				</div>
 			</div>
 		</div>
 	</nav>
+   
 
 	<!-- Main Content -->
-	<div class="container mx-auto flex flex-col md:flex-row mt-8 space-y-6 md:space-y-0 md:space-x-8">
+	<div class="container mx-auto flex flex-col md:flex-row mt-8 space-y-6 md:space-y-0 space-x-8">
 		<!-- Sidebar -->
-		<aside class="bg-white shadow-md rounded-lg p-6 w-full md:w-1/4">
-			<h2 class="text-xl font-semibold">Dashboard Menu</h2>
-			<ul class="mt-4 space-y-4">
-				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
-				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings: {{ total_artworks }}</span></a></li>
-				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
-				<li><a href="#" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">settings</span> <span>Account Settings</span></a></li>
-				<li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
-			</ul>
-		</aside>
+		<aside class="bg-white shadow-md rounded-lg p-10  w-full md:w-1/4">
+            
+            <ul class="mt-4 space-y-4">
+                <li><a href="{% url 'ViewRequestForArtist' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">track_changes</span> <span>Track Requests</span></a></li>
+                <li><a href="{% url 'myListings' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">list</span> <span>My Listings: {{ total_artworks }}</span></a></li>
+                <li><a href="{% url 'artist_feedback_view'  %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">feedback</span> <span>Manage Feedback</span></a></li>
+
+                <li><a href="{% url 'add_artwork' %}" class="block text-gray-600 hover:text-blue-500 flex items-center space-x-2"><span class="material-icons">add_circle</span> <span>Add Listing</span></a></li>
+            </ul>
+        </aside>
 
 		<!-- Dashboard Main Content -->
 		<main class="flex-1 bg-white shadow-md rounded-lg p-6">
@@ -96,6 +114,11 @@
 
 					<button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Save</button>
 				</form>
+				<br>
+					<a href="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'UserView' %}{% endif %}" 
+					   class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition ease-in-out duration-300">
+						<i class="fas fa-arrow-left mr-2"> </i>Back
+					</a>
 			</div>
 		</main>
 	</div>

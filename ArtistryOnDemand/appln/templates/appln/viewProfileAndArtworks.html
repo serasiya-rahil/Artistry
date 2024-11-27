@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Artistry On Demand</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/color-palette.png' %}">
+</head>
+
+<body class="bg-gray-100">
+    <!-- Navbar -->
+  
+	<nav class="bg-white shadow fixed top-0 left-0 w-full z-10">
+		<div class="container mx-auto px-4 py-5 flex justify-between items-center">
+			<a href="" class="text-2xl font-bold text-blue-900 flex items-center space-x-2">
+				<i class="fas fa-palette text-indigo-600"></i> <!-- Main logo icon -->
+				<span >Artistry On Demand</span>
+			</a>
+			<div class="space-x-6 flex items-center">
+				<a href="{% url 'UserView' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-home"></i> <!-- Home icon -->
+					<span>Home</span>
+				</a>
+				<a href="{% url 'aboutUs' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-info-circle"></i> <!-- About icon -->
+					<span>About</span>
+				</a>
+				<a href="{% url 'Services' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-paint-brush"></i> <!-- Services icon -->
+					<span>Services</span>
+				</a>
+				<a href="{% url 'ContactUs' %}" class="text-gray-600 hover:text-gray-900 flex items-center space-x-2">
+					<i class="fas text-blue-900 fa-envelope"></i> <!-- Contact icon -->
+					<span>Contact</span>
+				</a>
+				<form method="post" action="{% url 'logout' %}" style="display: inline;">
+					{% csrf_token %}
+					<button type="submit" class="text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center space-x-2">
+						<i class="fas text-blue-900 fa-sign-out-alt"></i> <!-- Logout icon -->
+						<span>Logout</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+   
+    
+    <!-- User Profile Section -->
+    <section class="container mx-auto pt-32 pb-12">
+        
+        <div class="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto">
+            <div class="flex items-center space-x-6">
+                {% if profile.profile_photo %}
+                <img src="{{ profile.profile_photo.url }}" alt="User Photo" class="w-24 h-24 rounded-full object-cover shadow-md">
+                {% else %}
+                <img src="{% static 'images/Default.png' %}" alt="Default Photo" class="w-24 h-24 rounded-full object-cover shadow-md">
+                {% endif %}
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">{{ artist.username }}</h1>
+                    <p class="text-gray-500">{{ profile.bio }}</p>
+                   
+                    <div class="p-4">
+            <a href="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'UserView' %}{% endif %}" 
+               class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition ease-in-out duration-300">
+                <i class="fas fa-arrow-left mr-2"></i> Back
+            </a>
+            <a href="{% url 'UserView' %}" 
+            class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition ease-in-out duration-300">
+             <i class="fas fa-home mr-2"></i> Home
+         </a>
+        </div>
+        </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Artworks Section -->
+    <section class="container mx-auto py-8 px-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">My Artworks</h2>
+        
+        <div id="art-listings" class="bg-white p-8 rounded-lg shadow-lg mt-8">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
+
+                {% for artwork in page_obj  %}
+                <div class="bg-gray-50 rounded-xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 ease-in-out transform hover:scale-105 overflow-hidden border-4 border-black-100">
+
+                    <!-- Artist Info -->
+                    <div class="flex items-center p-4 bg-white border-b border-gray-200">
+                        {% if artwork.artist.profiles.first and artwork.artist.profiles.first.profile_photo %}
+                        <img src="{{ artwork.artist.profiles.first.profile_photo.url }}" alt="Artist Photo" class="w-10 h-10 rounded-full object-cover mr-3 shadow-sm">
+                        {% else %}
+                        <img src="{% static 'images/Default.png' %}" alt="Default Artist Photo" class="w-10 h-10 rounded-full object-cover mr-2 shadow-sm">
+                        {% endif %}
+                        <div>
+                            <span class="text-gray-500 font-semibold" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">
+        
+                                <a href="/View-Profile-Artworks/{{ artwork.artist.username }}" class="text-blue-500 hover:underline"> {{ artwork.artist.username }}</a>
+
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="relative mb-4">
+                        <!-- Artwork Image or Video -->
+                        {% if artwork.image_path %}
+                        <img class="rounded-t-sm w-full h-48 object-cover" src="{{ artwork.image_path.url }}" alt="{{ artwork.title }}">
+                        {% elif artwork.video_path %}
+                        <video class="rounded-t-xl w-full h-48 object-cover" controls>
+                            <source src="{{ artwork.video_path.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Artwork Details -->
+                    <div class="px-4">
+                        <h3 class="text-sm font-semibold text-blue-900 truncate mb-1 flex items-center" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);">
+                            <i class="fas fa-palette mr-2 text-blue-700"></i>  <!-- Palette icon -->
+                            {{ artwork.title }}
+                        </h3>
+
+
+
+                        <hr class="border border-gray-300 my-2 px-0">
+
+                        {% if artwork.avg_rating %}
+                        <div class="text-blue-700 text-xs font-bold flex items-center space-x-1">
+                            <span>Rating</span>
+                            {% for i in star_range %}
+                            {% if i <= artwork.avg_rating %}
+                            <a href="{% url 'artwork_feedback' artwork.artwork_id %}" class="cursor-pointer">⭐</a> <!-- Full star -->
+                            {% elif i == artwork.avg_rating|add:0.5 %}
+                            <a href="{% url 'artwork_feedback' artwork.artwork_id %}" class="cursor-pointer">⭐</a> <!-- Half star -->
+                            {% else %}
+                            <a href="{% url 'artwork_feedback' artwork.artwork_id %}" class="cursor-pointer">☆</a> <!-- Empty star -->
+                            {% endif %}
+                            {% endfor %}
+                            <span>({{ artwork.rating_count }} ratings)</span>
+                        </div>
+                        {% else %}
+                        <div class="text-blue-700 text-xs font-bold flex items-center space-x-1">
+                            <span>Rating</span>
+                            {% for i in star_range %}
+                            <span>☆</span> <!-- Empty star when no rating -->
+                            {% endfor %}
+                            (0 ratings)
+                        </div>
+
+                        {% endif %}
+                    </div>
+                    <div class="px-4 py-2">
+                        <p class="text-gray-500 text-sm font-semibold truncate mb-2">{{ artwork.description }}</p>
+
+                    </div>
+                    <hr class="border border-gray-300">
+                    <!-- Price and Details Button -->
+                    <div class="flex justify-between items-center p-4 bg-gray-100 rounded-b-xl">
+                        <hr class="border-t-2 border-gray-300 my-2">
+                        <p class="text-md font-bold text-indigo-600" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);">
+                            Price: ${{ artwork.price }}
+                        </p>
+
+                        <a href="{% url 'viewArtworkById' artwork.artwork_id %}" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-md shadow-lg transition-colors duration-300 ease-in-out transform hover:scale-105">
+                            View Details
+                        </a>
+
+                    </div>
+
+                </div>
+                {% empty %}
+                <p class="text-center col-span-3 text-gray-500">No artworks available at the moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="mt-6 flex justify-center">
+            <nav aria-label="Pagination">
+                <ul class="flex space-x-2">
+                    {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 border rounded-md bg-white hover:bg-gray-100">
+                            Previous
+                        </a>
+                    </li>
+                    {% endif %}
+        
+                    {% for num in page_obj.paginator.page_range %}
+                    <li>
+                        <a href="?page={{ num }}" class="px-3 py-1 border rounded-md {% if num == page_obj.number %} bg-indigo-600 text-white {% else %} bg-white hover:bg-gray-100 {% endif %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endfor %}
+        
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 border rounded-md bg-white hover:bg-gray-100">
+                            Next
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-4">
+        <p>&copy; 2024 Artistry On Demand. All rights reserved.</p>
+    </footer>
+</body>
+</html>

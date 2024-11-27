@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     {% load static %}
     <!-- Material Icons CDN for sidebar icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -103,6 +105,10 @@
                             </svg>
                             Edit Profile
                         </a>
+                        <a href="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'UserView' %}{% endif %}" 
+					   class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition ease-in-out duration-300">
+						<i class="fas fa-arrow-left mr-2"> </i>Back
+					</a>
                     </div>
                     {% else %}
                     <h2 class="text-4xl font-semibold text-gray-800 mb-6">No Artist Profile Found</h2>
