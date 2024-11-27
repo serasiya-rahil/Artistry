@@ -16,6 +16,11 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Adjust path if needed
+]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -24,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!bswy@w=chn@am&1v-88^0)7ac^sba=v*#@@--)wsu467-o+8^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,19 +81,35 @@ WSGI_APPLICATION = 'ArtistryOnDemand.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'ArtistryOnDemand',  # Replace with your actual database name
-        'USER': 'rahil',       # Replace with your SQL Server username
-        'PASSWORD': 'rahil',   # Replace with your SQL Server password
-        'HOST': 'DESKTOP-99B9D8G\\SQLEXPRESS',  # SQL Server instance
-        'PORT': '',  # Keep empty for default SQL Server port
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Ensure you have this installed
-        },
+import os
+from django.db import connections
+
+# Try connecting to SQL Server first
+try:
+    connections['default'].cursor()
+    DATABASES = {
+        'default': {
+            'ENGINE': 'mssql',
+            'NAME': 'ArtistryOnDemand',  # Replace with your actual database name
+            'USER': 'rahil',  # Replace with your SQL Server username
+            'PASSWORD': 'rahil',  # Replace with your SQL Server password
+            'HOST': 'DESKTOP-99B9D8G\\SQLEXPRESS',  # SQL Server instance
+            'PORT': '',  # Keep empty for default SQL Server port
+            'OPTIONS': {
+                'driver': 'ODBC Driver 17 for SQL Server',  # Ensure you have this installed
+            },
+        }
     }
-}
+except Exception as e:
+    # If SQL Server is not available, fall back to SQLite
+    print(f"SQL Server not available, falling back to SQLite: {e}")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite3 backend
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Path to your SQLite database file
+        }
+    }
+
 
 
 
