@@ -71,12 +71,12 @@
 					<h1 class="text-2xl text-center font-bold">Create Your Account</h1>
 					<p class="mb-4 text-center">Please fill in the form below to create an account.</p>
 				</div>
-				<form method="POST" novalidate>
+				<form method="POST">
 					{% csrf_token %}
 
 					<div class="mb-4">
 						<label for="first_name" class="block text-sm font-medium text-gray-700">First Name:</label>
-						<input type="text" id="first_name" name="first_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="first_name" value="{{ form.first_name.value|default_if_none:'' }}" name="first_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 
 						{% if form.first_name.errors %}
 						<div class="text-red-500 text-xs">{{ form.first_name.value }} {{ form.first_name.errors }}</div>
@@ -85,7 +85,7 @@
 
 					<div class="mb-4">
 						<label for="last_name" class="block text-sm font-medium text-gray-700">Last Name:</label>
-						<input type="text" id="last_name" name="last_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="last_name" value="{{ form.last_name.value|default_if_none:'' }}" name="last_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 
 						{% if form.last_name.errors %}
 						<div class="text-red-500 text-xs"> {{ form.last_name.value }} {{ form.last_name.errors }}</div>
@@ -94,7 +94,7 @@
 
 					<div class="mb-4">
 						<label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
-						<input type="text" id="username" name="username" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="username" value="{{ form.username.value|default_if_none:'' }}" name="username" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.username.errors %}
 						<div class="text-red-500 text-xs"> {{ form.username.errors }}</div>
 						{% endif %}
@@ -102,7 +102,7 @@
 
 					<div class="mb-4">
 						<label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-						<input type="email" id="email" name="email" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="email" id="email" value="{{ form.email.value|default_if_none:'' }}" name="email" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 
 						{% if form.email.errors %}
 						<div class="text-red-500 text-xs"> {{ form.email.errors }}</div>
@@ -111,7 +111,7 @@
 
 					<div class="mb-4">
 						<label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number:</label>
-						<input type="number" id="phone_number" maxlength="10" name="phone_number" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="number" id="phone_number" value="{{ form.phone_number.value|default_if_none:'' }}" maxlength="10" name="phone_number" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.phone_number.errors %}
 						<div class="text-red-500 text-xs"> {{ form.phone_number.errors }}</div>
 						{% endif %}
@@ -119,7 +119,7 @@
 
 					<div class="mb-4">
 						<label for="password1" class="block text-sm font-medium text-gray-700">Password:</label>
-						<input type="password" id="password1" name="password1" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="password" value="{{ form.password1.value|default_if_none:'' }}" id="password1" name="password1" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.password1.errors %}
 						<div class="text-red-500 text-xs">{{ form.password1.errors }}</div>
 						{% endif %}
@@ -128,7 +128,7 @@
 					<div class="mb-4">
 						<label for="password2" class="block text-sm font-medium text-gray-700">Confirm Password:</label>
 
-						<input type="password" id="password2" name="password2" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="password" value="{{ form.password2.value|default_if_none:'' }}" id="password2" name="password2" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.password2.errors %}
 						<div class="text-red-500 text-xs">{{ form.password2.errors }}</div>
 						{% endif %}
@@ -136,7 +136,7 @@
 
 					<div class="mb-4">
 						<label for="address_line1" class="block text-sm font-medium text-gray-700">Address Line 1:</label>
-						<input type="text" id="address_line1" name="address_line1" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="address_line1"  value="{{ form.address_line1.value|default_if_none:'' }}" name="address_line1" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.address_line1.errors %}
 						<div class="text-red-500 text-xs">{{ form.address_line1.value }} {{ form.address_line1.errors }}</div>
 						{% endif %}
@@ -144,12 +144,12 @@
 
 					<div class="mb-4">
 						<label for="address_line2" class="block text-sm font-medium text-gray-700">Address Line 2:</label>
-						<input type="text" id="address_line2" name="address_line2" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" value="{{ form.address_line2.value|default_if_none:'' }}" id="address_line2" name="address_line2" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 					</div>
 
 					<div class="mb-4">
 						<label for="city" class="block text-sm font-medium text-gray-700">City:</label>
-						<input type="text" id="city" name="city" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="city"  value="{{ form.city.value|default_if_none:'' }}" name="city" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.city.errors %}
 						<div class="text-red-500 text-xs">{{ form.city.errors }}</div>
 						{% endif %}
@@ -157,7 +157,7 @@
 
 					<div class="mb-4">
 						<label for="province" class="block text-sm font-medium text-gray-700">Province:</label>
-						<input type="text" id="province" name="province" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="province" value="{{ form.province.value|default_if_none:'' }}" name="province" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.province.errors %}
 						<div class="text-red-500 text-xs"> {{ form.province.errors }}</div>
 						{% endif %}
@@ -165,7 +165,7 @@
 
 					<div class="mb-4">
 						<label for="country" class="block text-sm font-medium text-gray-700">Country:</label>
-						<input type="text" id="country" name="country" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+						<input type="text" id="country" value="{{ form.country.value|default_if_none:'' }}" name="country" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
 						{% if form.country.errors %}
 						<div class="text-red-500 text-xs"> {{ form.country.errors }}</div>
 						{% endif %}
