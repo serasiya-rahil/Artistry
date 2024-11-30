@@ -99,10 +99,10 @@ def login_user(request):
         
         if user is not None:
             login(request, user)
-            dbg.info(f"User logged in {request.user}")
+            dbg.info(f"User logged in Successfully: {request.user}")
             return redirect('UserView')  
         else:
-            dbg.error(f"Login failed for user: {username}")
+            dbg.error(f"Invalid Login for user: {username}")
             messages.error(request, 'Invalid username or password.')
             return render(request, 'appln/login.html') 
     else:
@@ -120,13 +120,12 @@ def artist_signup(request):
             user = User.objects.get(username=artist.username)
             messages.success(request, "Account Created Successfully")
             login(request, user)
-            dbg.info(f"User logged in: {user}")
+            dbg.info(f"User log-in Completed: {user}")
             return redirect('artistDashboard')  
         else:
-            
             dbg.error("Artist signup form is not valid.")
     else:
-        dbg.info("Displaying artist signup form.")
+        dbg.info("Rendering Artist signup form.")
         form = ArtistSignupForm()
 
     return render(request, 'appln/artist_signup.html', {'form': form})
@@ -167,7 +166,7 @@ def artist_login(request):
 @measure_time
 def artistDashboard(request):
     try:
-        dbg.info(f"Current User: {request.user}")
+        dbg.info(f"Current User Request: {request.user}")
         artist = Artist.objects.get(username=request.user)
         dbg.info(f"Artist found: {artist.username}")
         
@@ -176,7 +175,7 @@ def artistDashboard(request):
         PendingRequest = Request.objects.filter(artist=artist.artist_id).exclude(status__in=['Fulfilled', 'Cancelled']).count()
         
         artworks = Artwork.objects.filter(artist=artist)
-        dbg.info(f"Total artworks found: {artworks.count()}")
+        dbg.info(f"Total artwork Processed: {artworks.count()}")
         
         profile = ArtistProfile.objects.filter(artist_id=artist.artist_id).first()
         if not request.session.get('profile_update_message_shown', False):
@@ -222,7 +221,6 @@ def add_artwork(request):
             artwork.artist=artistobj
             dbg.info(f"Saving artwork: {artwork.title} for artist: {artistobj.username}")
             
-        
             artwork.save() 
             dbg.info(f"Artwork saved successfully: {artwork.title}")
             messages.success(request,'{artwork.title} saved successfully')
@@ -235,7 +233,6 @@ def add_artwork(request):
         except:
             profile = None
             dbg.error(f"Profile not found for artist: {artistobj.username}")
-
             
     return render(request, 'appln/add_artwork.html', {'form': form})
 
@@ -245,7 +242,7 @@ def delete_artwork(request, artwork_id):
     isDeletable = True 
     artist = get_object_or_404(Artist, username=request.user)
     artwork = get_object_or_404(Artwork, artwork_id=artwork_id, artist=artist)
-    
+    dbg.info(f"Delete Artwork with ID:{artwork_id} request received")
     #this status options cannot be deleted untill the request is not completed
     statusOptions = ['Pending', 'Accepted']
     
@@ -278,7 +275,6 @@ def delete_artwork(request, artwork_id):
         dbg.warn(f"Artwork cannot be deleted: {artwork.title}, as it has active orders present in the Request Table")
         messages.warning(request, f"The artwork '{artwork.title}' cannot be deleted as there are currently {request_count} pending orders associated with it. Please complete all outstanding orders before attempting deletion.")
 
-    
     return redirect('artistDashboard') 
 
 @login_required
@@ -337,10 +333,9 @@ def UserView(request):
         
     top_5_artworks = Artwork.objects.filter(artwork_id__in=top_5_artwork_ids)
 
-    dbg.info("Fetching all artworks for UserView.")
+    dbg.info(f"Fetching all artworks for UserView for User {request.user}")
     artworks = Artwork.objects.all().order_by('artwork_id')
    
-    
     Profile_artworks = Artwork.objects.select_related('artist').prefetch_related('artist__profiles').all()
     order_count = Order.objects.filter(user_id=request.user.id).count()
 
@@ -361,7 +356,6 @@ def UserView(request):
         dbg.info(f"Rating: {artwork.avg_rating} {type(artwork.avg_rating)}")
         artwork.rating_count = rating_info['rating_count']
 
-
     search_query = request.GET.get('search', '')
     if search_query:
         dbg.info(f"Search query received: {search_query}")
@@ -372,7 +366,6 @@ def UserView(request):
     
     paginator = Paginator(artworks, 3) 
 
-   
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -403,7 +396,6 @@ def view_profile(request):
     dbg.info(f"Attempting to view profile for user: {request.user}")
     
     artist = get_object_or_404(Artist, username=request.user)
-    dbg.info(f"Artist found: {artist.username}")
     
     profile = ArtistProfile.objects.filter(artist_id=artist.artist_id).first()
     if not profile:
@@ -420,24 +412,28 @@ def view_profile(request):
 
     return render(request, 'appln/artist_profile_form.html', {'artist_profile': artist_profile,'profile':profile})
 
-
 @login_required
 @measure_time
 def edit_profile(request, artist_id):
     artist_profile = None
     try:
         artist_profile = get_object_or_404(ArtistProfile, artist_id=artist_id)
+        dbg.info(f"Searching for Artist Profile {request.user}, {artist_id}")
     except:
+        dbg.info(f"Artist Profile Not Found {request.user}, {artist_id}")
         pass  # Allow artist_profile to remain None if not found
 
     if request.method == 'POST':
         if artist_profile:
             # Updating an existing profile
             form = ArtistProfileForm(request.POST, request.FILES, instance=artist_profile)
+            dbg.info(f"Populating Artist Profile instance from the POST request made to edit for {request.user}")
         else:
             # Creating a new profile - Ensure artist_id is assigned
             form = ArtistProfileForm(request.POST, request.FILES)
             artist_profile = ArtistProfile(artist_id=artist_id)  # Initialize with artist_id
+            dbg.info(f"Artist profile not found in Database")
+            dbg.info(f"Proceeding with Artist profile Validation")
 
         if form.is_valid():
             if artist_profile and 'profile_photo' in request.FILES:
@@ -445,9 +441,10 @@ def edit_profile(request, artist_id):
                 if artist_profile.profile_photo and os.path.isfile(artist_profile.profile_photo.path):
                     try:
                         os.remove(artist_profile.profile_photo.path)
-                        print(f"Deleted old file: {artist_profile.profile_photo.path}")
+                        dbg.info(f"Deleted old file: {artist_profile.profile_photo.path}")
                     except Exception as e:
                         print(f"Error deleting file: {e}")
+                        dbg.error(f"Error in Deleting old file: {artist_profile.profile_photo.path}")
             
             profile = form.save(commit=False)  # Don't save to DB yet
             profile.artist_id = artist_id  # Ensure artist_id is set
@@ -487,7 +484,7 @@ def viewArtworkById(request, artwork_id):
 @measure_time
 def orderNow(request, artwork_id):
     artwork = get_object_or_404(Artwork, pk=artwork_id)
-    
+    dbg.info(f"{request.user} requested to order {artwork_id}...Proceeding with prompting payment")
     if request.method == 'POST':
         form = RequestForm(request.POST, request.FILES)
         
@@ -524,11 +521,13 @@ def orderNow(request, artwork_id):
                 image_file = request.FILES['image_path']
                 image_filename = fs.save(image_file.name, image_file)
                 temp_form_data['image_path'] = image_filename  # Save the filename, not the URL
+                dbg.info(f"Saving the file for {request.user} with image file name as {image_filename}")
 
             if 'video_path' in request.FILES:
                 video_file = request.FILES['video_path']
                 video_filename = fs.save(video_file.name, video_file)
                 temp_form_data['video_path'] = video_filename  # Save the filename, not the URL
+                dbg.info(f"Saving the file for {request.user} with vieo file name as {video_filename}")
 
             # Save the temporary form data in session
             request.session['temp_form_data'] = temp_form_data
@@ -579,7 +578,7 @@ def payment_success(request):
                         request_instance.video_path = video_permanent_path
 
                 request_instance.save()
-
+                dbg.info(f"Payment completed for {request.user}")
                 # Create the order record
                 order_instance = Order(
                     total_price=Artwork.objects.get(pk=temp_data['artwork_id']).price,
@@ -591,7 +590,7 @@ def payment_success(request):
                 )
                 order_instance.request = request_instance
                 order_instance.save()
-
+                dbg.info(f"Order completed for {request.user} with OrderID: {order_instance.order_id}")
                 messages.success(request, f"Order Placed Successfully with Order ID: {order_instance.order_id}")
                 return redirect('UserView')
 
@@ -633,12 +632,6 @@ def PastOrders(request):
         allOrders = Order.objects.filter(user_id=request.user.id).order_by('-created_at')
         
         dbg.info(f"Orders Count: {allOrders.count()}")
-
-        for order in allOrders:
-            dbg.info(f"Order found: {order.order_id}")
-            dbg.info(f"Artwork ID: {order.artwork.artwork_id}")
-            dbg.info(f"Status: {order.request.status}")
-
         
     except:
         allOrders = None
@@ -651,6 +644,7 @@ def edit_request(request, request_id):
     request_instance = get_object_or_404(Request, request_id=request_id)
     RequestNumber = request_instance.request_id
 
+    dbg.info(f"Edit Request received for {request_id} made by {request.user}")
     # Check if the request is editable
     if not request_instance.is_editable():
         messages.info(request,"This request cannot be edited as the 3-hour modification window has passed.")
@@ -714,6 +708,7 @@ def edit_request(request, request_id):
             # If any changes were made (to image or video), save the instance
             if changes_made:
                 request_instance.save()  # Save the instance after changes
+                dbg.info(f"Edit request successfully processed for {request_id} made by {request.user}")
 
             messages.success(request, "Request updated successfully.")
             return redirect('UserView')  # Adjust this as necessary
@@ -730,8 +725,7 @@ def ViewRequestForArtist(request):
     
     try:
         allRequests = Request.objects.filter(artist_id=artistToSearch.artist_id)
-        for req in allRequests:
-            dbg.info(f"Request id: {req.request_id}")
+        dbg.info(f"All request found for {request.user} with total request as {allRequests.count()}")
     except Request.DoesNotExist:
         allRequests = None
 
@@ -794,6 +788,7 @@ def view_request(request, request_id):
         'request': request_instance
     }
     
+    dbg.info(f"Rendering view request {request_id} made by {request.user}")
     return render(request, 'appln/view_requestByID.html', context)
 
 @login_required
@@ -802,6 +797,7 @@ def upload_file(request, request_id):
     # Get the Request instance by request_id
     request_instance = Request.objects.get(request_id=request_id)
 
+    dbg.info(f"Artist Proceeded to upload the final artwork for {request_id} with artist name {request.user}")
     # Check if an upload already exists for this request
     upload_instance = Upload.objects.filter(request=request_instance).first()
 
@@ -817,9 +813,10 @@ def upload_file(request, request_id):
 
             # Save the upload instance
             upload_instance.save()
-
+            dbg.info(f"Upload transaction completed by {request.user} for request ID {request_id}")
             # After saving the upload, mark the request as fulfilled and set the artist_delivery_date
             request_instance.status = 'fulfilled'
+            dbg.info(f"Updated the Status as fulfilled for completed request for request id {request_id}")
             request_instance.artist_delivery_date = timezone.now()  # Set to current time
             request_instance.save()
 
@@ -828,6 +825,8 @@ def upload_file(request, request_id):
             order_instance.order_status = 'completed'
             order_instance.actual_delivery_date = timezone.now()  # Set to current time
             order_instance.save()
+            dbg.info(f"Update the Status for Order table as fulfilled for completed request for request id {request_id}")
+
 
             # Redirect to a success page or back to the request view
             return redirect('ViewRequestForArtist')  # Replace with your actual URL name
@@ -958,6 +957,7 @@ def myListings(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    dbg.info(f"User requested to view the Mylisting section for user {request.user}")
     return render(request, 'appln/MyListings.html', {'page_obj': page_obj})
 
 @measure_time
