@@ -353,7 +353,6 @@ def UserView(request):
     for artwork in artworks:
         rating_info = avg_rating_dict.get(artwork.artwork_id, {'avg_rating': 0, 'rating_count': 0})
         artwork.avg_rating = float(rating_info['avg_rating'])
-        dbg.info(f"Rating: {artwork.avg_rating} {type(artwork.avg_rating)}")
         artwork.rating_count = rating_info['rating_count']
 
     search_query = request.GET.get('search', '')
